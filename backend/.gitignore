@@ -1,0 +1,7 @@
+# EatFit backend
+*.db
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env

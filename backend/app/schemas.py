@@ -1,0 +1,131 @@
+"""Pydantic schemas: request/response data contracts for the EatFit API."""
+from __future__ import annotations
+
+from datetime import datetime
+from enum import Enum
+from typing import List, Optional
+
+from pydantic import BaseModel, Field
+
+
+# ---------- Enums ----------
+class Gender(str, Enum):
+    male = "male"
+    female = "female"
+
+
+class Goal(str, Enum):
+    """User dietary goal."""
+    lose_fat = "lose_fat"      # 减脂
+    maintain = "maintain"      # 保持
+    gain_muscle = "gain_muscle"  # 增肌
+
+
+class ActivityLevel(str, Enum):
+    sedentary = "sedentary"          # 久坐 1.2
+    light = "light"                  # 轻度活动 1.375
+    moderate = "moderate"            # 中度活动 1.55
+    active = "active"                # 高度活动 1.725
+    very_active = "very_active"      # 极高强度 1.9
+
+
+class MealType(str, Enum):
+    breakfast = "breakfast"
+    lunch = "lunch"
+    dinner = "dinner"
+    snack = "snack"
+
+
+# ---------- User / Profile ----------
+class UserProfileBase(BaseModel):
+    name: str = Field(..., examples=["小明"])
+    gender: Gender
+    age: int = Field(..., ge=10, le=100)
+    height_cm: float = Field(..., ge=100, le=250, description="身高 cm")
+    weight_kg: float = Field(..., ge=30, le=250, description="体重 kg")
+    body_fat_pct: Optional[float] = Field(None, ge=3, le=60, description="体脂率 %")
+    activity_level: ActivityLevel = ActivityLevel.sedentary
+    goal: Goal = Goal.maintain
+    allergens: List[str] = Field(default_factory=list, description="过敏原标签")
+    disliked_tags: List[str] = Field(default_factory=list, description="忌口/不喜欢的标签")
+    diet_preference: Optional[str] = Field(None, description="饮食偏好,如 normal/vegetarian")
+
+
+class UserProfileCreate(UserProfileBase):
+    pass
+
+
+class UserProfileOut(UserProfileBase):
+    id: int
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+# ---------- Nutrition target ----------
+class NutritionTarget(BaseModel):
+    bmr: float = Field(..., description="基础代谢率 kcal")
+    tdee: float = Field(..., description="每日总消耗 kcal")
+    target_calories: float = Field(..., description="目标摄入 kcal")
+    protein_g: float
+    carbs_g: float
+    fat_g: float
+    explanation: str
+
+
+# ---------- Recipe ----------
+class IngredientItem(BaseModel):
+    name: str
+    amount_g: float
+    category: str = "其他"
+
+
+class RecipeOut(BaseModel):
+    id: int
+    name: str
+    meal_type: MealType
+    calories: float
+    protein_g: float
+    carbs_g: float
+    fat_g: float
+    tags: List[str]
+    allergens: List[str]
+    cook_minutes: int
+    ingredients: List[IngredientItem]
+    steps: List[str]
+    image_emoji: str = "🍽️"
+
+    class Config:
+        from_attributes = True
+
+
+# ---------- Meal plan ----------
+class MealItem(BaseModel):
+    meal_type: MealType
+    recipe: RecipeOut
+
+
+class DailyPlanOut(BaseModel):
+    date: str
+    profile_id: int
+    target: NutritionTarget
+    meals: List[MealItem]
+    total_calories: float
+    total_protein_g: float
+    total_carbs_g: float
+    total_fat_g: float
+
+
+# ---------- Grocery list ----------
+class GroceryItem(BaseModel):
+    name: str
+    total_amount_g: float
+    category: str
+
+
+class GroceryListOut(BaseModel):
+    date: str
+    profile_id: int
+    items: List[GroceryItem]
+    grouped: dict[str, List[GroceryItem]]
