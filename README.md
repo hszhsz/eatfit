@@ -3,12 +3,14 @@
 > 基于 TRAE SOLO 挑战赛创意提案「EatFit 吃什么」开发的全栈应用。
 > 录入身体数据 → AI 生成个性化每日食谱 → AI 营养顾问复盘与策略建议 → 一键买菜清单 → step-by-step 烹饪引导。
 
-本仓库包含两部分:
+本仓库目前包含四部分:
 
 ```
 EatFit/
-├── backend/      # Python FastAPI 后端 + 营养计算 / 食谱匹配引擎 + SQLite
-└── android/      # Kotlin + Jetpack Compose Android 前端
+├── backend/      # Python FastAPI 后端
+├── android/      # Kotlin + Jetpack Compose Android 客户端
+├── ios/          # SwiftUI 原生 iOS 客户端
+└── web/          # React Web 客户端
 ```
 
 ---
@@ -64,6 +66,24 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 3. 选择模拟器/真机,点击 Run ▶。
 
 > 工程自带 Gradle Wrapper(`gradlew` / `gradle-wrapper.jar`),首次构建会自动下载 Gradle 8.7。
+
+### 3. 运行 iOS 前端
+
+1. 安装并打开完整 **Xcode**。
+2. 生成工程:
+
+```bash
+cd ios
+xcodegen generate
+```
+
+3. 打开 `ios/EatFitIOS.xcodeproj`
+4. 选择模拟器或真机运行。
+5. 首次进入 app 时，在建档页填写后端地址：
+   - **iOS 模拟器** 推荐 `http://127.0.0.1:8000`
+   - **iPhone 真机** 需改成电脑局域网 IP，例如 `http://192.168.1.100:8000`
+
+> 若命令行 `xcodebuild` 提示缺少 iOS Platform / Simulator Runtime，请在 Xcode `Settings > Components` 安装对应平台组件，并确保 `xcode-select` 指向完整 Xcode。
 
 ---
 
@@ -141,6 +161,17 @@ android/app/src/main/java/com/eatfit/app/
 └── ui/
     ├── theme/ navigation/ components/
     └── screens/ onboarding / today / coach / recipe / grocery / profile
+
+ios/
+├── project.yml             # xcodegen 工程定义
+├── EatFitIOS.xcodeproj     # 生成后的 Xcode 工程
+└── EatFitIOS/
+    ├── App/                # App 入口与 Tab 根视图
+    ├── Models/             # Swift Codable 数据模型
+    ├── Networking/         # URLSession API Client
+    ├── Store/              # 全局会话与 profileId 持久化
+    ├── ViewModels/         # SwiftUI 状态管理
+    └── Views/              # Onboarding / Today / Recipes / Grocery / Coach / Profile
 ```
 
 ---

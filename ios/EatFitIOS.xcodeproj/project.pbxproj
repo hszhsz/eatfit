@@ -1,0 +1,444 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		25A3EC2CCB88A09B86E75EE6 /* AppStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F476D74FB8B88ED59B9F4B5 /* AppStore.swift */; };
+		305C2607FD1DD94DBA0CB3C0 /* APIModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB60030F805E4517F962D45 /* APIModels.swift */; };
+		31427CD5C8CA11FCD7766C55 /* CoachViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EF62FFDC30FC409777E8A3 /* CoachViewModel.swift */; };
+		3880433F7929BACAC91964F6 /* CoachScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5003D6EBCC9C3124E4EB380D /* CoachScreen.swift */; };
+		3A1A62975BF3F06840641374 /* TodayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B776176BBBF438EB920549A /* TodayViewModel.swift */; };
+		4C8B9FC4AE6A1AD1E9041277 /* RecipesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F101EA15876F9D4719AFBF /* RecipesScreen.swift */; };
+		52920618880AF03035A3A93F /* CommonViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99153EE389C577924B59D4B3 /* CommonViews.swift */; };
+		764C9DD469D24A00B5400859 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3058A0D8D1B803B455366228 /* OnboardingViewModel.swift */; };
+		865A44BFE8FE0B9DBF35D660 /* ProfileFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B986FE36B8E18D14F812F85 /* ProfileFormView.swift */; };
+		99E0FB9E0FC436C70DB6CEEE /* OnboardingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5CC5ADB41D4E342F979966 /* OnboardingScreen.swift */; };
+		B6B4ACFA829E8949B7465C07 /* ProfileScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 176D9FEC3B9CE2AD3E720C53 /* ProfileScreen.swift */; };
+		BF39EEB4C1F5ECC28F697600 /* RecipesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662516F3C43B98448617464A /* RecipesViewModel.swift */; };
+		CFB2812437FC0368B1153061 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D510233B0CE702D244651380 /* APIClient.swift */; };
+		E2F746C57F12BB071A9991A1 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C778B7989E62EC70191B603 /* ProfileViewModel.swift */; };
+		E7D93081E1D1B23635CF58D3 /* GroceryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78143FC93BF9145858E4F4D4 /* GroceryScreen.swift */; };
+		EA5CFD7B825043B0F691E1D6 /* GroceryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F818F1F5995C1D8C59B7499 /* GroceryViewModel.swift */; };
+		EC28F0A53414E0C67F3CC4EE /* EatFitIOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC723B88A8C43D60737807B9 /* EatFitIOSApp.swift */; };
+		F6C56081A15417E4B729A28B /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5B633ABEE5D90319317DA2 /* RootView.swift */; };
+		F7231E2149225351974D2CE4 /* TodayScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABE75372009FAF92BB00DBB /* TodayScreen.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0AF2F6E12909FF2C2C20FCE5 /* EatFitIOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = EatFitIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0CB60030F805E4517F962D45 /* APIModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIModels.swift; sourceTree = "<group>"; };
+		176D9FEC3B9CE2AD3E720C53 /* ProfileScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreen.swift; sourceTree = "<group>"; };
+		1F818F1F5995C1D8C59B7499 /* GroceryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroceryViewModel.swift; sourceTree = "<group>"; };
+		2B776176BBBF438EB920549A /* TodayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewModel.swift; sourceTree = "<group>"; };
+		3058A0D8D1B803B455366228 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
+		5003D6EBCC9C3124E4EB380D /* CoachScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoachScreen.swift; sourceTree = "<group>"; };
+		5F5B633ABEE5D90319317DA2 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		662516F3C43B98448617464A /* RecipesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesViewModel.swift; sourceTree = "<group>"; };
+		78143FC93BF9145858E4F4D4 /* GroceryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroceryScreen.swift; sourceTree = "<group>"; };
+		8B986FE36B8E18D14F812F85 /* ProfileFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileFormView.swift; sourceTree = "<group>"; };
+		8D5CC5ADB41D4E342F979966 /* OnboardingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingScreen.swift; sourceTree = "<group>"; };
+		99153EE389C577924B59D4B3 /* CommonViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonViews.swift; sourceTree = "<group>"; };
+		9C778B7989E62EC70191B603 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		9F476D74FB8B88ED59B9F4B5 /* AppStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStore.swift; sourceTree = "<group>"; };
+		A7EF62FFDC30FC409777E8A3 /* CoachViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoachViewModel.swift; sourceTree = "<group>"; };
+		AC723B88A8C43D60737807B9 /* EatFitIOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EatFitIOSApp.swift; sourceTree = "<group>"; };
+		C5F101EA15876F9D4719AFBF /* RecipesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesScreen.swift; sourceTree = "<group>"; };
+		CABE75372009FAF92BB00DBB /* TodayScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayScreen.swift; sourceTree = "<group>"; };
+		D510233B0CE702D244651380 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		14B68621BA17F0DF7B85536D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B137011A8CEEE3EFC6F14D74 /* Components */,
+				A51B0C7C464C492655A9DC6E /* Screens */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		242105A40A730A5C6DB4CDB3 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				9F476D74FB8B88ED59B9F4B5 /* AppStore.swift */,
+			);
+			path = Store;
+			sourceTree = "<group>";
+		};
+		39101ABE025123B592FC6153 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0CB60030F805E4517F962D45 /* APIModels.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		6312E43FD6C916DC073DF750 = {
+			isa = PBXGroup;
+			children = (
+				EB21196C05E95F89AEDA70A4 /* EatFitIOS */,
+				6A9EA7D004B312AA64B5E5F5 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6A9EA7D004B312AA64B5E5F5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0AF2F6E12909FF2C2C20FCE5 /* EatFitIOS.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9FDEDF0A7CDB1EDAF8783E91 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A7EF62FFDC30FC409777E8A3 /* CoachViewModel.swift */,
+				1F818F1F5995C1D8C59B7499 /* GroceryViewModel.swift */,
+				3058A0D8D1B803B455366228 /* OnboardingViewModel.swift */,
+				9C778B7989E62EC70191B603 /* ProfileViewModel.swift */,
+				662516F3C43B98448617464A /* RecipesViewModel.swift */,
+				2B776176BBBF438EB920549A /* TodayViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		A51B0C7C464C492655A9DC6E /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				5003D6EBCC9C3124E4EB380D /* CoachScreen.swift */,
+				78143FC93BF9145858E4F4D4 /* GroceryScreen.swift */,
+				8D5CC5ADB41D4E342F979966 /* OnboardingScreen.swift */,
+				176D9FEC3B9CE2AD3E720C53 /* ProfileScreen.swift */,
+				C5F101EA15876F9D4719AFBF /* RecipesScreen.swift */,
+				CABE75372009FAF92BB00DBB /* TodayScreen.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		B137011A8CEEE3EFC6F14D74 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				99153EE389C577924B59D4B3 /* CommonViews.swift */,
+				8B986FE36B8E18D14F812F85 /* ProfileFormView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		B37B947F7C9AFB4A155B828B /* App */ = {
+			isa = PBXGroup;
+			children = (
+				AC723B88A8C43D60737807B9 /* EatFitIOSApp.swift */,
+				5F5B633ABEE5D90319317DA2 /* RootView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		CCFA0B5C4E4E1B8898CCB06A /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				D510233B0CE702D244651380 /* APIClient.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		EB21196C05E95F89AEDA70A4 /* EatFitIOS */ = {
+			isa = PBXGroup;
+			children = (
+				B37B947F7C9AFB4A155B828B /* App */,
+				39101ABE025123B592FC6153 /* Models */,
+				CCFA0B5C4E4E1B8898CCB06A /* Networking */,
+				242105A40A730A5C6DB4CDB3 /* Store */,
+				9FDEDF0A7CDB1EDAF8783E91 /* ViewModels */,
+				14B68621BA17F0DF7B85536D /* Views */,
+			);
+			path = EatFitIOS;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		23D25BA059DF776BBB11FF60 /* EatFitIOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7CE2002472BCC47FD78516D7 /* Build configuration list for PBXNativeTarget "EatFitIOS" */;
+			buildPhases = (
+				76287E168930751B8BA8F418 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = EatFitIOS;
+			packageProductDependencies = (
+			);
+			productName = EatFitIOS;
+			productReference = 0AF2F6E12909FF2C2C20FCE5 /* EatFitIOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6D1DB3A5DB234E30A11421EA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					23D25BA059DF776BBB11FF60 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 589055E592AE7525ECA8BDA4 /* Build configuration list for PBXProject "EatFitIOS" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 6312E43FD6C916DC073DF750;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 6A9EA7D004B312AA64B5E5F5 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				23D25BA059DF776BBB11FF60 /* EatFitIOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		76287E168930751B8BA8F418 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CFB2812437FC0368B1153061 /* APIClient.swift in Sources */,
+				305C2607FD1DD94DBA0CB3C0 /* APIModels.swift in Sources */,
+				25A3EC2CCB88A09B86E75EE6 /* AppStore.swift in Sources */,
+				3880433F7929BACAC91964F6 /* CoachScreen.swift in Sources */,
+				31427CD5C8CA11FCD7766C55 /* CoachViewModel.swift in Sources */,
+				52920618880AF03035A3A93F /* CommonViews.swift in Sources */,
+				EC28F0A53414E0C67F3CC4EE /* EatFitIOSApp.swift in Sources */,
+				E7D93081E1D1B23635CF58D3 /* GroceryScreen.swift in Sources */,
+				EA5CFD7B825043B0F691E1D6 /* GroceryViewModel.swift in Sources */,
+				99E0FB9E0FC436C70DB6CEEE /* OnboardingScreen.swift in Sources */,
+				764C9DD469D24A00B5400859 /* OnboardingViewModel.swift in Sources */,
+				865A44BFE8FE0B9DBF35D660 /* ProfileFormView.swift in Sources */,
+				B6B4ACFA829E8949B7465C07 /* ProfileScreen.swift in Sources */,
+				E2F746C57F12BB071A9991A1 /* ProfileViewModel.swift in Sources */,
+				4C8B9FC4AE6A1AD1E9041277 /* RecipesScreen.swift in Sources */,
+				BF39EEB4C1F5ECC28F697600 /* RecipesViewModel.swift in Sources */,
+				F6C56081A15417E4B729A28B /* RootView.swift in Sources */,
+				F7231E2149225351974D2CE4 /* TodayScreen.swift in Sources */,
+				3A1A62975BF3F06840641374 /* TodayViewModel.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		6400EDA91F89FE8DCFA1FBE2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.1;
+			};
+			name = Release;
+		};
+		AB6F2F3AA992D1905E1A1794 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = EatFit;
+				INFOPLIST_KEY_NSAppTransportSecurity_NSAllowsLocalNetworking = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDefault;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.eatfit.ios;
+				PRODUCT_NAME = EatFit;
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		AF215162D2C96B599C1211DD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = EatFit;
+				INFOPLIST_KEY_NSAppTransportSecurity_NSAllowsLocalNetworking = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDefault;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.eatfit.ios;
+				PRODUCT_NAME = EatFit;
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		EA549CD9061FF2BD1F3F7F1B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.1;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		589055E592AE7525ECA8BDA4 /* Build configuration list for PBXProject "EatFitIOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EA549CD9061FF2BD1F3F7F1B /* Debug */,
+				6400EDA91F89FE8DCFA1FBE2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		7CE2002472BCC47FD78516D7 /* Build configuration list for PBXNativeTarget "EatFitIOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AB6F2F3AA992D1905E1A1794 /* Debug */,
+				AF215162D2C96B599C1211DD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6D1DB3A5DB234E30A11421EA /* Project object */;
+}
