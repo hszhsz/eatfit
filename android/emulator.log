@@ -1,0 +1,434 @@
+INFO         | Android emulator version 36.6.11.0 (build_id 15507667) (CL:N/A)
+INFO         | Graphics backend: gfxstream
+INFO         | Found systemPath /Users/heshaozhong/Library/Android/sdk/system-images/android-35/google_apis_playstore/x86_64/
+INFO         | Saving last run QEMU version for the AVD to 2
+INFO         | Increasing RAM size to 2560MB
+INFO         | Guest GLES Driver: Auto (ext controls)
+INFO         | emuglConfig_init: vulkan_mode_selected:swiftshader gles_mode_selected:host
+INFO         | Checking system compatibility:
+INFO         |   Checking: hasSufficientDiskSpace
+INFO         |      Ok: Disk space requirements to run avd: `Medium_Phone` are met
+INFO         |   Checking: hasSufficientHwGpu
+INFO         |      Ok: Hardware GPU compatibility checks are not required
+INFO         |   Checking: hasSufficientSystem
+INFO         |      Ok: System requirements to run avd: `Medium_Phone` are met
+INFO         | Warning: QMetaObject::connectSlotsByName: No matching signal for on_default_environment_selected() (:0, )
+INFO         | Warning: QMetaObject::connectSlotsByName: No matching signal for on_none_selected() (:0, )
+INFO         | Warning: QMetaObject::connectSlotsByName: No matching signal for on_custom_image_selected() (:0, )
+INFO         | Warning: QMetaObject::connectSlotsByName: No matching signal for on_custom_video_selected() (:0, )
+INFO         | Warning: QMetaObject::connectSlotsByName: No matching signal for on_custom_360_image_selected() (:0, )
+INFO         | Storing crashdata in: /tmp/android-heshaozhong/emu-crash-36.6.11.db, detection is enabled for process: 21364
+INFO         | Initializing gfxstream backend
+INFO         | startOpenglesRendererImpl: gpu info
+INFO         | GPU #1
+  Make: 8086
+  Model: 8a53
+  Device ID: 8a53
+
+INFO         | initIcdPaths: ICD set to 'swiftshader', using Swiftshader ICD
+INFO         | Setting ICD filenames for the loader = /Users/heshaozhong/Library/Android/sdk/emulator/lib64/vulkan/vk_swiftshader_icd.json
+INFO         | SharedLibrary::open for [/Users/heshaozhong/Library/Android/sdk/emulator/qemu/darwin-x86_64/lib64/vulkan/libvulkan.dylib]
+INFO         | Added library: /Users/heshaozhong/Library/Android/sdk/emulator/qemu/darwin-x86_64/lib64/vulkan/libvulkan.dylib
+INFO         | Enabling Vulkan portability.
+INFO         | Selecting Vulkan device: SwiftShader Device (Subzero), Version: 1.3.0
+INFO         | Using Vulkan externalMemoryMode: OpaqueFd for VkEmulation
+INFO         | Initializing VkEmulation features:
+INFO         |     glInteropSupported: false
+INFO         |     useDeferredCommands: true
+INFO         |     createResourceWithRequirements: true
+INFO         |     useVulkanComposition: false
+INFO         |     useVulkanNativeSwapchain: false
+INFO         |     enable guestRenderDoc: false
+INFO         |     ASTC LDR emulation mode: Gpu
+INFO         |     enable ETC2 emulation: true
+INFO         |     enable Ycbcr emulation: false
+INFO         |     guestVulkanOnly: false
+INFO         |     useDedicatedAllocations: false
+INFO         |     guestVulkanMaxApiVersion: 1.3.0
+INFO         |     enableProtectedMemoryEmulation: false
+INFO         | Graphics Adapter Vendor Google (Intel Inc.)
+INFO         | Graphics Adapter Android Emulator OpenGL ES Translator (Intel(R) Iris(TM) Plus Graphics OpenGL Engine)
+INFO         | Graphics API Version OpenGL ES 3.0 (4.1 INTEL-24.5.8)
+INFO         | Graphics API Extensions GL_OES_EGL_sync GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_depth24 GL_OES_depth32 GL_OES_element_index_uint GL_OES_texture_float GL_OES_texture_float_linear GL_OES_compressed_paletted_texture GL_OES_compressed_ETC1_RGB8_texture GL_OES_depth_texture GL_OES_texture_npot GL_OES_rgb8_rgba8 GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_texture_format_BGRA8888 GL_APPLE_texture_format_BGRA8888 
+INFO         | Graphics Device Extensions N/A
+INFO         | Disabling sparse binding feature support
+INFO         | Sending adb public key [QAAAAMvjXIUdVlwZHhNwtJ/8NdJefAJyGi8LLp2mMMBfa8K4D51hbj0V97ralVaUvqIGRdEwW8XeUoEei7d22g+treSZiEmgIsvxtP/FLlTBPv3LGtMC8fW++LJEyLe/bP+Zj+BFbGwoDNM6Abbxa/Hx0Ckzg86poj4SC/wI/yjdIENKn9X9t7TiOcchtWPR+4aDBTUJiB34wPBdvhdyvWpHBDd1FgflqG92o7gwcRyAmWh6mv99GipsnEq1fclzqOUIv0rvJtKtcnYm213wOdAwZ3i4zBySEXish5B7+bWtXZEFdmHq6IZIDR5achtcwR7O8DopsvzleppVHatfVRmOMGWTmj23lhy9XxY22JN+1WSIYYiKRGDYBvO0hxzgX162gCC2Mqsj4sbmf+3JSqItEVr/ieGyX9ci5fvxzA/QwVvfVafHQ1r4MKnqBreefLuz40pTmsvPRpbyKFwOWn3XCUm2PkDMKuL2lYGz3HyoZNLKXxCJjYnXgNj/eJGtYgqKb85xXysLHt6vqX0nrvSN32TQJWIW5Nq7ChsiMFO8+v7b60FjFJb/S80IiDCCTjVPHUBE1ABMIya0KndnbQzrw9+D5sV7LCdWUBtjzFsFYSRHGf170M6QTz3TRuYFFWd9h2CwGeN4QWdfUNpWBYeIvWO/TPpaji2N97wHyprgKm3pe6mFbwEAAQA= heshaozhong@unknown]
+INFO         | Userspace boot properties:
+INFO         |   androidboot.boot_devices=pci0000:00/0000:00:03.0 pci0000:00/0000:00:06.0
+INFO         |   androidboot.dalvik.vm.heapsize=576m
+INFO         |   androidboot.debug.hwui.renderer=skiagl
+INFO         |   androidboot.hardware=ranchu
+INFO         |   androidboot.hardware.gltransport=pipe
+INFO         |   androidboot.hardware.vulkan=ranchu
+INFO         |   androidboot.logcat=*:V
+INFO         |   androidboot.opengles.version=196608
+INFO         |   androidboot.qemu=1
+INFO         |   androidboot.qemu.adb.pubkey=QAAAAMvjXIUdVlwZHhNwtJ/8NdJefAJyGi8LLp2mMMBfa8K4D51hbj0V97ralVaUvqIGRdEwW8XeUoEei7d22g+treSZiEmgIsvxtP/FLlTBPv3LGtMC8fW++LJEyLe/bP+Zj+BFbGwoDNM6Abbxa/Hx0Ckzg86poj4SC/wI/yjdIENKn9X9t7TiOcchtWPR+4aDBTUJiB34wPBdvhdyvWpHBDd1FgflqG92o7gwcRyAmWh6mv99GipsnEq1fclzqOUIv0rvJtKtcnYm213wOdAwZ3i4zBySEXish5B7+bWtXZEFdmHq6IZIDR5achtcwR7O8DopsvzleppVHatfVRmOMGWTmj23lhy9XxY22JN+1WSIYYiKRGDYBvO0hxzgX162gCC2Mqsj4sbmf+3JSqItEVr/ieGyX9ci5fvxzA/QwVvfVafHQ1r4MKnqBreefLuz40pTmsvPRpbyKFwOWn3XCUm2PkDMKuL2lYGz3HyoZNLKXxCJjYnXgNj/eJGtYgqKb85xXysLHt6vqX0nrvSN32TQJWIW5Nq7ChsiMFO8+v7b60FjFJb/S80IiDCCTjVPHUBE1ABMIya0KndnbQzrw9+D5sV7LCdWUBtjzFsFYSRHGf170M6QTz3TRuYFFWd9h2CwGeN4QWdfUNpWBYeIvWO/TPpaji2N97wHyprgKm3pe6mFbwEAAQA= heshaozhong@unknown
+INFO         |   androidboot.qemu.avd_name=Medium_Phone
+INFO         |   androidboot.qemu.camera_hq_edge_processing=0
+INFO         |   androidboot.qemu.camera_protocol_ver=1
+INFO         |   androidboot.qemu.cpuvulkan.version=4206592
+INFO         |   androidboot.qemu.gltransport.drawFlushInterval=800
+INFO         |   androidboot.qemu.gltransport.name=pipe
+INFO         |   androidboot.qemu.hwcodec.avcdec=2
+INFO         |   androidboot.qemu.hwcodec.hevcdec=2
+INFO         |   androidboot.qemu.hwcodec.vpxdec=2
+INFO         |   androidboot.qemu.settings.system.screen_off_timeout=2147483647
+INFO         |   androidboot.qemu.skin=1080x2400
+INFO         |   androidboot.qemu.virtiowifi=1
+INFO         |   androidboot.qemu.vsync=60
+INFO         |   androidboot.serialno=EMULATOR36X6X11X0
+INFO         |   androidboot.vbmeta.digest=9b597927025d4f62f4594a14632a8d3763239f29c0b7af229e0b6ebcddcdea60
+INFO         |   androidboot.vbmeta.hash_alg=sha256
+INFO         |   androidboot.vbmeta.size=6720
+INFO         |   androidboot.veritymode=enforcing
+INFO         | Activated packet streamer for bluetooth emulation
+INFO         | Monitoring duration of emulator setup.
+WARNING      | The emulator now requires a signed jwt token for gRPC access! Use the -grpc flag if you really want an open unprotected grpc port
+INFO         | Using security allow list from: /Users/heshaozhong/Library/Android/sdk/emulator/lib/emulator_access.json
+INFO         | The active JSON Web Key Sets can be found here: /Users/heshaozhong/Library/Caches/TemporaryItems/avd/running/21364/jwks/4f93fbbc-0154-405f-9ea2-e48f8754d004/active.jwk
+INFO         | Scanning /Users/heshaozhong/Library/Caches/TemporaryItems/avd/running/21364/jwks/4f93fbbc-0154-405f-9ea2-e48f8754d004 for jwk keys.
+INFO         | Started GRPC server at 127.0.0.1:8556, security: Local, auth: +token
+INFO         | Advertising in: /Users/heshaozhong/Library/Caches/TemporaryItems/avd/running/pid_21364.ini
+INFO         | Successfully initialized netsim WiFi
+INFO         | Setting display: 0 configuration to: 1080x2400, dpi: 420x420 
+INFO         | setDisplayActiveConfig: id:0, 1080x2400
+WARNING      | getEnvironmentConfig: No environment config is provided
+INFO         | getEnvironmentConfig: Using default virtual scene mode for the environment.
+INFO         | getEnvironmentConfig: Using default configuration for mode mesh3d for the environment.
+INFO         | Initializing a scene with mode: mesh3d, argument: Toren1BD.obj
+INFO         | Checking system compatibility:
+INFO         |   Checking: hasSufficientDiskSpace
+INFO         |      Ok: Disk space requirements to run avd: `Medium_Phone` are met
+INFO         |   Checking: hasSufficientHwGpu
+INFO         |      Ok: Hardware GPU compatibility checks are not required
+INFO         |   Checking: hasSufficientSystem
+INFO         |      Ok: System requirements to run avd: `Medium_Phone` are met
+USER_INFO    | Emulator is performing a full startup. This may take upto two minutes, or more.
+INFO         | Warning: QMetaObject::connectSlotsByName: No matching signal for on_rgbcSensorValueWidget_valueChanged() (:0, )
+INFO         | Warning: QMetaObject::connectSlotsByName: No matching signal for on_posture_valueChanged(int) (:0, )
+INFO         | Warning: QObject::connect: Cannot queue arguments of type 'std::vector<android::emulation::control::SnapshotInfo>'
+(Make sure 'std::vector<android::emulation::control::SnapshotInfo>' is registered using qRegisterMetaType().) (:0, )
+INFO         | AVD supportsNativeGLES=1, supportsGuestAngle=0
+INFO         | Platform does not support Guest Angle
+INFO         | Created extended window in 347.889ms
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell getprop sys.boot_completed ' failed: 'adb: device offline'
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell getprop sys.boot_completed ' failed: 'adb: device offline'
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell getprop sys.boot_completed ' failed: 'adb: device offline'
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell getprop sys.boot_completed ' failed: 'adb: device offline'
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell getprop sys.boot_completed ' failed: 'adb: device offline'
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell getprop sys.boot_completed ' failed: 'adb: device offline'
+INFO         | Boot completed in 247237 ms
+INFO         | Increasing screen off timeout, logcat buffer size to 2M.
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell getprop sys.boot_completed ' failed: 'adb: device offline'
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell settings put system screen_off_timeout 2147483647 ' failed: 'adb: device offline'
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell settings put system screen_off_timeout 2147483647 ' failed: 'adb: device offline'
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell settings put system screen_off_timeout 2147483647 ' failed: 'adb: device offline'
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell settings put system screen_off_timeout 2147483647 ' failed: 'adb: device offline'
+ERROR        | adb protocol fault (couldn't read status length)
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell settings put system screen_off_timeout 2147483647 ' failed: 'adb: device offline'
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell settings put system screen_off_timeout 2147483647 ' failed: 'adb: device offline'
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell getprop sys.boot_completed ' failed: 'adb: device offline'
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell settings put system screen_off_timeout 2147483647 ' failed: 'adb: device offline'
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell settings put system screen_off_timeout 2147483647 ' failed: 'adb: device offline'
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell settings put system screen_off_timeout 2147483647 ' failed: 'adb: device offline'
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell settings put system screen_off_timeout 2147483647 ' failed: 'adb: device offline'
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell settings put system screen_off_timeout 2147483647 ' failed: 'adb: device offline'
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell getprop sys.boot_completed ' failed: 'adb: device offline'
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell settings put system screen_off_timeout 2147483647 ' failed: 'adb: device offline'
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell settings put system screen_off_timeout 2147483647 ' failed: 'adb: device offline'
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell settings put system screen_off_timeout 2147483647 ' failed: 'adb: device offline'
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell settings put system screen_off_timeout 2147483647 ' failed: 'adb: device offline'
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell settings put system screen_off_timeout 2147483647 ' failed: 'adb: device offline'
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell getprop sys.boot_completed ' failed: 'adb: device offline'
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell settings put system screen_off_timeout 2147483647 ' failed: 'adb: device offline'
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell settings put system screen_off_timeout 2147483647 ' failed: 'adb: device offline'
+ERROR        | adb protocol fault (couldn't read status length)
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell settings put system screen_off_timeout 2147483647 ' failed: 'adb: device offline'
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell settings put system screen_off_timeout 2147483647 ' failed: 'adb: device offline'
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell settings put system screen_off_timeout 2147483647 ' failed: 'adb: device offline'
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell getprop sys.boot_completed ' failed: 'adb: device offline'
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell settings put system screen_off_timeout 2147483647 ' failed: 'adb: device offline'
+INFO         | Warning: skipping QEventPoint(id=1 ts=0 pos=0,0 scn=290.485,453.214 gbl=290.485,453.214 Released ellipse=(1x1 ∡ 0) vel=0,0 press=-290.485,-453.214 last=-290.485,-453.214 Δ 290.485,453.214) : no target window (:0, )
+INFO         | Warning: skipping QEventPoint(id=1 ts=0 pos=0,0 scn=227.43,286.466 gbl=227.43,286.466 Released ellipse=(1x1 ∡ 0) vel=0,0 press=-227.43,-286.466 last=-227.43,-286.466 Δ 227.43,286.466) : no target window (:0, )
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell dumpsys package com.google.android.gms ' failed: ''
+INFO         | Warning: skipping QEventPoint(id=1 ts=0 pos=0,0 scn=426.582,429.978 gbl=426.582,429.978 Released ellipse=(1x1 ∡ 0) vel=0,0 press=-426.582,-429.978 last=-426.582,-429.978 Δ 426.582,429.978) : no target window (:0, )
+WARNING      | adb command '/Users/heshaozhong/Library/Android/sdk/platform-tools/adb -s emulator-5556 shell dumpsys package com.google.android.gms ' failed: 'Activity Resolver Table:
+  Full MIME Types:
+      vnd.android.cursor.item/com.google.android.gms.matchstick.phone:
+        d89904 com.google.android.gms/.matchstick.call.ContactsVideoActionActivity filter 7f08eed
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "vnd.android.cursor.item/com.google.android.gms.matchstick.phone"
+        5474122 com.google.android.gms/.matchstick.call.ContactsPrivilegedVideoActionActivity filter 77b47b3
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "vnd.android.cursor.item/com.google.android.gms.matchstick.phone"
+      application/vnd.apple.pkpasses:
+        8b82225 com.google.android.gms/.pay.deeplink.AliasSavePkPassActivity filter e6bfffa
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Scheme: "content"
+          StaticType: "application/vnd.apple.pkpass"
+          StaticType: "application/vnd.apple.pkpasses"
+          StaticType: "application/octet-stream"
+      application/vnd.google.wallet.walletable-resource:
+        15659ab com.google.android.gms/.pay.deeplink.AliasProcessWalletableResourceActivity filter 6587808
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Scheme: "walletable-resource"
+          StaticType: "application/vnd.google.wallet.walletable-resource"
+      */*:
+        1bec139 com.google.android.gms/.nearby.sharing.ShareSheetActivity filter 82dd37e
+          Action: "android.intent.action.SEND"
+          Action: "android.intent.action.SEND_MULTIPLE"
+          Action: "com.google.android.gms.SHARE_NEARBY"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "*"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        41eccd7 com.google.android.gms/.nearby.sharing.send.SendActivity filter 8d0e9c4
+          Action: "android.intent.action.SEND"
+          Action: "android.intent.action.SEND_MULTIPLE"
+          Action: "com.google.android.gms.SHARE_NEARBY"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "*"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        a43e951 com.google.android.gms/.nearby.sharing.ReceiveSurfaceActivity filter 5a735b6
+          Action: "com.google.android.gms.RECEIVE_NEARBY"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "*"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        b8cc98d com.google.android.gms/.nearby.sharing.receive.ReceiveActivity filter 68f742
+          Action: "com.google.android.gms.RECEIVE_NEARBY"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "*"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+      text/plain:
+        cf6742d com.google.android.gms/.plus.sharebox.ShareBoxActivity filter 4235d62
+          Action: "com.google.android.gms.plus.action.SHARE_GOOGLE"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "text/plain"
+      application/octet-stream:
+        8b82225 com.google.android.gms/.pay.deeplink.AliasSavePkPassActivity filter e6bfffa
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Scheme: "content"
+          StaticType: "application/vnd.apple.pkpass"
+          StaticType: "application/vnd.apple.pkpasses"
+          StaticType: "application/octet-stream"
+      vnd.android.cursor.item/com.google.android.gms.matchstick.phone.audio:
+        6c84170 com.google.android.gms/.matchstick.call.ContactsAudioActionActivity filter 3d42ce9
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "vnd.android.cursor.item/com.google.android.gms.matchstick.phone.audio"
+        c3c4d6e com.google.android.gms/.matchstick.call.ContactsPrivilegedAudioActionActivity filter 658ac0f
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "vnd.android.cursor.item/com.google.android.gms.matchstick.phone.audio"
+      application/vnd.apple.pkpass:
+        8b82225 com.google.android.gms/.pay.deeplink.AliasSavePkPassActivity filter e6bfffa
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Scheme: "content"
+          StaticType: "application/vnd.apple.pkpass"
+          StaticType: "application/vnd.apple.pkpasses"
+          StaticType: "application/octet-stream"
+
+  Base MIME Types:
+      vnd.android.cursor.item:
+        d89904 com.google.android.gms/.matchstick.call.ContactsVideoActionActivity filter 7f08eed
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "vnd.android.cursor.item/com.google.android.gms.matchstick.phone"
+        5474122 com.google.android.gms/.matchstick.call.ContactsPrivilegedVideoActionActivity filter 77b47b3
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "vnd.android.cursor.item/com.google.android.gms.matchstick.phone"
+        6c84170 com.google.android.gms/.matchstick.call.ContactsAudioActionActivity filter 3d42ce9
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "vnd.android.cursor.item/com.google.android.gms.matchstick.phone.audio"
+        c3c4d6e com.google.android.gms/.matchstick.call.ContactsPrivilegedAudioActionActivity filter 658ac0f
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "vnd.android.cursor.item/com.google.android.gms.matchstick.phone.audio"
+      text:
+        cf6742d com.google.android.gms/.plus.sharebox.ShareBoxActivity filter 4235d62
+          Action: "com.google.android.gms.plus.action.SHARE_GOOGLE"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "text/plain"
+      application:
+        8b82225 com.google.android.gms/.pay.deeplink.AliasSavePkPassActivity filter e6bfffa
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Scheme: "content"
+          StaticType: "application/vnd.apple.pkpass"
+          StaticType: "application/vnd.apple.pkpasses"
+          StaticType: "application/octet-stream"
+        8b82225 com.google.android.gms/.pay.deeplink.AliasSavePkPassActivity filter e6bfffa
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Scheme: "content"
+          StaticType: "application/vnd.apple.pkpass"
+          StaticType: "application/vnd.apple.pkpasses"
+          StaticType: "application/octet-stream"
+        8b82225 com.google.android.gms/.pay.deeplink.AliasSavePkPassActivity filter e6bfffa
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Scheme: "content"
+          StaticType: "application/vnd.apple.pkpass"
+          StaticType: "application/vnd.apple.pkpasses"
+          StaticType: "application/octet-stream"
+        15659ab com.google.android.gms/.pay.deeplink.AliasProcessWalletableResourceActivity filter 6587808
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Scheme: "walletable-resource"
+          StaticType: "application/vnd.google.wallet.walletable-resource"
+
+  Wild MIME Types:
+      *:
+        1bec139 com.google.android.gms/.nearby.sharing.ShareSheetActivity filter 82dd37e
+          Action: "android.intent.action.SEND"
+          Action: "android.intent.action.SEND_MULTIPLE"
+          Action: "com.google.android.gms.SHARE_NEARBY"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "*"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        41eccd7 com.google.android.gms/.nearby.sharing.send.SendActivity filter 8d0e9c4
+          Action: "android.intent.action.SEND"
+          Action: "android.intent.action.SEND_MULTIPLE"
+          Action: "com.google.android.gms.SHARE_NEARBY"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "*"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        a43e951 com.google.android.gms/.nearby.sharing.ReceiveSurfaceActivity filter 5a735b6
+          Action: "com.google.android.gms.RECEIVE_NEARBY"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "*"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+        b8cc98d com.google.android.gms/.nearby.sharing.receive.ReceiveActivity filter 68f742
+          Action: "com.google.android.gms.RECEIVE_NEARBY"
+          Category: "android.intent.category.DEFAULT"
+          StaticType: "*"
+          mPriority=0, mOrder=0, mHasStaticPartialTypes=true, mHasDynamicPartialTypes=false
+
+  Schemes:
+      walletable-resource:
+        15659ab com.google.android.gms/.pay.deeplink.AliasProcessWalletableResourceActivity filter 6587808
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Scheme: "walletable-resource"
+          StaticType: "application/vnd.google.wallet.walletable-resource"
+      mobiledataplan:
+        ca636d2 com.google.android.gms/.mobiledataplan.ui.MobileDataPlanSettingsActivity filter 12c8b15
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Scheme: "mobiledataplan"
+          Authority: "mobiledataplan.gms.android.google.com": -1
+          Path: "PatternMatcher{LITERAL: /startui}"
+        ca636d2 com.google.android.gms/.mobiledataplan.ui.MobileDataPlanSettingsActivity filter 995ce2a
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Scheme: "mobiledataplan"
+          Authority: "mobiledataplan.gms.android.google.com": -1
+          Path: "PatternMatcher{PREFIX: /esim/}"
+        815c41b com.google.android.gms/.mobiledataplan.ui.MobileDataPlanDetailActivity filter bd7c391
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Scheme: "mobiledataplan"
+          Authority: "mobiledataplan.gms.android.google.com": -1
+          Path: "PatternMatcher{LITERAL: /esimcarrieraccount}"
+      google-orchestration-gcore:
+        ae7f320 com.google.android.gms/.wallet.redirect.FinishAndroidAppRedirectProxyActivity filter b9674d9
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Scheme: "google-orchestration-gcore"
+          Authority: "return": -1
+      google.authzen:
+        9692eb9 com.google.android.gms/.auth.authzen.AuthzenDeeplinkHandlerActivity filter a1b72fe
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Scheme: "google.authzen"
+      growth:
+        9fa3b25 com.google.android.gms/.growth.featuredrops.activity.FeatureDropsActivity filter a7c9aab
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Scheme: "growth"
+          Authority: "featuredrops": -1
+          AutoVerify=true
+      intent:
+        da53631 com.google.android.gms/.auth.uiflows.common.UnpackingRedirectActivity filter c3aca97
+          Action: "com.google.android.gms.ui.UNPACKING_REDIRECT"
+          Category: "android.intent.category.DEFAULT"
+          Scheme: "intent"
+          Authority: "com.google.android.gms.auth.uiflows.common": -1
+      policy:
+        dea0003 com.google.android.gms/.kids.SettingsActivity filter 6ef5dfe
+          Action: "android.settings.MANAGE_SUPERVISOR_RESTRICTED_SETTING"
+          Category: "android.intent.category.DEFAULT"
+          Scheme: "policy"
+          Path: "PatternMatcher{LITERAL: biometric}"
+      promote_smartlock_scheme:
+        7414ecf com.google.android.gms/.trustlet.onbody.discovery.WebpageOnbodyPromotionActivity filter febd05c
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Scheme: "promote_smartlock_scheme"
+      comgoogleandroidgms:
+        e4fd7f6 com.google.android.gms/.dck.main.DckActivity filter a1017f7
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Scheme: "comgoogleandroidgms"
+          Authority: "dck": -1
+          Path: "PatternMatcher{GLOB: /home}"
+        798c49f com.google.android.gms/.pay.main.PayImplicitIntentActivity filter 9ee59ec
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Scheme: "comgoogleandroidgms"
+          Authority: "pay": -1
+          Path: "PatternMatcher{GLOB: /home}"
+        bb42c64 com.google.android.gms/.tapandpay.settings.TapAndPaySettingsActivity filter 2be7382
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Scheme: "comgoogleandroidgms"
+          Authority: "tapandpay": -1
+          Path: "PatternMatcher{GLOB: /settings}"
+      android.resource:
+        1e6ef8e com.google.android.gms/.appinvite.AppInviteActivity filter b8bc3bc
+          Action: "com.google.android.gms.appinvite.ACTION_APP_INVITE"
+          Category: "android.intent.category.DEFAULT"
+          Scheme: "http"
+          Scheme: "https"
+          Scheme: "android.resource"
+          Scheme: "content"
+          Scheme: "file"
+      comgooglewallet:
+        447fc85 com.google.android.gms/.dck.entrypoint.EntryPointDckActivity filter 84c5de8
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Scheme: "comgooglewallet"
+          Authority: "walletshare.googleapis.com": -1
+          Authority: "staging-walletshare.sandbox.googleapis.com": -1
+        447fc85 com.google.android.gms/.dck.entrypoint.EntryPointDckActivity filter 87c2
+INFO         | Warning: skipping QEventPoint(id=1 ts=0 pos=0,0 scn=302.501,306.078 gbl=302.501,306.078 Released ellipse=(1x1 ∡ 0) vel=0,0 press=-302.501,-306.078 last=-302.501,-306.078 Δ 302.501,306.078) : no target window (:0, )
+2026-07-05 13:48:28.301 qemu-system-x86_64[21364:277716] error messaging the mach port for IMKCFRunLoopWakeUpReliable
+INFO         | Warning: skipping QEventPoint(id=1 ts=0 pos=0,0 scn=430.437,353.631 gbl=430.437,353.631 Released ellipse=(1x1 ∡ 0) vel=0,0 press=-430.437,-353.631 last=-430.437,-353.631 Δ 430.437,353.631) : no target window (:0, )
+INFO         | Warning: skipping QEventPoint(id=1 ts=0 pos=0,0 scn=435.396,359.2 gbl=435.396,359.2 Released ellipse=(1x1 ∡ 0) vel=0,0 press=-435.396,-359.2 last=-435.396,-359.2 Δ 435.396,359.2) : no target window (:0, )
+INFO         | Wait for emulator (pid 21364) 20 seconds to shutdown gracefully before kill;you can set environment variable ANDROID_EMULATOR_WAIT_TIME_BEFORE_KILL(in seconds) to change the default value (20 seconds)
+
+INFO         | Wait for emulator (pid 21364) 20 seconds to shutdown gracefully before kill;you can set environment variable ANDROID_EMULATOR_WAIT_TIME_BEFORE_KILL(in seconds) to change the default value (20 seconds)
+
+INFO         | Saving with gfxstream=1
+INFO         | Saving snapshot 'default_boot' using 4586 ms
+INFO         | removeScene: scene=0x7fd009f19b60
+INFO         | removeAll
+ERROR        | Failed to restore previous context: 12297
+WARNING      | Netsim Wifi localhost:54047 is gone due to CANCELLED

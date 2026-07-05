@@ -15,7 +15,16 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-DATABASE_URL = "sqlite:///./eatfit.db"
+import os
+
+# On Vercel (serverless) we use an in-memory SQLite DB that is re-seeded
+# on every cold start. Locally we still use a file-based DB for convenience.
+_IS_VERCEL = os.getenv("VERCEL") is not None
+
+if _IS_VERCEL:
+    DATABASE_URL = "sqlite:///:memory:"
+else:
+    DATABASE_URL = "sqlite:///./eatfit.db"
 
 engine = create_engine(
     DATABASE_URL, connect_args={"check_same_thread": False}

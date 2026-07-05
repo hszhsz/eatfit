@@ -157,3 +157,19 @@ class CoachResponse(BaseModel):
     next_actions: List[str] = Field(default_factory=list)
     meal_strategy: List[str] = Field(default_factory=list)
     disclaimer: str = "建议仅作饮食管理参考，存在慢病、孕期或特殊医疗情况时应咨询医生或注册营养师。"
+
+
+# ---------- Web stateless requests ----------
+class WebTargetRequest(BaseModel):
+    profile: UserProfileCreate
+
+
+class WebPlanRequest(BaseModel):
+    profile: UserProfileCreate
+    date: Optional[str] = None
+
+
+class WebCoachAdviceRequest(BaseModel):
+    profile: UserProfileCreate
+    request: CoachRequest
+    date: Optional[str] = None
