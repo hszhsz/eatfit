@@ -1,6 +1,8 @@
 package com.eatfit.app.data.remote
 
 import com.eatfit.app.data.model.DailyPlan
+import com.eatfit.app.data.model.CoachRequest
+import com.eatfit.app.data.model.CoachResponse
 import com.eatfit.app.data.model.GroceryList
 import com.eatfit.app.data.model.NutritionTarget
 import com.eatfit.app.data.model.Recipe
@@ -50,4 +52,10 @@ interface EatFitApi {
         @Path("profileId") profileId: Int,
         @Query("date") date: String? = null,
     ): GroceryList
+
+    @POST("api/coach/{profileId}/advice")
+    suspend fun getCoachAdvice(
+        @Path("profileId") profileId: Int,
+        @Body body: CoachRequest,
+    ): CoachResponse
 }

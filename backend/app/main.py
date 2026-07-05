@@ -9,7 +9,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import init_db
-from app.routers import plan, profiles, recipes
+from app.routers import coach, plan, profiles, recipes
 from app.seed import seed_recipes
 
 app = FastAPI(
@@ -30,6 +30,7 @@ app.add_middleware(
 app.include_router(profiles.router)
 app.include_router(recipes.router)
 app.include_router(plan.router)
+app.include_router(coach.router)
 
 
 @app.on_event("startup")

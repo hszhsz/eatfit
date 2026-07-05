@@ -70,3 +70,22 @@ data class GroceryList(
     val items: List<GroceryItem>,
     val grouped: Map<String, List<GroceryItem>>,
 )
+
+@Serializable
+data class CoachRequest(
+    val message: String? = null,
+    val focus: String = "daily_review",
+)
+
+@Serializable
+data class CoachResponse(
+    val focus: String,
+    val headline: String,
+    val summary: String,
+    val score: Int,
+    @SerialName("risk_alerts") val riskAlerts: List<String> = emptyList(),
+    @SerialName("nutrition_insights") val nutritionInsights: List<String> = emptyList(),
+    @SerialName("next_actions") val nextActions: List<String> = emptyList(),
+    @SerialName("meal_strategy") val mealStrategy: List<String> = emptyList(),
+    val disclaimer: String,
+)

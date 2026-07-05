@@ -1,6 +1,8 @@
 package com.eatfit.app.data.repository
 
 import com.eatfit.app.data.model.DailyPlan
+import com.eatfit.app.data.model.CoachRequest
+import com.eatfit.app.data.model.CoachResponse
 import com.eatfit.app.data.model.GroceryList
 import com.eatfit.app.data.model.NutritionTarget
 import com.eatfit.app.data.model.Recipe
@@ -41,6 +43,9 @@ class EatFitRepository @Inject constructor(
 
     suspend fun getGroceryList(profileId: Int, date: String? = null): Result<GroceryList> =
         runCatching { api.getGroceryList(profileId, date) }
+
+    suspend fun getCoachAdvice(profileId: Int, body: CoachRequest): Result<CoachResponse> =
+        runCatching { api.getCoachAdvice(profileId, body) }
 
     suspend fun getRecipe(id: Int): Result<Recipe> =
         runCatching { api.getRecipe(id) }

@@ -36,6 +36,13 @@ class MealType(str, Enum):
     snack = "snack"
 
 
+class CoachFocus(str, Enum):
+    daily_review = "daily_review"
+    meal_strategy = "meal_strategy"
+    eating_out = "eating_out"
+    cravings = "cravings"
+
+
 # ---------- User / Profile ----------
 class UserProfileBase(BaseModel):
     name: str = Field(..., examples=["小明"])
@@ -129,3 +136,24 @@ class GroceryListOut(BaseModel):
     profile_id: int
     items: List[GroceryItem]
     grouped: dict[str, List[GroceryItem]]
+
+
+# ---------- AI coach ----------
+class CoachRequest(BaseModel):
+    message: Optional[str] = Field(
+        None,
+        description="用户补充说明，例如今天吃了什么、接下来想怎么吃、当前困扰等",
+    )
+    focus: CoachFocus = CoachFocus.daily_review
+
+
+class CoachResponse(BaseModel):
+    focus: CoachFocus
+    headline: str
+    summary: str
+    score: int = Field(..., ge=0, le=100, description="本次建议对应的执行质量评分")
+    risk_alerts: List[str] = Field(default_factory=list)
+    nutrition_insights: List[str] = Field(default_factory=list)
+    next_actions: List[str] = Field(default_factory=list)
+    meal_strategy: List[str] = Field(default_factory=list)
+    disclaimer: str = "建议仅作饮食管理参考，存在慢病、孕期或特殊医疗情况时应咨询医生或注册营养师。"

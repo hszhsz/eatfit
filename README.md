@@ -1,7 +1,7 @@
 # EatFit 吃什么 · AI 饮食管家
 
 > 基于 TRAE SOLO 挑战赛创意提案「EatFit 吃什么」开发的全栈应用。
-> 录入身体数据 → AI 生成个性化每日食谱 → 一键买菜清单 → step-by-step 烹饪引导。
+> 录入身体数据 → AI 生成个性化每日食谱 → AI 营养顾问复盘与策略建议 → 一键买菜清单 → step-by-step 烹饪引导。
 
 本仓库包含两部分:
 
@@ -20,7 +20,8 @@ EatFit/
 │   Android (Compose)      │ ───────────────────────▶│   FastAPI 后端            │
 │                          │                         │                          │
 │  Onboarding 录入体测      │   POST /api/profiles    │  营养引擎(BMR/TDEE/宏量) │
-│  Today 今日食谱看板       │   GET  /api/plan/{id}   │  食谱匹配 + 过敏原过滤    │
+│  Today 今日饮食控制台     │   GET  /api/plan/{id}   │  食谱匹配 + 过敏原过滤    │
+│  Coach AI营养顾问         │   POST /api/coach/...   │  LLM 营养分析与行动建议   │
 │  RecipeDetail 烹饪步骤    │   GET  /api/recipes/{id}│  买菜清单聚合             │
 │  Grocery 买菜清单         │   GET  .../grocery      │  SQLite + 13 道种子食谱   │
 │  Profile 体测编辑         │                         │                          │
@@ -29,7 +30,7 @@ EatFit/
 ```
 
 - **前端**:Kotlin / Jetpack Compose / Material3 / MVVM / Hilt(DI)/ Retrofit + kotlinx.serialization / Navigation / DataStore
-- **后端**:Python 3 / FastAPI / SQLAlchemy / SQLite,纯规则引擎(不依赖任何外部大模型,完全离线可跑)
+- **后端**:Python 3 / FastAPI / SQLAlchemy / SQLite + Volcengine Ark(OpenAI Responses 兼容)大模型接入
 
 ---
 
@@ -41,6 +42,10 @@ EatFit/
 cd backend
 python3 -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
+export EATFIT_LLM_API_KEY="你的 Ark API Key"
+# 可选:
+# export EATFIT_LLM_BASE_URL="https://ark.cn-beijing.volces.com/api/coding/v3"
+# export EATFIT_LLM_MODEL="minimax-m3"
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
@@ -48,6 +53,7 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 - 接口文档(Swagger UI):http://localhost:8000/docs
 - 健康检查:http://localhost:8000/api/health
 - 首次启动会自动建表并写入 13 道种子食谱。
+- 若未配置 `EATFIT_LLM_API_KEY`,AI 顾问接口会回退到本地策略建议,方便开发联调。
 
 ### 2. 运行 Android 前端
 
@@ -93,6 +99,7 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 | GET  | `/api/recipes/{id}` | 食谱详情(含食材与步骤) |
 | GET  | `/api/plan/{profileId}` | 生成今日食谱(可传 `?date=`) |
 | GET  | `/api/plan/{profileId}/grocery` | 生成买菜清单 |
+| POST | `/api/coach/{profileId}/advice` | 生成 AI 营养顾问建议 |
 
 ---
 
@@ -118,8 +125,8 @@ backend/
 │   ├── database.py          # SQLAlchemy 模型 + session
 │   ├── schemas.py           # Pydantic 数据契约
 │   ├── seed.py              # 食谱入库
-│   ├── routers/             # profiles / recipes / plan 路由
-│   ├── services/            # nutrition(营养)/ planner(食谱)/ mappers
+│   ├── routers/             # profiles / recipes / plan / coach 路由
+│   ├── services/            # nutrition / planner / llm_coach / mappers
 │   └── data/recipes_seed.py # 13 道种子食谱
 ├── requirements.txt
 └── verify_logic.py
@@ -133,7 +140,7 @@ android/app/src/main/java/com/eatfit/app/
 ├── di/AppModule.kt          # Hilt 依赖注入
 └── ui/
     ├── theme/ navigation/ components/
-    └── screens/ onboarding / today / recipe / grocery / profile
+    └── screens/ onboarding / today / coach / recipe / grocery / profile
 ```
 
 ---
@@ -141,5 +148,5 @@ android/app/src/main/java/com/eatfit/app/
 ## 七、说明
 
 - 本项目的食谱营养数据为演示用途的人工整理值,不构成专业医学或营养建议。
-- 食谱库、营养计算均为本地规则实现,**不调用任何外部 AI 服务**,可完全离线运行,便于评审复现。
-- 后续可扩展方向(对应提案):接入生鲜平台导购、对接体脂秤/手环数据形成「测→吃→练」闭环、营养师人工审核(Pro/专业版)。
+- AI 顾问当前采用 Volcengine Ark 的 OpenAI Responses 兼容接口,默认模型为 `minimax-m3`;密钥应只放在服务端环境变量。
+- 后续可扩展方向:接入拍照识别饮食记录、体脂秤/手环数据回流、会员版营养师审核与长期跟踪。
