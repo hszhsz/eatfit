@@ -5,19 +5,21 @@ import { useCurrentProfile } from "@/hooks/useCurrentProfile";
 import { usePlan } from "@/hooks/useDashboardData";
 import { formatDateLabel, formatNumber } from "@/lib/format";
 import { useDashboardStore } from "@/store/dashboardStore";
+import { useLang } from "@/i18n/LanguageContext";
 
 export function PlanPage() {
   const { data: profile } = useCurrentProfile();
   const selectedDate = useDashboardStore((state) => state.selectedDate);
   const setSelectedDate = useDashboardStore((state) => state.setSelectedDate);
   const { data: plan, isLoading, error } = usePlan(profile, selectedDate);
+  const { lang, t } = useLang();
 
   if (!profile) {
     return (
       <EmptyState
-        title="No plan without a profile"
-        body="Save your profile first so the planner has real inputs for calories, macro targets, allergens, and preferences."
-        cta="Go to Profile"
+        title={t("plan.empty.title")}
+        body={t("plan.empty.body")}
+        cta={t("plan.empty.cta")}
         to="/app/profile"
       />
     );
@@ -26,8 +28,8 @@ export function PlanPage() {
   return (
     <div className="space-y-6">
       <SectionCard
-        title="Daily meal plan"
-        eyebrow="Planner"
+        title={t("plan.title")}
+        eyebrow={t("plan.eyebrow")}
         action={
           <input
             type="date"
@@ -38,7 +40,7 @@ export function PlanPage() {
         }
       >
         <div className="mb-6 text-[#6B5544]">
-          Viewing {formatDateLabel(selectedDate)}. Every request uses your latest Supabase profile data and the backend meal planner.
+          {t("plan.viewing", { date: formatDateLabel(selectedDate, lang) })}
         </div>
 
         {isLoading ? (
@@ -53,10 +55,10 @@ export function PlanPage() {
           <>
             <div className="mb-6 grid gap-4 md:grid-cols-4">
               {[
-                ["Calories", `${formatNumber(plan.totalCalories)} kcal`],
-                ["Protein", `${formatNumber(plan.totalProteinG, 1)} g`],
-                ["Carbs", `${formatNumber(plan.totalCarbsG, 1)} g`],
-                ["Fat", `${formatNumber(plan.totalFatG, 1)} g`],
+                [t("plan.calories"), `${formatNumber(plan.totalCalories, 0, lang)} kcal`],
+                [t("plan.protein"), `${formatNumber(plan.totalProteinG, 1, lang)} g`],
+                [t("plan.carbs"), `${formatNumber(plan.totalCarbsG, 1, lang)} g`],
+                [t("plan.fat"), `${formatNumber(plan.totalFatG, 1, lang)} g`],
               ].map(([label, value]) => (
                 <div key={label} className="rounded-3xl border border-[#F0E6DD] bg-white p-5 shadow-warm">
                   <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">{label}</div>
@@ -72,7 +74,7 @@ export function PlanPage() {
             </div>
           </>
         ) : (
-          <div className="text-[#6B5544]">No data returned for this date.</div>
+          <div className="text-[#6B5544]">{t("plan.noData")}</div>
         )}
       </SectionCard>
     </div>

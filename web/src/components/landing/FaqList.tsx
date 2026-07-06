@@ -1,28 +1,20 @@
-const items = [
-  {
-    question: "Where is user data stored?",
-    answer:
-      "Web user data is stored in Supabase under row-level security policies bound to the Clerk user identity.",
-  },
-  {
-    question: "What powers the nutrition logic?",
-    answer:
-      "The existing FastAPI backend handles nutrition targets, meal planning, grocery aggregation, and AI coaching orchestration.",
-  },
-  {
-    question: "Can the dashboard be used without a profile?",
-    answer:
-      "You can sign in and browse the shell, but planning and coaching stay locked until the nutrition profile is saved.",
-  },
-];
+import { useLang } from "@/i18n/LanguageContext";
 
 export function FaqList() {
+  const { t } = useLang();
+
+  const items = [
+    { question: t("faq.q1"), answer: t("faq.a1") },
+    { question: t("faq.q2"), answer: t("faq.a2") },
+    { question: t("faq.q3"), answer: t("faq.a3") },
+  ];
+
   return (
     <section className="grid gap-4 lg:grid-cols-[0.8fr_1.2fr]">
       <div>
-        <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">FAQ</div>
+        <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">{t("faq.eyebrow")}</div>
         <h2 className="mt-4 max-w-md font-serif text-4xl text-[#1F1611]">
-          Built for a real product surface, not a one-page demo.
+          {t("faq.heading")}
         </h2>
       </div>
       <div className="space-y-4">

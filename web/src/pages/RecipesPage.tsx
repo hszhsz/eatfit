@@ -4,11 +4,13 @@ import { EmptyState } from "@/components/common/EmptyState";
 import { SectionCard } from "@/components/common/SectionCard";
 import { useRecipes } from "@/hooks/useDashboardData";
 import { formatNumber } from "@/lib/format";
+import { useLang } from "@/i18n/LanguageContext";
 
 export function RecipesPage() {
   const { data: recipes, isLoading, error } = useRecipes();
   const [mealFilter, setMealFilter] = useState("all");
   const [tagFilter, setTagFilter] = useState("");
+  const { lang, t } = useLang();
 
   const filtered = useMemo(() => {
     return (recipes || []).filter((recipe) => {
@@ -24,23 +26,23 @@ export function RecipesPage() {
 
   return (
     <div className="space-y-6">
-      <SectionCard title="Recipe library" eyebrow="Catalog">
+      <SectionCard title={t("recipes.title")} eyebrow={t("recipes.eyebrow")}>
         <div className="mb-6 grid gap-4 md:grid-cols-[220px_1fr]">
           <select
             value={mealFilter}
             onChange={(event) => setMealFilter(event.target.value)}
             className="rounded-2xl border border-[#F0E6DD] bg-white px-4 py-3 text-[#1F1611] outline-none"
           >
-            <option value="all">All meals</option>
-            <option value="breakfast">Breakfast</option>
-            <option value="lunch">Lunch</option>
-            <option value="dinner">Dinner</option>
-            <option value="snack">Snack</option>
+            <option value="all">{t("recipes.allMeals")}</option>
+            <option value="breakfast">{t("recipes.breakfast")}</option>
+            <option value="lunch">{t("recipes.lunch")}</option>
+            <option value="dinner">{t("recipes.dinner")}</option>
+            <option value="snack">{t("recipes.snack")}</option>
           </select>
           <input
             value={tagFilter}
             onChange={(event) => setTagFilter(event.target.value)}
-            placeholder="Filter by tag"
+            placeholder={t("recipes.filterPlaceholder")}
             className="rounded-2xl border border-[#F0E6DD] bg-white px-4 py-3 text-[#1F1611] outline-none"
           />
         </div>
@@ -55,8 +57,8 @@ export function RecipesPage() {
           <div className="text-red-500">{String(error.message)}</div>
         ) : filtered.length === 0 ? (
           <EmptyState
-            title="No recipes match the current filters"
-            body="Adjust the meal type or tag filter to reveal the seeded recipe library."
+            title={t("recipes.empty.title")}
+            body={t("recipes.empty.body")}
           />
         ) : (
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -75,22 +77,22 @@ export function RecipesPage() {
                     </h3>
                   </div>
                   <div className="rounded-full border border-[#F0E6DD] px-3 py-1 text-xs text-[#6B5544]">
-                    {recipe.cookMinutes} min
+                    {t("recipes.cookTime", { min: recipe.cookMinutes })}
                   </div>
                 </div>
 
                 <div className="mt-5 grid grid-cols-3 gap-3 text-sm text-[#6B5544]">
                   <div>
-                    <div className="text-[#9C8B7A]">Calories</div>
-                    <div className="mt-1 text-[#1F1611]">{formatNumber(recipe.calories)}</div>
+                    <div className="text-[#9C8B7A]">{t("recipes.calories")}</div>
+                    <div className="mt-1 text-[#1F1611]">{formatNumber(recipe.calories, 0, lang)}</div>
                   </div>
                   <div>
-                    <div className="text-[#9C8B7A]">Protein</div>
-                    <div className="mt-1 text-[#1F1611]">{formatNumber(recipe.proteinG, 1)} g</div>
+                    <div className="text-[#9C8B7A]">{t("recipes.protein")}</div>
+                    <div className="mt-1 text-[#1F1611]">{formatNumber(recipe.proteinG, 1, lang)} g</div>
                   </div>
                   <div>
-                    <div className="text-[#9C8B7A]">Carbs</div>
-                    <div className="mt-1 text-[#1F1611]">{formatNumber(recipe.carbsG, 1)} g</div>
+                    <div className="text-[#9C8B7A]">{t("recipes.carbs")}</div>
+                    <div className="mt-1 text-[#1F1611]">{formatNumber(recipe.carbsG, 1, lang)} g</div>
                   </div>
                 </div>
 

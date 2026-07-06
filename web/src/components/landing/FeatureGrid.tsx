@@ -1,29 +1,33 @@
 import { Bot, ChartColumnBig, ClipboardList, ShieldCheck } from "lucide-react";
 
-const features = [
-  {
-    title: "Adaptive macro targets",
-    body: "FastAPI computes BMR, TDEE, and macro distribution directly from profile inputs and goal state.",
-    icon: ChartColumnBig,
-  },
-  {
-    title: "AI coach with structure",
-    body: "Advice is returned with a headline, summary, score, risks, insights, next actions, and meal strategy.",
-    icon: Bot,
-  },
-  {
-    title: "Grocery built from plan",
-    body: "Ingredients are aggregated by category so daily planning turns into an executable shopping list.",
-    icon: ClipboardList,
-  },
-  {
-    title: "User data isolation",
-    body: "Clerk secures identity and Supabase RLS isolates every profile, plan snapshot, and coach session.",
-    icon: ShieldCheck,
-  },
-];
+import { useLang } from "@/i18n/LanguageContext";
 
 export function FeatureGrid() {
+  const { t } = useLang();
+
+  const features = [
+    {
+      title: t("features.adaptive.title"),
+      body: t("features.adaptive.body"),
+      icon: ChartColumnBig,
+    },
+    {
+      title: t("features.coach.title"),
+      body: t("features.coach.body"),
+      icon: Bot,
+    },
+    {
+      title: t("features.grocery.title"),
+      body: t("features.grocery.body"),
+      icon: ClipboardList,
+    },
+    {
+      title: t("features.security.title"),
+      body: t("features.security.body"),
+      icon: ShieldCheck,
+    },
+  ];
+
   return (
     <section id="features" className="grid gap-4 lg:grid-cols-2">
       {features.map((feature) => {

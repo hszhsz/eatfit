@@ -17,6 +17,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 
 import { env, hasSupabase } from "@/lib/env";
 import { createSupabaseClient } from "@/lib/supabase";
+import { LanguageProvider } from "@/i18n/LanguageContext";
 
 const queryClient = new QueryClient();
 const SupabaseContext = createContext<SupabaseClient | null>(null);
@@ -58,7 +59,9 @@ export function AppProviders({ children }: PropsWithChildren) {
     >
       <QueryClientProvider client={queryClient}>
         <SupabaseProvider>
-          <BrowserRouter>{children}</BrowserRouter>
+          <LanguageProvider>
+            <BrowserRouter>{children}</BrowserRouter>
+          </LanguageProvider>
         </SupabaseProvider>
       </QueryClientProvider>
     </ClerkProvider>
@@ -68,7 +71,9 @@ export function AppProviders({ children }: PropsWithChildren) {
 export function PreviewProviders({ children }: PropsWithChildren) {
   return (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>{children}</BrowserRouter>
+      <LanguageProvider>
+        <BrowserRouter>{children}</BrowserRouter>
+      </LanguageProvider>
     </QueryClientProvider>
   );
 }

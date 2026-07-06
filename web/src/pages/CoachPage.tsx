@@ -10,13 +10,7 @@ import {
 } from "@/hooks/useDashboardData";
 import { useDashboardStore } from "@/store/dashboardStore";
 import type { CoachFocus } from "@/types/eatfit";
-
-const focusOptions: { value: CoachFocus; label: string }[] = [
-  { value: "daily_review", label: "Daily Review" },
-  { value: "meal_strategy", label: "Meal Strategy" },
-  { value: "eating_out", label: "Eating Out" },
-  { value: "cravings", label: "Cravings" },
-];
+import { useLang } from "@/i18n/LanguageContext";
 
 export function CoachPage() {
   const { data: profile } = useCurrentProfile();
@@ -28,6 +22,14 @@ export function CoachPage() {
   const currentSessionId = sessions?.[0]?.id;
   const { data: messages } = useCoachMessages(currentSessionId);
   const coachMutation = useCoachMutation(profile, selectedDate);
+  const { t } = useLang();
+
+  const focusOptions: { value: CoachFocus; label: string }[] = [
+    { value: "daily_review", label: t("coach.focus.dailyReview") },
+    { value: "meal_strategy", label: t("coach.focus.mealStrategy") },
+    { value: "eating_out", label: t("coach.focus.eatingOut") },
+    { value: "cravings", label: t("coach.focus.cravings") },
+  ];
 
   const latestResponse = useMemo(() => {
     if (coachMutation.data?.response) {
@@ -47,16 +49,16 @@ export function CoachPage() {
 
   useEffect(() => {
     if (!message && coachFocus === "daily_review") {
-      setMessage("Review today and tell me what to tighten for tomorrow.");
+      setMessage(t("coach.contextPlaceholder"));
     }
-  }, [coachFocus, message]);
+  }, [coachFocus, message, t]);
 
   if (!profile) {
     return (
       <EmptyState
-        title="The coach needs your profile context"
-        body="Save a profile first so the AI advice can anchor to your calories, macros, goal, allergens, and meal plan."
-        cta="Go to Profile"
+        title={t("coach.empty.title")}
+        body={t("coach.empty.body")}
+        cta={t("coach.empty.cta")}
         to="/app/profile"
       />
     );
@@ -71,7 +73,7 @@ export function CoachPage() {
 
   return (
     <div className="grid gap-6 xl:grid-cols-[360px_1fr]">
-      <SectionCard title="Coach control" eyebrow="Input">
+      <SectionCard title={t("coach.title")} eyebrow={t("coach.eyebrow")}>
         <div className="space-y-3">
           {focusOptions.map((option) => (
             <button
@@ -91,7 +93,7 @@ export function CoachPage() {
         </div>
 
         <label className="mt-6 block">
-          <div className="mb-2 text-sm text-[#6B5544]">Context</div>
+          <div className="mb-2 text-sm text-[#6B5544]">{t("coach.context")}</div>
           <textarea
             value={message}
             onChange={(event) => setMessage(event.target.value)}
@@ -106,36 +108,36 @@ export function CoachPage() {
           disabled={coachMutation.isPending}
           className="mt-6 w-full rounded-full bg-[#FF6B35] px-5 py-3 text-sm font-semibold text-white disabled:opacity-60 transition hover:bg-[#E55329]"
         >
-          {coachMutation.isPending ? "Generating advice..." : "Generate Advice"}
+          {coachMutation.isPending ? t("coach.generating") : t("coach.generate")}
         </button>
       </SectionCard>
 
       <div className="space-y-6">
-        <SectionCard title="Structured response" eyebrow="Output">
+        <SectionCard title={t("coach.response.title")} eyebrow={t("coach.response.eyebrow")}>
           {latestResponse ? (
             <div className="space-y-6">
               <div className="rounded-[24px] border border-[#F0E6DD] bg-white p-5 shadow-warm">
-                <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">Headline</div>
+                <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">{t("coach.headline")}</div>
                 <h2 className="mt-3 font-serif text-3xl text-[#1F1611]">{latestResponse.headline}</h2>
                 <p className="mt-4 leading-7 text-[#6B5544]">{latestResponse.summary}</p>
               </div>
 
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="rounded-[24px] border border-[#F0E6DD] bg-white p-5 shadow-warm">
-                  <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">Score</div>
+                  <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">{t("coach.score")}</div>
                   <div className="mt-3 text-5xl font-semibold text-[#1F1611]">{latestResponse.score}</div>
                 </div>
                 <div className="rounded-[24px] border border-[#F0E6DD] bg-white p-5 shadow-warm">
-                  <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">Disclaimer</div>
+                  <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">{t("coach.disclaimer")}</div>
                   <p className="mt-3 text-sm leading-6 text-[#6B5544]">{latestResponse.disclaimer}</p>
                 </div>
               </div>
 
               {[
-                ["Risk alerts", latestResponse.riskAlerts],
-                ["Nutrition insights", latestResponse.nutritionInsights],
-                ["Next actions", latestResponse.nextActions],
-                ["Meal strategy", latestResponse.mealStrategy],
+                [t("coach.riskAlerts"), latestResponse.riskAlerts],
+                [t("coach.nutritionInsights"), latestResponse.nutritionInsights],
+                [t("coach.nextActions"), latestResponse.nextActions],
+                [t("coach.mealStrategy"), latestResponse.mealStrategy],
               ].map(([label, items]) => (
                 <div
                   key={String(label)}
@@ -154,12 +156,12 @@ export function CoachPage() {
             </div>
           ) : (
             <div className="text-[#6B5544]">
-              Run a coaching prompt to generate the first structured response.
+              {t("coach.noResponse")}
             </div>
           )}
         </SectionCard>
 
-        <SectionCard title="Saved sessions" eyebrow="Supabase history">
+        <SectionCard title={t("coach.sessions.title")} eyebrow={t("coach.sessions.eyebrow")}>
           {sessions && sessions.length > 0 ? (
             <div className="space-y-3">
               {sessions.map((session) => (
@@ -175,7 +177,7 @@ export function CoachPage() {
               ))}
             </div>
           ) : (
-            <div className="text-[#6B5544]">No saved sessions yet.</div>
+            <div className="text-[#6B5544]">{t("coach.noSessions")}</div>
           )}
         </SectionCard>
       </div>

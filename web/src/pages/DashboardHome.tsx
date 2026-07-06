@@ -6,73 +6,80 @@ import { PlanMealCard } from "@/components/common/PlanMealCard";
 import { SectionCard } from "@/components/common/SectionCard";
 import { useCurrentProfile } from "@/hooks/useCurrentProfile";
 import { useCoachSessions, usePlan } from "@/hooks/useDashboardData";
-import { formatDateLabel, formatNumber } from "@/lib/format";
+import { formatDateLabel, formatNumber, getGoalLabels } from "@/lib/format";
 import { useDashboardStore } from "@/store/dashboardStore";
+import { useLang } from "@/i18n/LanguageContext";
 
 export function DashboardHome() {
   const { data: profile } = useCurrentProfile();
   const selectedDate = useDashboardStore((state) => state.selectedDate);
   const { data: plan, isLoading } = usePlan(profile, selectedDate);
   const { data: sessions } = useCoachSessions(profile);
+  const { lang, t } = useLang();
 
   if (!profile) {
     return (
       <EmptyState
-        title="Your dashboard is ready. Your profile is not."
-        body="Complete the nutrition profile first so EatFit can calculate targets, generate meals, and anchor the AI coach in real context."
-        cta="Set Up Profile"
+        title={t("empty.profile.title")}
+        body={t("empty.profile.body")}
+        cta={t("empty.profile.cta")}
         to="/app/profile"
       />
     );
   }
 
+  const goalLabels = getGoalLabels(lang);
+
   return (
     <div className="space-y-6">
       <section className="rounded-[24px] border border-[#F0E6DD] bg-[radial-gradient(circle_at_top_left,_rgba(255,107,53,0.08),_transparent_28%),rgba(255,255,255,0.6)] p-6 shadow-warm">
-        <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">Dashboard Overview</div>
+        <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">{t("dash.overview")}</div>
         <div className="mt-4 flex flex-wrap items-end justify-between gap-4">
           <div>
             <h1 className="font-serif text-5xl text-[#1F1611]">
-              Welcome back, {profile.name}.
+              {t("dash.welcome", { name: profile.name })}
             </h1>
             <p className="mt-3 text-lg text-[#6B5544]">
-              Reviewing {formatDateLabel(selectedDate)} with your current goal locked to {profile.goal.replace("_", " ")}.
+              {t("dash.reviewing", {
+                date: formatDateLabel(selectedDate, lang),
+                goal: goalLabels[profile.goal],
+              })}
             </p>
           </div>
           <Link
             to="/app/coach"
             className="rounded-full bg-[#FF6B35] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#E55329]"
           >
-            Open AI Coach
+            {t("dash.openCoach")}
           </Link>
         </div>
       </section>
 
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <MetricCard
-          label="Target Calories"
-          value={plan ? `${formatNumber(plan.target.targetCalories)} kcal` : "--"}
-          meta="Generated from your latest profile"
+          label={t("dash.targetCalories")}
+          value={plan ? `${formatNumber(plan.target.targetCalories, 0, lang)} kcal` : "--"}
+          meta={t("dash.metaGenerated")}
         />
         <MetricCard
-          label="Protein"
-          value={plan ? `${formatNumber(plan.target.proteinG, 1)} g` : "--"}
-          meta="Daily target"
+          label={t("dash.protein")}
+          value={plan ? `${formatNumber(plan.target.proteinG, 1, lang)} g` : "--"}
+          meta={t("dash.metaDailyTarget")}
         />
         <MetricCard
-          label="Planned Meals"
+          label={t("dash.plannedMeals")}
           value={plan ? `${plan.meals.length}` : "--"}
-          meta="Breakfast to snack coverage"
+          meta={t("dash.metaBreakfast")}
         />
         <MetricCard
-          label="Coach Sessions"
+          label={t("dash.coachSessions")}
           value={`${sessions?.length || 0}`}
-          meta="Saved to Supabase"
+          meta={t("dash.metaSupabase")}
         />
       </section>
 
       <div className="grid gap-6 xl:grid-cols-[1.3fr_0.9fr]">
-        <SectionCard title="Today's meal lineup" eyebrow="Plan">
+        <SectionCard title={t("dash.todayLineup")} eyebrow={t("plan.eyebrow")}>
           {isLoading ? (
             <div className="grid gap-4 md:grid-cols-2">
               {Array.from({ length: 2 }).map((_, index) => (
@@ -89,19 +96,19 @@ export function DashboardHome() {
               ))}
             </div>
           ) : (
-            <div className="text-[#6B5544]">No plan generated yet.</div>
+            <div className="text-[#6B5544]">{t("dash.noPlanYet")}</div>
           )}
         </SectionCard>
 
         <div className="space-y-6">
-          <SectionCard title="Execution summary" eyebrow="Targets">
+          <SectionCard title={t("dash.executionSummary")} eyebrow={t("dash.metaDailyTarget")}>
             {plan ? (
               <div className="space-y-4">
                 {[
-                  ["Calories", plan.totalCalories, plan.target.targetCalories, "kcal"],
-                  ["Protein", plan.totalProteinG, plan.target.proteinG, "g"],
-                  ["Carbs", plan.totalCarbsG, plan.target.carbsG, "g"],
-                  ["Fat", plan.totalFatG, plan.target.fatG, "g"],
+                  [t("plan.calories"), plan.totalCalories, plan.target.targetCalories, "kcal"],
+                  [t("dash.protein"), plan.totalProteinG, plan.target.proteinG, "g"],
+                  [t("plan.carbs"), plan.totalCarbsG, plan.target.carbsG, "g"],
+                  [t("plan.fat"), plan.totalFatG, plan.target.fatG, "g"],
                 ].map(([label, current, target, unit]) => {
                   const ratio = Math.min(Number(current) / Number(target), 1.3);
                   return (
@@ -109,7 +116,7 @@ export function DashboardHome() {
                       <div className="mb-2 flex items-center justify-between text-sm text-[#6B5544]">
                         <span>{label}</span>
                         <span>
-                          {formatNumber(Number(current), 1)} / {formatNumber(Number(target), 1)} {unit}
+                          {formatNumber(Number(current), 1, lang)} / {formatNumber(Number(target), 1, lang)} {unit}
                         </span>
                       </div>
                       <div className="h-2 overflow-hidden rounded-full bg-[#FFF5EE]">
@@ -123,11 +130,11 @@ export function DashboardHome() {
                 })}
               </div>
             ) : (
-              <div className="text-[#6B5544]">Save your profile to unlock calculations.</div>
+              <div className="text-[#6B5544]">{t("dash.saveProfile")}</div>
             )}
           </SectionCard>
 
-          <SectionCard title="Latest coaching momentum" eyebrow="AI Coach">
+          <SectionCard title={t("dash.latestMomentum")} eyebrow={t("shell.nav.coach")}>
             {sessions && sessions.length > 0 ? (
               <div className="space-y-4">
                 {sessions.slice(0, 3).map((session) => (
@@ -144,7 +151,7 @@ export function DashboardHome() {
               </div>
             ) : (
               <div className="text-[#6B5544]">
-                No coach history yet. Open the coach workspace and start the first session.
+                {t("dash.noCoachHistory")}
               </div>
             )}
           </SectionCard>

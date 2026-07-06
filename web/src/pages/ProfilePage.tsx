@@ -6,8 +6,9 @@ import { z } from "zod";
 import { EmptyState } from "@/components/common/EmptyState";
 import { SectionCard } from "@/components/common/SectionCard";
 import { useCurrentProfile } from "@/hooks/useCurrentProfile";
-import { activityLabels, goalLabels, joinTags, splitTags } from "@/lib/format";
+import { getActivityLabels, getGoalLabels, joinTags, splitTags } from "@/lib/format";
 import type { UserProfileFormValues } from "@/types/eatfit";
+import { useLang } from "@/i18n/LanguageContext";
 
 const profileSchema = z.object({
   name: z.string().min(2),
@@ -45,6 +46,7 @@ const defaultValues: ProfileFormSchema = {
 
 export function ProfilePage() {
   const { data: profile, saveProfile, isSaving, saveError } = useCurrentProfile();
+  const { lang, t } = useLang();
   const form = useForm<ProfileFormSchema>({
     resolver: zodResolver(profileSchema),
     defaultValues,
@@ -88,17 +90,20 @@ export function ProfilePage() {
     await saveProfile(payload);
   }
 
+  const goalLabels = getGoalLabels(lang);
+  const activityLabels = getActivityLabels(lang);
+
   return (
     <div className="space-y-6">
-      <SectionCard title="Nutrition profile" eyebrow="Supabase">
+      <SectionCard title={t("profile.title")} eyebrow={t("profile.eyebrow")}>
         <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {[
-              ["name", "Name", "text"],
-              ["age", "Age", "number"],
-              ["heightCm", "Height (cm)", "number"],
-              ["weightKg", "Weight (kg)", "number"],
-              ["bodyFatPct", "Body fat %", "number"],
+              ["name", t("profile.name"), "text"],
+              ["age", t("profile.age"), "number"],
+              ["heightCm", t("profile.height"), "number"],
+              ["weightKg", t("profile.weight"), "number"],
+              ["bodyFatPct", t("profile.bodyFat"), "number"],
             ].map(([field, label, type]) => (
               <label key={field} className="block">
                 <div className="mb-2 text-sm text-[#6B5544]">{label}</div>
@@ -111,18 +116,18 @@ export function ProfilePage() {
             ))}
 
             <label className="block">
-              <div className="mb-2 text-sm text-[#6B5544]">Gender</div>
+              <div className="mb-2 text-sm text-[#6B5544]">{t("profile.gender")}</div>
               <select
                 {...form.register("gender")}
                 className="w-full rounded-2xl border border-[#F0E6DD] bg-white px-4 py-3 text-[#1F1611] outline-none"
               >
-                <option value="male">Male</option>
-                <option value="female">Female</option>
+                <option value="male">{t("profile.male")}</option>
+                <option value="female">{t("profile.female")}</option>
               </select>
             </label>
 
             <label className="block">
-              <div className="mb-2 text-sm text-[#6B5544]">Goal</div>
+              <div className="mb-2 text-sm text-[#6B5544]">{t("profile.goal")}</div>
               <select
                 {...form.register("goal")}
                 className="w-full rounded-2xl border border-[#F0E6DD] bg-white px-4 py-3 text-[#1F1611] outline-none"
@@ -136,7 +141,7 @@ export function ProfilePage() {
             </label>
 
             <label className="block">
-              <div className="mb-2 text-sm text-[#6B5544]">Activity level</div>
+              <div className="mb-2 text-sm text-[#6B5544]">{t("profile.activity")}</div>
               <select
                 {...form.register("activityLevel")}
                 className="w-full rounded-2xl border border-[#F0E6DD] bg-white px-4 py-3 text-[#1F1611] outline-none"
@@ -150,30 +155,30 @@ export function ProfilePage() {
             </label>
 
             <label className="block xl:col-span-3">
-              <div className="mb-2 text-sm text-[#6B5544]">Diet preference</div>
+              <div className="mb-2 text-sm text-[#6B5544]">{t("profile.diet")}</div>
               <input
                 type="text"
-                placeholder="vegetarian, high-protein, etc."
+                placeholder={t("profile.dietPlaceholder")}
                 {...form.register("dietPreference")}
                 className="w-full rounded-2xl border border-[#F0E6DD] bg-white px-4 py-3 text-[#1F1611] outline-none transition focus:border-[#FF6B35]/40"
               />
             </label>
 
             <label className="block xl:col-span-3">
-              <div className="mb-2 text-sm text-[#6B5544]">Allergens (comma separated)</div>
+              <div className="mb-2 text-sm text-[#6B5544]">{t("profile.allergens")}</div>
               <input
                 type="text"
-                placeholder="shrimp, peanut"
+                placeholder={t("profile.allergensPlaceholder")}
                 {...form.register("allergensText")}
                 className="w-full rounded-2xl border border-[#F0E6DD] bg-white px-4 py-3 text-[#1F1611] outline-none transition focus:border-[#FF6B35]/40"
               />
             </label>
 
             <label className="block xl:col-span-3">
-              <div className="mb-2 text-sm text-[#6B5544]">Disliked tags (comma separated)</div>
+              <div className="mb-2 text-sm text-[#6B5544]">{t("profile.disliked")}</div>
               <input
                 type="text"
-                placeholder="fish, spicy"
+                placeholder={t("profile.dislikedPlaceholder")}
                 {...form.register("dislikedTagsText")}
                 className="w-full rounded-2xl border border-[#F0E6DD] bg-white px-4 py-3 text-[#1F1611] outline-none transition focus:border-[#FF6B35]/40"
               />
@@ -186,17 +191,17 @@ export function ProfilePage() {
               disabled={isSaving}
               className="rounded-full bg-[#FF6B35] px-5 py-3 text-sm font-semibold text-white disabled:opacity-60 transition hover:bg-[#E55329]"
             >
-              {isSaving ? "Saving..." : "Save Profile"}
+              {isSaving ? t("profile.saving") : t("profile.save")}
             </button>
             {saveError ? (
               <div className="text-sm text-red-500">{String(saveError.message)}</div>
             ) : profile ? (
               <div className="text-sm text-[#6B5544]">
-                Last updated {new Date(profile.updatedAt).toLocaleString()}
+                {t("profile.lastUpdated", { date: new Date(profile.updatedAt).toLocaleString() })}
               </div>
             ) : (
               <div className="text-sm text-[#6B5544]">
-                Create the profile once and EatFit will persist it to Supabase.
+                {t("profile.createHint")}
               </div>
             )}
           </div>
@@ -205,8 +210,8 @@ export function ProfilePage() {
 
       {!profile ? (
         <EmptyState
-          title="No profile row yet"
-          body="Once you save the form above, the dashboard will start generating targets, plans, grocery output, and AI coach sessions."
+          title={t("profile.noProfileTitle")}
+          body={t("profile.noProfileBody")}
         />
       ) : null}
     </div>

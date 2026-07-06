@@ -1,22 +1,26 @@
-const steps = [
-  {
-    title: "01. Capture the profile",
-    body: "Body metrics, activity level, goal, allergens, and preferences are saved to Supabase.",
-  },
-  {
-    title: "02. Generate the day",
-    body: "The dashboard requests a stateless plan and grocery list from the FastAPI nutrition engine.",
-  },
-  {
-    title: "03. Tighten the loop",
-    body: "The AI coach turns context into targeted advice and stores sessions for follow-up reviews.",
-  },
-];
+import { useLang } from "@/i18n/LanguageContext";
 
 export function WorkflowStrip() {
+  const { t } = useLang();
+
+  const steps = [
+    {
+      title: t("workflow.step1.title"),
+      body: t("workflow.step1.body"),
+    },
+    {
+      title: t("workflow.step2.title"),
+      body: t("workflow.step2.body"),
+    },
+    {
+      title: t("workflow.step3.title"),
+      body: t("workflow.step3.body"),
+    },
+  ];
+
   return (
     <section className="rounded-[24px] border border-[#F0E6DD] bg-white p-6 shadow-warm md:p-8">
-      <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">Operating Flow</div>
+      <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">{t("workflow.eyebrow")}</div>
       <div className="mt-8 grid gap-4 lg:grid-cols-3">
         {steps.map((step) => (
           <article

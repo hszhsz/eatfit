@@ -4,18 +4,20 @@ import { useCurrentProfile } from "@/hooks/useCurrentProfile";
 import { useGrocery } from "@/hooks/useDashboardData";
 import { formatNumber } from "@/lib/format";
 import { useDashboardStore } from "@/store/dashboardStore";
+import { useLang } from "@/i18n/LanguageContext";
 
 export function GroceryPage() {
   const { data: profile } = useCurrentProfile();
   const selectedDate = useDashboardStore((state) => state.selectedDate);
   const { data: grocery, isLoading, error } = useGrocery(profile, selectedDate);
+  const { lang, t } = useLang();
 
   if (!profile) {
     return (
       <EmptyState
-        title="No grocery output without a profile"
-        body="Save your profile and daily plan inputs first. EatFit uses them to aggregate ingredients into a shopping list."
-        cta="Go to Profile"
+        title={t("grocery.empty.title")}
+        body={t("grocery.empty.body")}
+        cta={t("grocery.empty.cta")}
         to="/app/profile"
       />
     );
@@ -23,7 +25,7 @@ export function GroceryPage() {
 
   return (
     <div className="space-y-6">
-      <SectionCard title="Grocery list" eyebrow="Shopping">
+      <SectionCard title={t("grocery.title")} eyebrow={t("grocery.eyebrow")}>
         {isLoading ? (
           <div className="grid gap-4 md:grid-cols-2">
             {Array.from({ length: 4 }).map((_, index) => (
@@ -53,7 +55,7 @@ export function GroceryPage() {
                         {item.name}
                       </span>
                       <span className="text-sm text-[#6B5544]">
-                        {formatNumber(item.totalAmountG, 1)} g
+                        {formatNumber(item.totalAmountG, 1, lang)} g
                       </span>
                     </label>
                   ))}
@@ -62,7 +64,7 @@ export function GroceryPage() {
             ))}
           </div>
         ) : (
-          <div className="text-[#6B5544]">Generate a plan first.</div>
+          <div className="text-[#6B5544]">{t("grocery.generateFirst")}</div>
         )}
       </SectionCard>
     </div>

@@ -10,17 +10,21 @@ import {
 } from "lucide-react";
 import { NavLink, Outlet } from "react-router-dom";
 
-const navItems = [
-  { to: "/app", label: "Overview", icon: Home, end: true },
-  { to: "/app/profile", label: "Profile", icon: NotebookPen },
-  { to: "/app/plan", label: "Plan", icon: ChartColumnBig },
-  { to: "/app/recipes", label: "Recipes", icon: ChefHat },
-  { to: "/app/grocery", label: "Grocery", icon: ClipboardList },
-  { to: "/app/coach", label: "AI Coach", icon: Bot },
-];
+import { LanguageSwitcher } from "@/components/common/LanguageSwitcher";
+import { useLang } from "@/i18n/LanguageContext";
 
 export function AppShell() {
   const { user } = useUser();
+  const { t } = useLang();
+
+  const navItems = [
+    { to: "/app", label: t("shell.nav.overview"), icon: Home, end: true },
+    { to: "/app/profile", label: t("shell.nav.profile"), icon: NotebookPen },
+    { to: "/app/plan", label: t("shell.nav.plan"), icon: ChartColumnBig },
+    { to: "/app/recipes", label: t("shell.nav.recipes"), icon: ChefHat },
+    { to: "/app/grocery", label: t("shell.nav.grocery"), icon: ClipboardList },
+    { to: "/app/coach", label: t("shell.nav.coach"), icon: Bot },
+  ];
 
   return (
     <div className="min-h-screen bg-[#FFF9F2] text-[#1F1611]">
@@ -33,14 +37,14 @@ export function AppShell() {
             <div>
               <div className="font-serif text-2xl tracking-wide">EatFit</div>
               <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">
-                Nutrition OS
+                {t("shell.brandTagline")}
               </div>
             </div>
           </div>
 
           <div className="mb-6 rounded-3xl border border-[#F0E6DD] bg-[#FFF5EE] p-4">
             <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">
-              Signed in as
+              {t("shell.signedInAs")}
             </div>
             <div className="mt-3 flex items-center justify-between gap-3">
               <div>
@@ -48,7 +52,7 @@ export function AppShell() {
                   {user?.fullName || user?.primaryEmailAddress?.emailAddress}
                 </div>
                 <div className="text-sm text-[#6B5544]">
-                  Personalized nutrition dashboard
+                  {t("shell.signedInDesc")}
                 </div>
               </div>
               <UserButton />
@@ -80,10 +84,14 @@ export function AppShell() {
           </nav>
 
           <div className="mt-10 rounded-3xl border border-[#F0E6DD] bg-gradient-to-br from-[#FFF5EE] to-transparent p-4 text-sm text-[#6B5544]">
-            <div className="font-medium text-[#1F1611]">Operating note</div>
+            <div className="font-medium text-[#1F1611]">{t("shell.operatingNote")}</div>
             <p className="mt-2 leading-6 text-[#6B5544]">
-              Profile data lives in Supabase. Plans and coaching are computed from your latest inputs through the FastAPI nutrition engine.
+              {t("shell.operatingDesc")}
             </p>
+          </div>
+
+          <div className="mt-6">
+            <LanguageSwitcher />
           </div>
         </aside>
 

@@ -3,12 +3,15 @@ import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 
 import Home from "@/pages/Home";
+import { LanguageProvider } from "@/i18n/LanguageContext";
 
 describe("Home", () => {
   it("renders the landing page headline and CTA", () => {
     render(
       <MemoryRouter>
-        <Home />
+        <LanguageProvider>
+          <Home />
+        </LanguageProvider>
       </MemoryRouter>,
     );
 
