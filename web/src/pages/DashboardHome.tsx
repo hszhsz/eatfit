@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 
 import { EmptyState } from "@/components/common/EmptyState";
 import { MetricCard } from "@/components/common/MetricCard";
+import { OnboardingSteps } from "@/components/common/OnboardingSteps";
 import { PlanMealCard } from "@/components/common/PlanMealCard";
 import { SectionCard } from "@/components/common/SectionCard";
 import { useCurrentProfile } from "@/hooks/useCurrentProfile";
@@ -29,14 +30,18 @@ export function DashboardHome() {
   }
 
   const goalLabels = getGoalLabels(lang);
+  const hasPlan = Boolean(plan?.meals?.length);
+  const hasCoach = Boolean(sessions?.length);
 
   return (
     <div className="space-y-6">
+      <OnboardingSteps hasProfile hasPlan={hasPlan} hasCoach={hasCoach} />
+
       <section className="rounded-[24px] border border-[#F0E6DD] bg-[radial-gradient(circle_at_top_left,_rgba(255,107,53,0.08),_transparent_28%),rgba(255,255,255,0.6)] p-6 shadow-warm">
         <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">{t("dash.overview")}</div>
         <div className="mt-4 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h1 className="font-serif text-5xl text-[#1F1611]">
+            <h1 className="font-serif text-4xl text-[#1F1611] md:text-5xl">
               {t("dash.welcome", { name: profile.name })}
             </h1>
             <p className="mt-3 text-lg text-[#6B5544]">
@@ -55,7 +60,7 @@ export function DashboardHome() {
         </div>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <MetricCard
           label={t("dash.targetCalories")}
           value={plan ? `${formatNumber(plan.target.targetCalories, 0, lang)} kcal` : "--"}
@@ -89,14 +94,22 @@ export function DashboardHome() {
                 />
               ))}
             </div>
-          ) : plan ? (
+          ) : plan && plan.meals.length > 0 ? (
             <div className="grid gap-4 md:grid-cols-2">
               {plan.meals.map((meal) => (
                 <PlanMealCard key={`${meal.mealType}-${meal.recipe.id}`} meal={meal} />
               ))}
             </div>
           ) : (
-            <div className="text-[#6B5544]">{t("dash.noPlanYet")}</div>
+            <div className="flex flex-col items-center gap-4 py-8 text-[#6B5544]">
+              <p>{t("dash.noPlanYet")}</p>
+              <Link
+                to="/app/plan"
+                className="rounded-full bg-[#FF6B35] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#E55329]"
+              >
+                {lang === "zh" ? "生成计划" : "Generate Plan"}
+              </Link>
+            </div>
           )}
         </SectionCard>
 

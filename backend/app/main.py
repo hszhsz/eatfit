@@ -1,26 +1,46 @@
-"""EatFit FastAPI application entry point.
+"""EatFit FastAPI application — stateless nutrition engine.
 
-Run locally with:
-    uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+Architecture:
+- Recipes: static in-memory store (seed data, no DB needed)
+- Profiles: frontend persists to Supabase; backend receives via POST
+- Plans/Grocery/Coach: computed on-the-fly from POST body
+- LLM Coach: optional, falls back to local heuristic if no API key
 """
 from __future__ import annotations
 
 import os
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.database import init_db
-from app.routers import coach, plan, profiles, recipes, web
-from app.seed import seed_recipes
+from app.recipe_store import get_all_recipes
+from app.routers import recipes, web
+
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    # Pre-load recipes on startup so first request is fast
+    count = len(get_all_recipes())
+    print(f"[EatFit] Recipe store ready: {count} recipes loaded.")
+
+    api_key = os.getenv("EATFIT_LLM_API_KEY")
+    if not api_key:
+        print("[EatFit] WARNING: EATFIT_LLM_API_KEY not set — AI Coach will use local fallback.")
+    else:
+        print("[EatFit] LLM API key detected — AI Coach will use live model.")
+
+    yield
+
 
 app = FastAPI(
     title="EatFit API",
-    description="AI 饮食管家后端:营养计算、个性化食谱、买菜清单、烹饪引导。",
-    version="1.0.0",
+    description="AI 饮食管家后端：营养计算、个性化食谱、买菜清单、烹饪引导。",
+    version="1.1.0",
+    lifespan=lifespan,
 )
 
-# Allow the web frontend, Android app, and local dev to call the API.
+# CORS — explicit origins only (no wildcard + credentials, which is invalid)
 _ALLOWED_ORIGINS = [
     "https://web-iota-beige-57.vercel.app",
     "https://web-84hacftff-jackhes-projects-5ded530b.vercel.app",
@@ -29,48 +49,30 @@ _ALLOWED_ORIGINS = [
     "http://localhost:3210",
     "http://127.0.0.1:5173",
     "http://127.0.0.1:3210",
-    "*",  # also allow any origin (mobile app, etc.)
 ]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=_ALLOWED_ORIGINS,
+    allow_origin_regex=r"https://web-.*\.vercel\.app",  # allow Vercel preview deployments
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-app.include_router(profiles.router)
+# Only register routers that the frontend actually uses
 app.include_router(recipes.router)
-app.include_router(plan.router)
-app.include_router(coach.router)
 app.include_router(web.router)
-
-
-def _bootstrap():
-    """Create tables and seed recipes. Called at import time for serverless."""
-    init_db()
-    count = seed_recipes()
-    print(f"[EatFit] Database ready. Recipes in library: {count}")
-
-
-# In serverless (Vercel) there are no startup events; initialise eagerly.
-if os.getenv("VERCEL"):
-    _bootstrap()
-
-
-@app.on_event("startup")
-def on_startup():
-    if not os.getenv("VERCEL"):
-        _bootstrap()
 
 
 @app.get("/")
 def root():
     return {
         "app": "EatFit API",
+        "version": "1.1.0",
         "status": "ok",
         "docs": "/docs",
+        "recipes": len(get_all_recipes()),
     }
 
 

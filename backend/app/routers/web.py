@@ -1,13 +1,12 @@
-"""Stateless Web endpoints backed by the existing nutrition services."""
+"""Stateless Web endpoints — receive profile via POST, compute and return."""
 from __future__ import annotations
 
 import hashlib
 from types import SimpleNamespace
 
-from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
+from fastapi import APIRouter
 
-from app.database import Recipe, get_db
+from app.recipe_store import get_all_recipes
 from app.schemas import (
     ActivityLevel,
     CoachResponse,
@@ -21,7 +20,6 @@ from app.schemas import (
     WebTargetRequest,
 )
 from app.services.llm_coach import generate_coach_advice
-from app.services.mappers import recipe_to_out
 from app.services.nutrition import compute_target
 from app.services.planner import build_daily_plan, build_grocery_list
 
@@ -57,10 +55,10 @@ def get_target(body: WebTargetRequest):
 
 
 @router.post("/plan", response_model=DailyPlanOut)
-def get_plan(body: WebPlanRequest, db: Session = Depends(get_db)):
+def get_plan(body: WebPlanRequest):
     profile = body.profile.dict()
     target = _compute_target(body)
-    recipes = [recipe_to_out(r) for r in db.query(Recipe).all()]
+    recipes = get_all_recipes()
     return build_daily_plan(
         profile_id=_profile_seed(profile),
         target=target,
@@ -74,16 +72,16 @@ def get_plan(body: WebPlanRequest, db: Session = Depends(get_db)):
 
 
 @router.post("/grocery", response_model=GroceryListOut)
-def get_grocery(body: WebPlanRequest, db: Session = Depends(get_db)):
-    plan = get_plan(body, db)
+def get_grocery(body: WebPlanRequest):
+    plan = get_plan(body)
     return build_grocery_list(plan)
 
 
 @router.post("/coach/advice", response_model=CoachResponse)
-def get_advice(body: WebCoachAdviceRequest, db: Session = Depends(get_db)):
+def get_advice(body: WebCoachAdviceRequest):
     profile = body.profile.dict()
     target = _compute_target(body)
-    recipes = [recipe_to_out(r) for r in db.query(Recipe).all()]
+    recipes = get_all_recipes()
     plan = build_daily_plan(
         profile_id=_profile_seed(profile),
         target=target,
