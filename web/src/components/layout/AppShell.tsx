@@ -6,13 +6,13 @@ import {
   ClipboardList,
   Home,
   NotebookPen,
-  Salad,
   UtensilsCrossed,
   TrendingUp,
 } from "lucide-react";
 import { NavLink, Outlet } from "react-router-dom";
 import { useState } from "react";
 
+import { EatFitLogo } from "@/components/common/EatFitLogo";
 import { LanguageSwitcher } from "@/components/common/LanguageSwitcher";
 import { useLang } from "@/i18n/LanguageContext";
 
@@ -39,7 +39,7 @@ export function AppShell() {
         <div className="flex items-center justify-between border-b border-[#F0E6DD] bg-white px-4 py-3 xl:hidden">
           <div className="flex items-center gap-2">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#FF6B35]/30 bg-[#FFE5D9]">
-              <Salad className="h-4 w-4 text-[#FF6B35]" />
+              <EatFitLogo className="h-5 w-5 text-[#FF6B35]" />
             </div>
             <span className="font-serif text-xl">EatFit</span>
           </div>
@@ -60,7 +60,7 @@ export function AppShell() {
         >
           <div className="mb-10 hidden items-center gap-3 xl:flex">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-[#FF6B35]/30 bg-[#FFE5D9]">
-              <Salad className="h-6 w-6 text-[#FF6B35]" />
+              <EatFitLogo className="h-7 w-7 text-[#FF6B35]" />
             </div>
             <div>
               <div className="font-serif text-2xl tracking-wide">EatFit</div>

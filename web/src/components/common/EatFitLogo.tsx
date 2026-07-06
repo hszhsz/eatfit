@@ -1,0 +1,27 @@
+interface EatFitLogoProps {
+  className?: string;
+}
+
+/** EatFit brand logo — a fork & spoon in a rounded square. */
+export function EatFitLogo({ className = "h-6 w-6" }: EatFitLogoProps) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect width="32" height="32" rx="8" fill="currentColor" />
+      {/* Fork */}
+      <path
+        d="M11 7v6c0 1.1.7 2 1.75 2.3V25c0 .55.45 1 1 1s1-.45 1-1V15.3C15.3 15 16 14.1 16 13V7c0-.55-.45-1-1-1s-1 .45-1 1v4h-1V7c0-.55-.45-1-1-1s-1 .45-1 1z"
+        fill="white"
+      />
+      {/* Spoon */}
+      <path
+        d="M22 7c-1.65 0-3 1.79-3 4 0 1.72.87 3.19 2.1 3.76.55.25.9.78.9 1.38V25c0 .55.45 1 1 1s1-.45 1-1v-8.86c0-.6.35-1.13.9-1.38C26.13 14.19 27 12.72 27 11c0-2.21-1.35-4-3-4z"
+        fill="white"
+      />
+    </svg>
+  );
+}

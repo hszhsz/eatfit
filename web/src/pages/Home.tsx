@@ -1,4 +1,4 @@
-import { Salad } from "lucide-react";
+import { EatFitLogo } from "@/components/common/EatFitLogo";
 import { Link } from "react-router-dom";
 
 import { AppDownload } from "@/components/landing/AppDownload";
@@ -18,7 +18,7 @@ export default function Home() {
         <header className="flex flex-wrap items-center justify-between gap-4 rounded-[24px] border border-[#F0E6DD] bg-white px-6 py-4 shadow-warm">
           <div className="flex items-center gap-3">
             <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-[#FF6B35]/30 bg-[#FFE5D9]">
-              <Salad className="h-5 w-5 text-[#FF6B35]" />
+              <EatFitLogo className="h-6 w-6 text-[#FF6B35]" />
             </div>
             <div>
               <div className="font-serif text-2xl">{t("home.brand")}</div>
