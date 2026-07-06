@@ -1,0 +1,23 @@
+{
+  "name": "EatFit · AI 饮食管家",
+  "short_name": "EatFit",
+  "description": "个性化营养目标、智能食谱生成、买菜清单、AI 营养顾问",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "theme_color": "#FF6B35",
+  "background_color": "#FFF9F2",
+  "display": "standalone",
+  "start_url": "/"
+}
