@@ -123,12 +123,23 @@ function mapCoach(response: any): CoachResponse {
   };
 }
 
+// ---------- Recipe API ----------
+
 export async function fetchRecipes() {
   const recipes = await request<any[]>("/api/recipes");
   return recipes.map(mapRecipe);
 }
 
-export async function fetchPlan(profile: UserProfileFormValues, date: string) {
+// ---------- Plan/Grocery/Coach: prefer by-id (Supabase), fallback to full profile ----------
+
+export async function fetchPlan(profile: UserProfileFormValues, date: string, profileId?: string) {
+  if (profileId) {
+    const payload = await request<any>("/api/web/by-id/plan", {
+      method: "POST",
+      body: JSON.stringify({ profile_id: profileId, date }),
+    });
+    return mapPlan(payload);
+  }
   const payload = await request<any>("/api/web/plan", {
     method: "POST",
     body: JSON.stringify({ profile: toProfilePayload(profile), date }),
@@ -136,7 +147,14 @@ export async function fetchPlan(profile: UserProfileFormValues, date: string) {
   return mapPlan(payload);
 }
 
-export async function fetchGrocery(profile: UserProfileFormValues, date: string) {
+export async function fetchGrocery(profile: UserProfileFormValues, date: string, profileId?: string) {
+  if (profileId) {
+    const payload = await request<any>("/api/web/by-id/grocery", {
+      method: "POST",
+      body: JSON.stringify({ profile_id: profileId, date }),
+    });
+    return mapGrocery(payload);
+  }
   const payload = await request<any>("/api/web/grocery", {
     method: "POST",
     body: JSON.stringify({ profile: toProfilePayload(profile), date }),
@@ -148,7 +166,19 @@ export async function fetchCoachAdvice(
   profile: UserProfileFormValues,
   date: string,
   coachRequest: CoachRequest,
+  profileId?: string,
 ) {
+  if (profileId) {
+    const payload = await request<any>("/api/web/by-id/coach/advice", {
+      method: "POST",
+      body: JSON.stringify({
+        profile_id: profileId,
+        request: coachRequest,
+        date,
+      }),
+    });
+    return mapCoach(payload);
+  }
   const payload = await request<any>("/api/web/coach/advice", {
     method: "POST",
     body: JSON.stringify({

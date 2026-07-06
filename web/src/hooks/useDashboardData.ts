@@ -33,6 +33,7 @@ export function usePlan(profile: UserProfile | null, selectedDate: string) {
         return null;
       }
 
+      // Try Supabase snapshot first (cached)
       if (client) {
         const snapshot = await getPlanSnapshot(client, profile.id, selectedDate);
         if (snapshot?.meals) {
@@ -49,7 +50,8 @@ export function usePlan(profile: UserProfile | null, selectedDate: string) {
         }
       }
 
-      const plan = await fetchPlan(profile, selectedDate);
+      // Fetch from backend (by-id if we have Supabase profile.id, else full profile)
+      const plan = await fetchPlan(profile, selectedDate, profile.id);
       if (client) {
         await savePlanSnapshot(client, profile.id, plan);
       }
@@ -69,7 +71,7 @@ export function useGrocery(profile: UserProfile | null, selectedDate: string) {
         return null;
       }
 
-      const grocery = await fetchGrocery(profile, selectedDate);
+      const grocery = await fetchGrocery(profile, selectedDate, profile.id);
       if (client) {
         await saveGrocerySnapshot(client, profile.id, grocery);
       }
@@ -119,7 +121,7 @@ export function useCoachMutation(profile: UserProfile | null, date: string) {
         throw new Error("Profile is required before using the coach.");
       }
 
-      const response = await fetchCoachAdvice(profile, date, payload);
+      const response = await fetchCoachAdvice(profile, date, payload, profile.id);
       let sessionId: string | null = null;
 
       if (client) {

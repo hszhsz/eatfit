@@ -160,6 +160,7 @@ class CoachResponse(BaseModel):
 
 
 # ---------- Web stateless requests ----------
+# Option A: send full profile (backward compat)
 class WebTargetRequest(BaseModel):
     profile: UserProfileCreate
 
@@ -171,5 +172,17 @@ class WebPlanRequest(BaseModel):
 
 class WebCoachAdviceRequest(BaseModel):
     profile: UserProfileCreate
+    request: CoachRequest
+    date: Optional[str] = None
+
+
+# Option B: reference profile by UUID (Supabase persisted)
+class ProfileByIdRequest(BaseModel):
+    profile_id: str = Field(..., description="Supabase profile UUID")
+    date: Optional[str] = None
+
+
+class CoachByIdRequest(BaseModel):
+    profile_id: str = Field(..., description="Supabase profile UUID")
     request: CoachRequest
     date: Optional[str] = None

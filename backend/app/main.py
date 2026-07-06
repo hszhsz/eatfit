@@ -15,14 +15,20 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.recipe_store import get_all_recipes
+from app.supabase_client import get_supabase
 from app.routers import recipes, web
 
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
-    # Pre-load recipes on startup so first request is fast
-    count = len(get_all_recipes())
-    print(f"[EatFit] Recipe store ready: {count} recipes loaded.")
+    # Load recipes (from Supabase or fallback to seed data)
+    recipes = get_all_recipes()
+    count = len(recipes)
+    sb = get_supabase()
+    if sb.available:
+        print(f"[EatFit] Supabase connected. {count} recipes loaded from database.")
+    else:
+        print(f"[EatFit] Supabase not configured (SUPABASE_URL/SUPABASE_SERVICE_KEY missing). Using in-memory seed data: {count} recipes.")
 
     api_key = os.getenv("EATFIT_LLM_API_KEY")
     if not api_key:
