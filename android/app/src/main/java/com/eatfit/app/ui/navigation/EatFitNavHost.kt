@@ -15,6 +15,7 @@ import com.eatfit.app.ui.screens.onboarding.OnboardingScreen
 import com.eatfit.app.ui.screens.profile.ProfileScreen
 import com.eatfit.app.ui.screens.recipe.RecipeDetailScreen
 import com.eatfit.app.ui.screens.coach.CoachScreen
+import com.eatfit.app.ui.screens.settings.SettingsScreen
 import com.eatfit.app.ui.screens.today.TodayScreen
 
 @Composable
@@ -45,6 +46,7 @@ fun EatFitNavHost() {
                 onOpenCoach = { navController.navigate(Screen.Coach.route) },
                 onOpenGrocery = { navController.navigate(Screen.Grocery.route) },
                 onOpenProfile = { navController.navigate(Screen.Profile.route) },
+                onOpenSettings = { navController.navigate(Screen.Settings.route) },
             )
         }
         composable(Screen.Coach.route) {
@@ -58,6 +60,9 @@ fun EatFitNavHost() {
                 onBack = { navController.popBackStack() },
                 onSaved = { navController.popBackStack() },
             )
+        }
+        composable(Screen.Settings.route) {
+            SettingsScreen(onBack = { navController.popBackStack() })
         }
         composable(
             route = Screen.RecipeDetail.route,

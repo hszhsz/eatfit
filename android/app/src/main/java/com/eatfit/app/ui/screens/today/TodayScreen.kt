@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -59,6 +60,7 @@ fun TodayScreen(
     onOpenCoach: () -> Unit,
     onOpenGrocery: () -> Unit,
     onOpenProfile: () -> Unit,
+    onOpenSettings: () -> Unit,
     viewModel: TodayViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
@@ -73,6 +75,9 @@ fun TodayScreen(
                     }
                     IconButton(onClick = onOpenProfile) {
                         Icon(Icons.Default.Person, contentDescription = "我的")
+                    }
+                    IconButton(onClick = onOpenSettings) {
+                        Icon(Icons.Default.Settings, contentDescription = "设置")
                     }
                 },
             )

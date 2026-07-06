@@ -30,7 +30,7 @@ export function LandingHero() {
               <ArrowRight className="h-4 w-4" />
             </Link>
             <a
-              href="#dashboard"
+              href="#features"
               className="inline-flex items-center gap-2 rounded-full border border-[#F0E6DD] px-6 py-3 text-sm text-[#3D2817] transition hover:bg-[#FFF5EE]"
             >
               Explore Dashboard

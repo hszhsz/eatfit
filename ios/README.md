@@ -1,38 +1,68 @@
 # EatFit iOS
 
-原生 iOS 客户端，使用 `SwiftUI + URLSession + async/await`，直接复用现有 FastAPI 接口。
+## 构建要求
 
-## 功能范围
+- macOS + 完整 Xcode（非 Command Line Tools）
+- iOS 17.0+ 部署目标
+- [XcodeGen](https://github.com/yonaskolb/XcodeGen)（可选，用于重新生成工程文件）
 
-- 首次建档 / 编辑档案
-- 今日饮食计划
-- 食谱库与食谱详情
-- 买菜清单
-- AI 营养顾问
+## 构建步骤
 
-## 本地运行
-
-1. 先启动后端：
+### 1. 安装 XcodeGen（如未安装）
 
 ```bash
-cd backend
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+brew install xcodegen
 ```
 
-2. 生成 Xcode 工程：
+### 2. 生成 Xcode 工程
 
 ```bash
 cd ios
 xcodegen generate
 ```
 
-3. 用 Xcode 打开 `ios/EatFitIOS.xcodeproj`
+### 3. 打开并运行
 
-4. 运行前确认后端地址：
-   - iOS 模拟器：`http://127.0.0.1:8000`
-   - iPhone 真机：改成你电脑的局域网 IP，例如 `http://192.168.1.100:8000`
+```bash
+open EatFitIOS.xcodeproj
+```
 
-## 说明
+在 Xcode 中：
+- 选择目标设备（模拟器或真机）
+- 点击 Run ▶
 
-- 当前工程未引入第三方依赖，便于直接打开和调试。
-- 如果本机 `xcodebuild` 报错缺少 iOS runtime / simulator platform，请在 Xcode 的 `Settings > Components` 安装对应 iOS Platform，并确保 `xcode-select` 指向完整 Xcode。
+### 4. 配置后端地址
+
+首次进入 App 时，在 Onboarding 页面填写后端地址：
+- **iOS 模拟器**：`http://127.0.0.1:8000`
+- **iPhone 真机**：改为电脑局域网 IP，例如 `http://192.168.1.100:8000`
+
+### 5. 构建 IPA（需要 Apple Developer 账号）
+
+```bash
+# Archive
+xcodebuild archive \
+  -project EatFitIOS.xcodeproj \
+  -scheme EatFitIOS \
+  -archivePath build/EatFitIOS.xcarchive
+
+# Export IPA
+xcodebuild -exportArchive \
+  -archivePath build/EatFitIOS.xcarchive \
+  -exportPath build/ipa \
+  -exportOptionsPlist ExportOptions.plist
+```
+
+> 需要在 `project.yml` 中设置 `DEVELOPMENT_TEAM` 为你的 Apple Team ID。
+
+## 项目结构
+
+```
+EatFitIOS/
+├── App/           # App 入口与 Tab 根视图
+├── Models/        # Swift Codable 数据模型
+├── Networking/    # URLSession API Client
+├── Store/         # 全局会话与 profileId 持久化
+├── ViewModels/    # SwiftUI 状态管理
+└── Views/         # Onboarding / Today / Recipes / Grocery / Coach / Profile
+```

@@ -1,6 +1,7 @@
 import { Salad } from "lucide-react";
 import { Link } from "react-router-dom";
 
+import { AppDownload } from "@/components/landing/AppDownload";
 import { FaqList } from "@/components/landing/FaqList";
 import { FeatureGrid } from "@/components/landing/FeatureGrid";
 import { LandingHero } from "@/components/landing/LandingHero";
@@ -25,10 +26,16 @@ export default function Home() {
 
           <nav className="flex items-center gap-2">
             <a
-              href="#dashboard"
+              href="#features"
               className="rounded-full px-4 py-2 text-sm text-[#6B5544] transition hover:bg-[#FFF5EE] hover:text-[#1F1611]"
             >
               Features
+            </a>
+            <a
+              href="#download"
+              className="rounded-full px-4 py-2 text-sm text-[#6B5544] transition hover:bg-[#FFF5EE] hover:text-[#1F1611]"
+            >
+              下载
             </a>
             <Link
               to="/sign-in"
@@ -48,6 +55,7 @@ export default function Home() {
         <LandingHero />
         <FeatureGrid />
         <WorkflowStrip />
+        <AppDownload />
         <FaqList />
 
         <footer className="rounded-[24px] border border-[#F0E6DD] bg-white px-6 py-8 text-sm text-[#6B5544] shadow-warm">

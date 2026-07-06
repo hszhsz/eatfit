@@ -6,6 +6,7 @@ sealed class Screen(val route: String) {
     data object Coach : Screen("coach")
     data object Grocery : Screen("grocery")
     data object Profile : Screen("profile")
+    data object Settings : Screen("settings")
     data object RecipeDetail : Screen("recipe/{recipeId}") {
         fun create(recipeId: Int) = "recipe/$recipeId"
     }

@@ -25,7 +25,7 @@ const features = [
 
 export function FeatureGrid() {
   return (
-    <section id="dashboard" className="grid gap-4 lg:grid-cols-2">
+    <section id="features" className="grid gap-4 lg:grid-cols-2">
       {features.map((feature) => {
         const Icon = feature.icon;
         return (
