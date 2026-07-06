@@ -7,6 +7,8 @@ import {
   Home,
   NotebookPen,
   Salad,
+  UtensilsCrossed,
+  TrendingUp,
 } from "lucide-react";
 import { NavLink, Outlet } from "react-router-dom";
 import { useState } from "react";
@@ -16,7 +18,7 @@ import { useLang } from "@/i18n/LanguageContext";
 
 export function AppShell() {
   const { user } = useUser();
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   const navItems = [
@@ -25,7 +27,9 @@ export function AppShell() {
     { to: "/app/plan", label: t("shell.nav.plan"), icon: ChartColumnBig },
     { to: "/app/recipes", label: t("shell.nav.recipes"), icon: ChefHat },
     { to: "/app/grocery", label: t("shell.nav.grocery"), icon: ClipboardList },
+    { to: "/app/food-log", label: lang === "zh" ? "饮食记录" : "Food Log", icon: UtensilsCrossed },
     { to: "/app/coach", label: t("shell.nav.coach"), icon: Bot },
+    { to: "/app/progress", label: lang === "zh" ? "进度趋势" : "Progress", icon: TrendingUp },
   ];
 
   return (

@@ -128,3 +128,27 @@ export interface CoachMessage {
   structuredPayload?: CoachResponse | null;
   createdAt: string;
 }
+
+export interface FoodLog {
+  id: string;
+  profileId: string;
+  logDate: string;
+  mealType: MealType;
+  foodName: string;
+  calories: number;
+  proteinG: number;
+  carbsG: number;
+  fatG: number;
+  source: string;
+  recipeId: number | null;
+  createdAt: string;
+}
+
+export interface WeightLog {
+  id: string;
+  profileId: string;
+  logDate: string;
+  weightKg: number;
+  note: string | null;
+  createdAt: string;
+}

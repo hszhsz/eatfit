@@ -6,10 +6,12 @@ import { useLang } from "@/i18n/LanguageContext";
 import { env, hasSupabase } from "@/lib/env";
 import { CoachPage } from "@/pages/CoachPage";
 import { DashboardHome } from "@/pages/DashboardHome";
+import { FoodLogPage } from "@/pages/FoodLogPage";
 import { GroceryPage } from "@/pages/GroceryPage";
 import Home from "@/pages/Home";
 import { PlanPage } from "@/pages/PlanPage";
 import { ProfilePage } from "@/pages/ProfilePage";
+import { ProgressPage } from "@/pages/ProgressPage";
 import { RecipesPage } from "@/pages/RecipesPage";
 import { SignInPage } from "@/pages/SignInPage";
 import { SignUpPage } from "@/pages/SignUpPage";
@@ -55,6 +57,8 @@ export default function App() {
         <Route path="recipes" element={<RecipesPage />} />
         <Route path="grocery" element={<GroceryPage />} />
         <Route path="coach" element={<CoachPage />} />
+        <Route path="food-log" element={<FoodLogPage />} />
+        <Route path="progress" element={<ProgressPage />} />
       </Route>
       <Route path="*" element={<SetupMissingPage />} />
     </Routes>
