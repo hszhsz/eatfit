@@ -15,18 +15,18 @@ function MissingClerkApp() {
       <Route
         path="*"
         element={
-          <div className="flex min-h-screen items-center justify-center bg-[#060816] px-4 text-white">
-            <div className="max-w-2xl rounded-[32px] border border-white/10 bg-black/20 p-8">
-              <div className="text-xs uppercase tracking-[0.24em] text-zinc-500">
+          <div className="flex min-h-screen items-center justify-center bg-[#FFF9F2] px-4 text-[#1F1611]">
+            <div className="max-w-2xl rounded-3xl border border-[#F0E6DD] bg-white p-8 shadow-warm">
+              <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">
                 Missing Clerk key
               </div>
               <h1 className="mt-4 font-serif text-4xl">
                 Add `VITE_CLERK_PUBLISHABLE_KEY` to continue.
               </h1>
-              <p className="mt-6 leading-7 text-zinc-400">
+              <p className="mt-6 leading-7 text-[#6B5544]">
                 The landing page is available, but authentication screens and the protected dashboard require a valid Clerk publishable key.
               </p>
-              <div className="mt-4 rounded-2xl bg-white/5 p-4 text-sm text-zinc-300">
+              <div className="mt-4 rounded-2xl bg-[#FFF5EE] p-4 text-sm text-[#6B5544]">
                 Current value: {env.clerkPublishableKey ? "configured" : "missing"}
               </div>
             </div>

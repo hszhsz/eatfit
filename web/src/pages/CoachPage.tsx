@@ -81,8 +81,8 @@ export function CoachPage() {
               className={[
                 "w-full rounded-2xl border px-4 py-3 text-left text-sm transition",
                 coachFocus === option.value
-                  ? "border-[#8cffb0]/40 bg-[#8cffb0]/10 text-white"
-                  : "border-white/10 bg-black/20 text-zinc-300 hover:bg-white/5",
+                  ? "border-[#FF6B35]/40 bg-[#FFE5D9] text-[#1F1611]"
+                  : "border-[#F0E6DD] bg-white text-[#6B5544] hover:bg-[#FFF5EE]",
               ].join(" ")}
             >
               {option.label}
@@ -91,12 +91,12 @@ export function CoachPage() {
         </div>
 
         <label className="mt-6 block">
-          <div className="mb-2 text-sm text-zinc-300">Context</div>
+          <div className="mb-2 text-sm text-[#6B5544]">Context</div>
           <textarea
             value={message}
             onChange={(event) => setMessage(event.target.value)}
             rows={8}
-            className="w-full rounded-3xl border border-white/10 bg-black/20 px-4 py-4 text-white outline-none"
+            className="w-full rounded-3xl border border-[#F0E6DD] bg-white px-4 py-4 text-[#1F1611] outline-none"
           />
         </label>
 
@@ -104,7 +104,7 @@ export function CoachPage() {
           type="button"
           onClick={handleSubmit}
           disabled={coachMutation.isPending}
-          className="mt-6 w-full rounded-full bg-[#8cffb0] px-5 py-3 text-sm font-semibold text-[#04120a] disabled:opacity-60"
+          className="mt-6 w-full rounded-full bg-[#FF6B35] px-5 py-3 text-sm font-semibold text-white disabled:opacity-60 transition hover:bg-[#E55329]"
         >
           {coachMutation.isPending ? "Generating advice..." : "Generate Advice"}
         </button>
@@ -114,20 +114,20 @@ export function CoachPage() {
         <SectionCard title="Structured response" eyebrow="Output">
           {latestResponse ? (
             <div className="space-y-6">
-              <div className="rounded-[28px] border border-white/10 bg-black/20 p-5">
-                <div className="text-xs uppercase tracking-[0.24em] text-zinc-500">Headline</div>
-                <h2 className="mt-3 font-serif text-3xl text-white">{latestResponse.headline}</h2>
-                <p className="mt-4 leading-7 text-zinc-400">{latestResponse.summary}</p>
+              <div className="rounded-[24px] border border-[#F0E6DD] bg-white p-5 shadow-warm">
+                <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">Headline</div>
+                <h2 className="mt-3 font-serif text-3xl text-[#1F1611]">{latestResponse.headline}</h2>
+                <p className="mt-4 leading-7 text-[#6B5544]">{latestResponse.summary}</p>
               </div>
 
               <div className="grid gap-4 md:grid-cols-2">
-                <div className="rounded-[28px] border border-white/10 bg-black/20 p-5">
-                  <div className="text-xs uppercase tracking-[0.24em] text-zinc-500">Score</div>
-                  <div className="mt-3 text-5xl font-semibold text-white">{latestResponse.score}</div>
+                <div className="rounded-[24px] border border-[#F0E6DD] bg-white p-5 shadow-warm">
+                  <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">Score</div>
+                  <div className="mt-3 text-5xl font-semibold text-[#1F1611]">{latestResponse.score}</div>
                 </div>
-                <div className="rounded-[28px] border border-white/10 bg-black/20 p-5">
-                  <div className="text-xs uppercase tracking-[0.24em] text-zinc-500">Disclaimer</div>
-                  <p className="mt-3 text-sm leading-6 text-zinc-400">{latestResponse.disclaimer}</p>
+                <div className="rounded-[24px] border border-[#F0E6DD] bg-white p-5 shadow-warm">
+                  <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">Disclaimer</div>
+                  <p className="mt-3 text-sm leading-6 text-[#6B5544]">{latestResponse.disclaimer}</p>
                 </div>
               </div>
 
@@ -139,12 +139,12 @@ export function CoachPage() {
               ].map(([label, items]) => (
                 <div
                   key={String(label)}
-                  className="rounded-[28px] border border-white/10 bg-black/20 p-5"
+                  className="rounded-[24px] border border-[#F0E6DD] bg-white p-5 shadow-warm"
                 >
-                  <div className="text-xs uppercase tracking-[0.24em] text-zinc-500">{label}</div>
-                  <ul className="mt-4 space-y-3 text-zinc-300">
+                  <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">{label}</div>
+                  <ul className="mt-4 space-y-3 text-[#6B5544]">
                     {(items as string[]).map((item, index) => (
-                      <li key={`${label}-${index}`} className="rounded-2xl bg-white/5 px-4 py-3">
+                      <li key={`${label}-${index}`} className="rounded-2xl bg-[#FFF5EE] px-4 py-3">
                         {item}
                       </li>
                     ))}
@@ -153,7 +153,7 @@ export function CoachPage() {
               ))}
             </div>
           ) : (
-            <div className="text-zinc-400">
+            <div className="text-[#6B5544]">
               Run a coaching prompt to generate the first structured response.
             </div>
           )}
@@ -165,17 +165,17 @@ export function CoachPage() {
               {sessions.map((session) => (
                 <div
                   key={session.id}
-                  className="rounded-2xl border border-white/10 bg-black/20 px-4 py-4"
+                  className="rounded-2xl border border-[#F0E6DD] bg-[#FFF5EE] px-4 py-4"
                 >
-                  <div className="font-medium text-white">{session.title}</div>
-                  <div className="mt-1 text-xs uppercase tracking-[0.2em] text-zinc-500">
+                  <div className="font-medium text-[#1F1611]">{session.title}</div>
+                  <div className="mt-1 text-xs uppercase tracking-[0.2em] text-[#9C8B7A]">
                     {session.focus.replace("_", " ")}
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="text-zinc-400">No saved sessions yet.</div>
+            <div className="text-[#6B5544]">No saved sessions yet.</div>
           )}
         </SectionCard>
       </div>

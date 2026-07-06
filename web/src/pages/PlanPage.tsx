@@ -33,22 +33,22 @@ export function PlanPage() {
             type="date"
             value={selectedDate}
             onChange={(event) => setSelectedDate(event.target.value)}
-            className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none"
+            className="rounded-2xl border border-[#F0E6DD] bg-white px-4 py-3 text-sm text-[#1F1611] outline-none"
           />
         }
       >
-        <div className="mb-6 text-zinc-400">
+        <div className="mb-6 text-[#6B5544]">
           Viewing {formatDateLabel(selectedDate)}. Every request uses your latest Supabase profile data and the backend meal planner.
         </div>
 
         {isLoading ? (
           <div className="grid gap-4 md:grid-cols-2">
             {Array.from({ length: 4 }).map((_, index) => (
-              <div key={index} className="h-60 animate-pulse rounded-3xl bg-white/5" />
+              <div key={index} className="h-60 animate-pulse rounded-3xl bg-[#FFF5EE]" />
             ))}
           </div>
         ) : error ? (
-          <div className="text-rose-300">{String(error.message)}</div>
+          <div className="text-red-500">{String(error.message)}</div>
         ) : plan ? (
           <>
             <div className="mb-6 grid gap-4 md:grid-cols-4">
@@ -58,9 +58,9 @@ export function PlanPage() {
                 ["Carbs", `${formatNumber(plan.totalCarbsG, 1)} g`],
                 ["Fat", `${formatNumber(plan.totalFatG, 1)} g`],
               ].map(([label, value]) => (
-                <div key={label} className="rounded-3xl border border-white/10 bg-black/20 p-5">
-                  <div className="text-xs uppercase tracking-[0.24em] text-zinc-500">{label}</div>
-                  <div className="mt-3 text-2xl font-medium text-white">{value}</div>
+                <div key={label} className="rounded-3xl border border-[#F0E6DD] bg-white p-5 shadow-warm">
+                  <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">{label}</div>
+                  <div className="mt-3 text-2xl font-medium text-[#1F1611]">{value}</div>
                 </div>
               ))}
             </div>
@@ -72,7 +72,7 @@ export function PlanPage() {
             </div>
           </>
         ) : (
-          <div className="text-zinc-400">No data returned for this date.</div>
+          <div className="text-[#6B5544]">No data returned for this date.</div>
         )}
       </SectionCard>
     </div>

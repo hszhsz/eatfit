@@ -15,16 +15,16 @@ const steps = [
 
 export function WorkflowStrip() {
   return (
-    <section className="rounded-[36px] border border-white/10 bg-black/20 p-6 md:p-8">
-      <div className="text-xs uppercase tracking-[0.24em] text-zinc-500">Operating Flow</div>
+    <section className="rounded-[24px] border border-[#F0E6DD] bg-white p-6 shadow-warm md:p-8">
+      <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">Operating Flow</div>
       <div className="mt-8 grid gap-4 lg:grid-cols-3">
         {steps.map((step) => (
           <article
             key={step.title}
-            className="rounded-[28px] border border-white/10 bg-white/5 p-5"
+            className="rounded-[24px] border border-[#F0E6DD] bg-[#FFF5EE] p-5"
           >
-            <h3 className="font-serif text-2xl text-white">{step.title}</h3>
-            <p className="mt-4 leading-7 text-zinc-400">{step.body}</p>
+            <h3 className="font-serif text-2xl text-[#1F1611]">{step.title}</h3>
+            <p className="mt-4 leading-7 text-[#6B5544]">{step.body}</p>
           </article>
         ))}
       </div>

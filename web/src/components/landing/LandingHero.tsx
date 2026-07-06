@@ -3,20 +3,20 @@ import { Link } from "react-router-dom";
 
 export function LandingHero() {
   return (
-    <section className="relative overflow-hidden rounded-[40px] border border-white/10 bg-[radial-gradient(circle_at_top_left,_rgba(140,255,176,0.16),_transparent_26%),radial-gradient(circle_at_bottom_right,_rgba(201,178,118,0.18),_transparent_24%),rgba(255,255,255,0.03)] px-6 py-8 md:px-10 md:py-12">
-      <div className="absolute inset-0 bg-[linear-gradient(130deg,transparent_0%,rgba(255,255,255,0.04)_48%,transparent_80%)]" />
+    <section className="relative overflow-hidden rounded-[24px] border border-[#F0E6DD] bg-[radial-gradient(circle_at_top_left,_rgba(255,107,53,0.10),_transparent_26%),radial-gradient(circle_at_bottom_right,_rgba(245,158,11,0.10),_transparent_24%),rgba(255,255,255,0.6)] px-6 py-8 shadow-warm md:px-10 md:py-12">
+      <div className="absolute inset-0 bg-[linear-gradient(130deg,transparent_0%,rgba(255,107,53,0.04)_48%,transparent_80%)]" />
       <div className="relative grid items-center gap-10 lg:grid-cols-[1.2fr_0.95fr]">
         <div>
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.24em] text-zinc-300">
-            <Sparkles className="h-3.5 w-3.5 text-[#8cffb0]" />
-            Official Website + Product Dashboard
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#F0E6DD] bg-[#FFF5EE] px-4 py-2 text-xs uppercase tracking-[0.24em] text-[#6B5544]">
+            <Sparkles className="h-3.5 w-3.5 text-[#FF6B35]" />
+            Product Dashboard
           </div>
 
-          <h1 className="mt-8 max-w-3xl font-serif text-5xl leading-[1.02] text-white md:text-7xl">
+          <h1 className="mt-8 max-w-3xl font-serif text-5xl leading-[1.02] text-[#1F1611] md:text-7xl">
             The nutrition platform that looks as sharp as the discipline it builds.
           </h1>
 
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-zinc-300">
+          <p className="mt-6 max-w-2xl text-lg leading-8 text-[#6B5544]">
             EatFit pairs a premium brand surface with a full daily operating system:
             personalized targets, meal planning, grocery aggregation, and an AI coach that pushes the next best move.
           </p>
@@ -24,14 +24,14 @@ export function LandingHero() {
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <Link
               to="/sign-up"
-              className="inline-flex items-center gap-2 rounded-full bg-[#8cffb0] px-6 py-3 text-sm font-semibold text-[#04120a] transition hover:-translate-y-0.5"
+              className="inline-flex items-center gap-2 rounded-full bg-[#FF6B35] px-6 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#E55329]"
             >
               Start With Clerk
               <ArrowRight className="h-4 w-4" />
             </Link>
             <a
               href="#dashboard"
-              className="inline-flex items-center gap-2 rounded-full border border-white/10 px-6 py-3 text-sm text-zinc-200 transition hover:bg-white/5"
+              className="inline-flex items-center gap-2 rounded-full border border-[#F0E6DD] px-6 py-3 text-sm text-[#3D2817] transition hover:bg-[#FFF5EE]"
             >
               Explore Dashboard
             </a>
@@ -39,16 +39,16 @@ export function LandingHero() {
         </div>
 
         <div className="grid gap-4">
-          <div className="rounded-[32px] border border-white/10 bg-black/30 p-6 backdrop-blur">
+          <div className="rounded-[24px] border border-[#F0E6DD] bg-white p-6 shadow-warm">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-xs uppercase tracking-[0.24em] text-zinc-500">
-                  Today’s Operating Board
+                <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">
+                  Today's Operating Board
                 </div>
-                <div className="mt-3 font-serif text-3xl text-white">2,214 kcal target</div>
+                <div className="mt-3 font-serif text-3xl text-[#1F1611]">2,214 kcal target</div>
               </div>
-              <div className="rounded-2xl border border-[#8cffb0]/20 bg-[#8cffb0]/10 p-3">
-                <Bot className="h-5 w-5 text-[#8cffb0]" />
+              <div className="rounded-2xl border border-[#FF6B35]/20 bg-[#FFE5D9] p-3">
+                <Bot className="h-5 w-5 text-[#FF6B35]" />
               </div>
             </div>
 
@@ -58,27 +58,27 @@ export function LandingHero() {
                 ["Carbs", "231 g"],
                 ["Fat", "63 g"],
               ].map(([label, value]) => (
-                <div key={label} className="rounded-2xl bg-white/5 p-4">
-                  <div className="text-xs uppercase tracking-[0.16em] text-zinc-500">
+                <div key={label} className="rounded-2xl bg-[#FFF5EE] p-4">
+                  <div className="text-xs uppercase tracking-[0.16em] text-[#9C8B7A]">
                     {label}
                   </div>
-                  <div className="mt-2 text-xl font-medium text-white">{value}</div>
+                  <div className="mt-2 text-xl font-medium text-[#1F1611]">{value}</div>
                 </div>
               ))}
             </div>
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-[28px] border border-white/10 bg-white/5 p-5">
-              <div className="text-xs uppercase tracking-[0.24em] text-zinc-500">Plan Quality</div>
-              <div className="mt-3 text-4xl font-semibold text-white">92</div>
-              <p className="mt-2 text-sm leading-6 text-zinc-400">
+            <div className="rounded-[24px] border border-[#F0E6DD] bg-white p-5 shadow-warm">
+              <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">Plan Quality</div>
+              <div className="mt-3 text-4xl font-semibold text-[#1F1611]">92</div>
+              <p className="mt-2 text-sm leading-6 text-[#6B5544]">
                 Structured coaching with risk alerts, next actions, and meal strategy.
               </p>
             </div>
-            <div className="rounded-[28px] border border-white/10 bg-white/5 p-5">
-              <div className="text-xs uppercase tracking-[0.24em] text-zinc-500">Flow</div>
-              <ul className="mt-3 space-y-3 text-sm text-zinc-300">
+            <div className="rounded-[24px] border border-[#F0E6DD] bg-white p-5 shadow-warm">
+              <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">Flow</div>
+              <ul className="mt-3 space-y-3 text-sm text-[#6B5544]">
                 <li>Clerk authentication</li>
                 <li>Supabase persistence</li>
                 <li>FastAPI nutrition engine</li>

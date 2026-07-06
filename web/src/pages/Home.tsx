@@ -8,17 +8,17 @@ import { WorkflowStrip } from "@/components/landing/WorkflowStrip";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#060816] px-4 py-4 text-white md:px-8 md:py-8">
+    <div className="min-h-screen bg-[#FFF9F2] px-4 py-4 text-[#1F1611] md:px-8 md:py-8">
       <div className="mx-auto max-w-[1500px] space-y-4">
-        <header className="flex flex-wrap items-center justify-between gap-4 rounded-[28px] border border-white/10 bg-black/20 px-6 py-4 backdrop-blur">
+        <header className="flex flex-wrap items-center justify-between gap-4 rounded-[24px] border border-[#F0E6DD] bg-white px-6 py-4 shadow-warm">
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-[#8cffb0]/30 bg-[#8cffb0]/10">
-              <Salad className="h-5 w-5 text-[#8cffb0]" />
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-[#FF6B35]/30 bg-[#FFE5D9]">
+              <Salad className="h-5 w-5 text-[#FF6B35]" />
             </div>
             <div>
               <div className="font-serif text-2xl">EatFit</div>
-              <div className="text-xs uppercase tracking-[0.24em] text-zinc-500">
-                Official Site
+              <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">
+                Nutrition Platform
               </div>
             </div>
           </div>
@@ -26,19 +26,19 @@ export default function Home() {
           <nav className="flex items-center gap-2">
             <a
               href="#dashboard"
-              className="rounded-full px-4 py-2 text-sm text-zinc-300 transition hover:bg-white/5 hover:text-white"
+              className="rounded-full px-4 py-2 text-sm text-[#6B5544] transition hover:bg-[#FFF5EE] hover:text-[#1F1611]"
             >
               Features
             </a>
             <Link
               to="/sign-in"
-              className="rounded-full border border-white/10 px-4 py-2 text-sm text-zinc-200 transition hover:bg-white/5"
+              className="rounded-full border border-[#F0E6DD] px-4 py-2 text-sm text-[#3D2817] transition hover:bg-[#FFF5EE]"
             >
               Sign In
             </Link>
             <Link
               to="/sign-up"
-              className="rounded-full bg-[#8cffb0] px-4 py-2 text-sm font-semibold text-[#04120a] transition hover:-translate-y-0.5"
+              className="rounded-full bg-[#FF6B35] px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#E55329]"
             >
               Get Started
             </Link>
@@ -50,8 +50,18 @@ export default function Home() {
         <WorkflowStrip />
         <FaqList />
 
-        <footer className="rounded-[28px] border border-white/10 bg-black/20 px-6 py-6 text-sm text-zinc-400">
-          EatFit Web pairs Clerk authentication, Supabase persistence, and the existing FastAPI nutrition engine into one production-ready surface.
+        <footer className="rounded-[24px] border border-[#F0E6DD] bg-white px-6 py-8 text-sm text-[#6B5544] shadow-warm">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <div className="font-serif text-lg text-[#1F1611]">EatFit</div>
+              <p className="mt-1 max-w-md leading-6 text-[#9C8B7A]">
+                Personalized nutrition planning, meal generation, and AI coaching — powered by Clerk, Supabase, and FastAPI.
+              </p>
+            </div>
+            <div className="text-[#9C8B7A]">
+              © 2026 EatFit. All rights reserved.
+            </div>
+          </div>
         </footer>
       </div>
     </div>

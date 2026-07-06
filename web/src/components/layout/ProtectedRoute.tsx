@@ -7,7 +7,7 @@ export function ProtectedRoute({ children }: PropsWithChildren) {
 
   if (!isLoaded) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#060816] text-zinc-200">
+      <div className="flex min-h-screen items-center justify-center bg-[#FFF9F2] text-[#6B5544]">
         Loading your workspace...
       </div>
     );

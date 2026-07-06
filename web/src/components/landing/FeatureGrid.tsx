@@ -31,13 +31,13 @@ export function FeatureGrid() {
         return (
           <article
             key={feature.title}
-            className="rounded-[32px] border border-white/10 bg-white/5 p-6 transition hover:-translate-y-0.5 hover:bg-white/[0.07]"
+            className="rounded-[24px] border border-[#F0E6DD] bg-white p-6 shadow-warm transition hover:-translate-y-0.5 hover:bg-[#FFF5EE]"
           >
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-[#8cffb0]/20 bg-[#8cffb0]/10">
-              <Icon className="h-5 w-5 text-[#8cffb0]" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-[#FF6B35]/20 bg-[#FFE5D9]">
+              <Icon className="h-5 w-5 text-[#FF6B35]" />
             </div>
-            <h2 className="mt-6 font-serif text-3xl text-white">{feature.title}</h2>
-            <p className="mt-4 max-w-xl leading-7 text-zinc-400">{feature.body}</p>
+            <h2 className="mt-6 font-serif text-3xl text-[#1F1611]">{feature.title}</h2>
+            <p className="mt-4 max-w-xl leading-7 text-[#6B5544]">{feature.body}</p>
           </article>
         );
       })}

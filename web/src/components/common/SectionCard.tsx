@@ -16,16 +16,16 @@ export function SectionCard({
 }: SectionCardProps) {
   return (
     <section
-      className={`rounded-[28px] border border-white/10 bg-white/5 p-6 shadow-[0_20px_80px_rgba(0,0,0,0.24)] ${className}`}
+      className={`rounded-[24px] border border-[#F0E6DD] bg-white p-6 shadow-warm ${className}`}
     >
       <div className="mb-5 flex items-start justify-between gap-4">
         <div>
           {eyebrow ? (
-            <div className="text-xs uppercase tracking-[0.24em] text-zinc-500">
+            <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">
               {eyebrow}
             </div>
           ) : null}
-          <h2 className="mt-2 font-serif text-2xl text-white">{title}</h2>
+          <h2 className="mt-2 font-serif text-2xl text-[#1F1611]">{title}</h2>
         </div>
         {action}
       </div>

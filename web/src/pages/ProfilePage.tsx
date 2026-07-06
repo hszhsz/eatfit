@@ -101,20 +101,20 @@ export function ProfilePage() {
               ["bodyFatPct", "Body fat %", "number"],
             ].map(([field, label, type]) => (
               <label key={field} className="block">
-                <div className="mb-2 text-sm text-zinc-300">{label}</div>
+                <div className="mb-2 text-sm text-[#6B5544]">{label}</div>
                 <input
                   type={type}
                   {...form.register(field as keyof ProfileFormSchema)}
-                  className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition focus:border-[#8cffb0]/40"
+                  className="w-full rounded-2xl border border-[#F0E6DD] bg-white px-4 py-3 text-[#1F1611] outline-none transition focus:border-[#FF6B35]/40"
                 />
               </label>
             ))}
 
             <label className="block">
-              <div className="mb-2 text-sm text-zinc-300">Gender</div>
+              <div className="mb-2 text-sm text-[#6B5544]">Gender</div>
               <select
                 {...form.register("gender")}
-                className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none"
+                className="w-full rounded-2xl border border-[#F0E6DD] bg-white px-4 py-3 text-[#1F1611] outline-none"
               >
                 <option value="male">Male</option>
                 <option value="female">Female</option>
@@ -122,10 +122,10 @@ export function ProfilePage() {
             </label>
 
             <label className="block">
-              <div className="mb-2 text-sm text-zinc-300">Goal</div>
+              <div className="mb-2 text-sm text-[#6B5544]">Goal</div>
               <select
                 {...form.register("goal")}
-                className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none"
+                className="w-full rounded-2xl border border-[#F0E6DD] bg-white px-4 py-3 text-[#1F1611] outline-none"
               >
                 {Object.entries(goalLabels).map(([value, label]) => (
                   <option key={value} value={value}>
@@ -136,10 +136,10 @@ export function ProfilePage() {
             </label>
 
             <label className="block">
-              <div className="mb-2 text-sm text-zinc-300">Activity level</div>
+              <div className="mb-2 text-sm text-[#6B5544]">Activity level</div>
               <select
                 {...form.register("activityLevel")}
-                className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none"
+                className="w-full rounded-2xl border border-[#F0E6DD] bg-white px-4 py-3 text-[#1F1611] outline-none"
               >
                 {Object.entries(activityLabels).map(([value, label]) => (
                   <option key={value} value={value}>
@@ -150,32 +150,32 @@ export function ProfilePage() {
             </label>
 
             <label className="block xl:col-span-3">
-              <div className="mb-2 text-sm text-zinc-300">Diet preference</div>
+              <div className="mb-2 text-sm text-[#6B5544]">Diet preference</div>
               <input
                 type="text"
                 placeholder="vegetarian, high-protein, etc."
                 {...form.register("dietPreference")}
-                className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition focus:border-[#8cffb0]/40"
+                className="w-full rounded-2xl border border-[#F0E6DD] bg-white px-4 py-3 text-[#1F1611] outline-none transition focus:border-[#FF6B35]/40"
               />
             </label>
 
             <label className="block xl:col-span-3">
-              <div className="mb-2 text-sm text-zinc-300">Allergens (comma separated)</div>
+              <div className="mb-2 text-sm text-[#6B5544]">Allergens (comma separated)</div>
               <input
                 type="text"
                 placeholder="shrimp, peanut"
                 {...form.register("allergensText")}
-                className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition focus:border-[#8cffb0]/40"
+                className="w-full rounded-2xl border border-[#F0E6DD] bg-white px-4 py-3 text-[#1F1611] outline-none transition focus:border-[#FF6B35]/40"
               />
             </label>
 
             <label className="block xl:col-span-3">
-              <div className="mb-2 text-sm text-zinc-300">Disliked tags (comma separated)</div>
+              <div className="mb-2 text-sm text-[#6B5544]">Disliked tags (comma separated)</div>
               <input
                 type="text"
                 placeholder="fish, spicy"
                 {...form.register("dislikedTagsText")}
-                className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white outline-none transition focus:border-[#8cffb0]/40"
+                className="w-full rounded-2xl border border-[#F0E6DD] bg-white px-4 py-3 text-[#1F1611] outline-none transition focus:border-[#FF6B35]/40"
               />
             </label>
           </div>
@@ -184,18 +184,18 @@ export function ProfilePage() {
             <button
               type="submit"
               disabled={isSaving}
-              className="rounded-full bg-[#8cffb0] px-5 py-3 text-sm font-semibold text-[#04120a] disabled:opacity-60"
+              className="rounded-full bg-[#FF6B35] px-5 py-3 text-sm font-semibold text-white disabled:opacity-60 transition hover:bg-[#E55329]"
             >
               {isSaving ? "Saving..." : "Save Profile"}
             </button>
             {saveError ? (
-              <div className="text-sm text-rose-300">{String(saveError.message)}</div>
+              <div className="text-sm text-red-500">{String(saveError.message)}</div>
             ) : profile ? (
-              <div className="text-sm text-zinc-400">
+              <div className="text-sm text-[#6B5544]">
                 Last updated {new Date(profile.updatedAt).toLocaleString()}
               </div>
             ) : (
-              <div className="text-sm text-zinc-400">
+              <div className="text-sm text-[#6B5544]">
                 Create the profile once and EatFit will persist it to Supabase.
               </div>
             )}
