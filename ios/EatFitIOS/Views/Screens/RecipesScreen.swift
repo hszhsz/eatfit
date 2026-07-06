@@ -97,6 +97,23 @@ struct RecipesScreen: View {
     }
 }
 
+// Extracted as separate view to help Swift type-checker
+private struct RecipeStepsSection: View {
+    let steps: [String]
+
+    var body: some View {
+        ForEach(steps.indices, id: \.self) { index in
+            HStack(alignment: .top, spacing: 12) {
+                Text("\(index + 1)")
+                    .font(.headline)
+                    .foregroundStyle(Color.accentColor)
+                Text(steps[index])
+            }
+            .padding(.vertical, 4)
+        }
+    }
+}
+
 struct RecipeDetailScreen: View {
     @EnvironmentObject private var store: AppStore
     let recipeID: Int
@@ -116,46 +133,7 @@ struct RecipeDetailScreen: View {
                     Task { await load() }
                 }
             } else if let recipe {
-                List {
-                    Section {
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text("\(recipe.imageEmoji) \(recipe.name)")
-                                .font(.title2.weight(.semibold))
-                            Text("\(recipe.mealType.label) · \(recipe.calories.kcalText) · \(recipe.cookMinutes) 分钟")
-                                .foregroundStyle(.secondary)
-                            HStack(spacing: 12) {
-                                MetricCard(title: "蛋白", value: recipe.proteinG.gramText, tint: .blue)
-                                MetricCard(title: "碳水", value: recipe.carbsG.gramText, tint: .purple)
-                                MetricCard(title: "脂肪", value: recipe.fatG.gramText, tint: .pink)
-                            }
-                        }
-                        .listRowInsets(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
-                    }
-
-                    Section("食材") {
-                        ForEach(recipe.ingredients, id: \.self) { ingredient in
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text(ingredient.name)
-                                Text("\(ingredient.amountG.gramText) · \(ingredient.category)")
-                                    .font(.subheadline)
-                                    .foregroundStyle(.secondary)
-                            }
-                        }
-                    }
-
-                    Section("步骤") {
-                        ForEach(Array(recipe.steps.enumerated()), id: \.offset) { index, step in
-                            HStack(alignment: .top, spacing: 12) {
-                                Text("\(index + 1)")
-                                    .font(.headline)
-                                    .foregroundStyle(.accent)
-                                Text(step)
-                            }
-                            .padding(.vertical, 4)
-                        }
-                    }
-                }
-                .listStyle(.insetGrouped)
+                RecipeDetailContent(recipe: recipe)
             }
         }
         .navigationTitle("食谱详情")
@@ -178,5 +156,45 @@ struct RecipeDetailScreen: View {
         } catch {
             errorMessage = error.localizedDescription
         }
+    }
+}
+
+// Extracted as separate view to help Swift type-checker
+private struct RecipeDetailContent: View {
+    let recipe: Recipe
+
+    var body: some View {
+        List {
+            Section {
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("\(recipe.imageEmoji) \(recipe.name)")
+                        .font(.title2.weight(.semibold))
+                    Text("\(recipe.mealType.label) · \(recipe.calories.kcalText) · \(recipe.cookMinutes) 分钟")
+                        .foregroundStyle(.secondary)
+                    HStack(spacing: 12) {
+                        MetricCard(title: "蛋白", value: recipe.proteinG.gramText, tint: .blue)
+                        MetricCard(title: "碳水", value: recipe.carbsG.gramText, tint: .purple)
+                        MetricCard(title: "脂肪", value: recipe.fatG.gramText, tint: .pink)
+                    }
+                }
+                .listRowInsets(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
+            }
+
+            Section("食材") {
+                ForEach(recipe.ingredients, id: \.self) { ingredient in
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(ingredient.name)
+                        Text("\(ingredient.amountG.gramText) · \(ingredient.category)")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            }
+
+            Section("步骤") {
+                RecipeStepsSection(steps: recipe.steps)
+            }
+        }
+        .listStyle(.insetGrouped)
     }
 }
