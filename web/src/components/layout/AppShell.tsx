@@ -9,6 +9,7 @@ import {
   Salad,
 } from "lucide-react";
 import { NavLink, Outlet } from "react-router-dom";
+import { useState } from "react";
 
 import { LanguageSwitcher } from "@/components/common/LanguageSwitcher";
 import { useLang } from "@/i18n/LanguageContext";
@@ -16,6 +17,7 @@ import { useLang } from "@/i18n/LanguageContext";
 export function AppShell() {
   const { user } = useUser();
   const { t } = useLang();
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   const navItems = [
     { to: "/app", label: t("shell.nav.overview"), icon: Home, end: true },
@@ -29,8 +31,30 @@ export function AppShell() {
   return (
     <div className="min-h-screen bg-[#FFF9F2] text-[#1F1611]">
       <div className="mx-auto grid min-h-screen max-w-[1600px] grid-cols-1 xl:grid-cols-[280px_1fr]">
-        <aside className="border-b border-[#F0E6DD] bg-white px-6 py-8 xl:border-b-0 xl:border-r">
-          <div className="mb-10 flex items-center gap-3">
+        {/* Mobile top bar */}
+        <div className="flex items-center justify-between border-b border-[#F0E6DD] bg-white px-4 py-3 xl:hidden">
+          <div className="flex items-center gap-2">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#FF6B35]/30 bg-[#FFE5D9]">
+              <Salad className="h-4 w-4 text-[#FF6B35]" />
+            </div>
+            <span className="font-serif text-xl">EatFit</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setMobileNavOpen(!mobileNavOpen)}
+            className="rounded-xl border border-[#F0E6DD] px-3 py-2 text-sm text-[#6B5544]"
+          >
+            ☰
+          </button>
+        </div>
+
+        {/* Sidebar */}
+        <aside
+          className={`border-b border-[#F0E6DD] bg-white px-6 py-8 xl:border-b-0 xl:border-r ${
+            mobileNavOpen ? "block" : "hidden xl:block"
+          }`}
+        >
+          <div className="mb-10 hidden items-center gap-3 xl:flex">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-[#FF6B35]/30 bg-[#FFE5D9]">
               <Salad className="h-6 w-6 text-[#FF6B35]" />
             </div>
@@ -47,11 +71,11 @@ export function AppShell() {
               {t("shell.signedInAs")}
             </div>
             <div className="mt-3 flex items-center justify-between gap-3">
-              <div>
-                <div className="font-medium text-[#1F1611]">
+              <div className="min-w-0">
+                <div className="truncate font-medium text-[#1F1611]">
                   {user?.fullName || user?.primaryEmailAddress?.emailAddress}
                 </div>
-                <div className="text-sm text-[#6B5544]">
+                <div className="truncate text-sm text-[#6B5544]">
                   {t("shell.signedInDesc")}
                 </div>
               </div>
@@ -67,6 +91,7 @@ export function AppShell() {
                   key={item.to}
                   to={item.to}
                   end={item.end}
+                  onClick={() => setMobileNavOpen(false)}
                   className={({ isActive }) =>
                     [
                       "flex items-center gap-3 rounded-2xl px-4 py-3 text-sm transition",
@@ -83,7 +108,7 @@ export function AppShell() {
             })}
           </nav>
 
-          <div className="mt-10 rounded-3xl border border-[#F0E6DD] bg-gradient-to-br from-[#FFF5EE] to-transparent p-4 text-sm text-[#6B5544]">
+          <div className="mt-10 hidden rounded-3xl border border-[#F0E6DD] bg-gradient-to-br from-[#FFF5EE] to-transparent p-4 text-sm text-[#6B5544] xl:block">
             <div className="font-medium text-[#1F1611]">{t("shell.operatingNote")}</div>
             <p className="mt-2 leading-6 text-[#6B5544]">
               {t("shell.operatingDesc")}

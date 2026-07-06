@@ -5,7 +5,7 @@ from datetime import datetime
 from enum import Enum
 from typing import List, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 # ---------- Enums ----------
@@ -63,11 +63,10 @@ class UserProfileCreate(UserProfileBase):
 
 
 class UserProfileOut(UserProfileBase):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     created_at: datetime
-
-    class Config:
-        from_attributes = True
 
 
 # ---------- Nutrition target ----------
@@ -89,6 +88,8 @@ class IngredientItem(BaseModel):
 
 
 class RecipeOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     name: str
     meal_type: MealType
@@ -103,8 +104,6 @@ class RecipeOut(BaseModel):
     steps: List[str]
     image_emoji: str = "🍽️"
 
-    class Config:
-        from_attributes = True
 
 
 # ---------- Meal plan ----------

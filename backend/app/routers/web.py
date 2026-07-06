@@ -35,9 +35,6 @@ from app.supabase_client import get_supabase
 
 router = APIRouter(prefix="/api/web", tags=["web"])
 
-
-# ---------- Helpers ----------
-
 def _compute_target_from_profile(profile: dict | Any) -> NutritionTarget:
     return compute_target(
         gender=Gender(profile.gender if isinstance(profile, dict) else profile.gender),
@@ -140,9 +137,6 @@ def get_advice(body: WebCoachAdviceRequest):
     plan = _build_plan(profile, target, body.date)
     return generate_coach_advice(_profile_namespace(profile), target, plan, body.request)
 
-
-# ---------- Mode B: profile_id (Supabase persisted) ----------
-
 @router.post("/by-id/target", response_model=NutritionTarget)
 def get_target_by_id(body: ProfileByIdRequest):
     profile = _load_profile_from_supabase(body.profile_id)
@@ -167,4 +161,8 @@ def get_advice_by_id(body: CoachByIdRequest):
     profile = _load_profile_from_supabase(body.profile_id)
     target = _compute_target_from_profile(profile)
     plan = _build_plan(profile, target, body.date)
-    return generate_coach_advice(_profile_namespace(profile), target, plan, body.request)
+    # Fetch conversation history from Supabase for multi-turn context
+    sb = get_supabase()
+    history = sb.fetch_recent_coach_messages(body.profile_id, limit=10) if sb.available else []
+    return generate_coach_advice(_profile_namespace(profile), target, plan, body.request,
+                                 conversation_history=history)

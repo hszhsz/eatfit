@@ -62,12 +62,14 @@ def _plan_payload(plan: DailyPlanOut) -> dict[str, Any]:
     }
 
 
-def _build_prompt(profile: Any, target: NutritionTarget, plan: DailyPlanOut, request: CoachRequest) -> tuple[str, str]:
+def _build_prompt(profile: Any, target: NutritionTarget, plan: DailyPlanOut, request: CoachRequest,
+                     conversation_history: list[dict] | None = None) -> tuple[str, str]:
     system_prompt = (
         "你是 EatFit 的首席 AI 营养顾问，具备注册营养师级别的表达风格。"
         "你必须只输出 JSON，不要输出 markdown、解释文字或代码块。"
         "内容必须使用简体中文，语气专业、克制、可执行。"
-        "请结合用户目标、体测、今日推荐食谱和用户补充说明给出建议。"
+        "请结合用户目标、体测、今日推荐食谱、用户补充说明和之前的对话历史给出建议。"
+        "如果用户在追问之前的话题，请结合对话历史给出连贯的回答。"
         "输出 JSON 结构必须严格包含以下字段："
         '{"focus":"daily_review|meal_strategy|eating_out|cravings",'
         '"headline":"一句标题",'
@@ -82,30 +84,31 @@ def _build_prompt(profile: Any, target: NutritionTarget, plan: DailyPlanOut, req
         "所有条目必须具体，不要重复，不要写空数组以外的 null。"
         "严格控制长度：summary 不超过 60 个汉字；每个数组最多 3 条；每条不超过 28 个汉字；总输出控制在 650 个汉字内。"
     )
-    user_prompt = json.dumps(
-        {
-            "focus": request.focus.value,
-            "focus_label": _focus_label(request.focus),
-            "user_message": request.message or "请先给我做一份今日饮食管理简报，并指出最该优先优化的一件事。",
-            "profile": {
-                "name": profile.name,
-                "gender": profile.gender,
-                "age": profile.age,
-                "height_cm": profile.height_cm,
-                "weight_kg": profile.weight_kg,
-                "body_fat_pct": profile.body_fat_pct,
-                "activity_level": profile.activity_level,
-                "goal": profile.goal,
-                "goal_label": _goal_label(profile.goal),
-                "allergens": profile.allergens,
-                "disliked_tags": profile.disliked_tags,
-                "diet_preference": profile.diet_preference,
-            },
-            "target_explanation": target.explanation,
-            "plan": _plan_payload(plan),
+    user_data = {
+        "focus": request.focus.value,
+        "focus_label": _focus_label(request.focus),
+        "user_message": request.message or "请先给我做一份今日饮食管理简报，并指出最该优先优化的一件事。",
+        "profile": {
+            "name": profile.name,
+            "gender": profile.gender,
+            "age": profile.age,
+            "height_cm": profile.height_cm,
+            "weight_kg": profile.weight_kg,
+            "body_fat_pct": profile.body_fat_pct,
+            "activity_level": profile.activity_level,
+            "goal": profile.goal,
+            "goal_label": _goal_label(profile.goal),
+            "allergens": profile.allergens,
+            "disliked_tags": profile.disliked_tags,
+            "diet_preference": profile.diet_preference,
         },
-        ensure_ascii=False,
-    )
+        "target_explanation": target.explanation,
+        "plan": _plan_payload(plan),
+    }
+    # Include conversation history for multi-turn context
+    if conversation_history:
+        user_data["conversation_history"] = conversation_history[-10:]  # last 10 messages max
+    user_prompt = json.dumps(user_data, ensure_ascii=False)
     return system_prompt, user_prompt
 
 
@@ -165,12 +168,13 @@ def _local_fallback(profile: Any, plan: DailyPlanOut, request: CoachRequest) -> 
     )
 
 
-def generate_coach_advice(profile: Any, target: NutritionTarget, plan: DailyPlanOut, request: CoachRequest) -> CoachResponse:
+def generate_coach_advice(profile: Any, target: NutritionTarget, plan: DailyPlanOut, request: CoachRequest,
+                            conversation_history: list[dict] | None = None) -> CoachResponse:
     api_key = os.getenv("EATFIT_LLM_API_KEY")
     if not api_key:
         return _local_fallback(profile, plan, request)
 
-    system_prompt, user_prompt = _build_prompt(profile, target, plan, request)
+    system_prompt, user_prompt = _build_prompt(profile, target, plan, request, conversation_history)
     base_url = os.getenv("EATFIT_LLM_BASE_URL", DEFAULT_BASE_URL).rstrip("/")
     model = os.getenv("EATFIT_LLM_MODEL", DEFAULT_MODEL)
 

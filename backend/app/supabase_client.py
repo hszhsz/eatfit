@@ -154,6 +154,38 @@ class SupabaseClient:
         except Exception:
             return None
 
+    # ---------- Coach Sessions & Messages ----------
+
+    def fetch_recent_coach_messages(self, profile_id: str, limit: int = 10) -> list[dict]:
+        """Fetch recent coach messages for a profile's latest session.
+
+        Used to provide conversation history for multi-turn coaching.
+        """
+        if not self.available:
+            return []
+        try:
+            # First get the latest session for this profile
+            resp = httpx.get(
+                f"{self.url}/rest/v1/coach_sessions?profile_id=eq.{profile_id}&order=updated_at.desc&limit=1&select=id",
+                headers=self._headers,
+                timeout=10.0,
+            )
+            resp.raise_for_status()
+            sessions = resp.json()
+            if not sessions:
+                return []
+            session_id = sessions[0]["id"]
+            # Then get messages for that session
+            resp = httpx.get(
+                f"{self.url}/rest/v1/coach_messages?session_id=eq.{session_id}&order=created_at.asc&limit={limit}&select=role,message",
+                headers=self._headers,
+                timeout=10.0,
+            )
+            resp.raise_for_status()
+            return resp.json()
+        except Exception:
+            return []
+
 
 # Singleton
 _client: SupabaseClient | None = None
