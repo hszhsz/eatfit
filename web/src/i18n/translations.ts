@@ -6,58 +6,104 @@ export const translations: Record<Lang, TranslationDict> = {
   en: {
     // Home / Nav
     "home.brand": "EatFit",
-    "home.brandTagline": "Nutrition Platform",
+    "home.brandTagline": "AI Nutrition Coach",
     "home.nav.features": "Features",
+    "home.nav.pricing": "Pricing",
     "home.nav.download": "Download",
     "home.nav.signIn": "Sign In",
     "home.nav.getStarted": "Get Started",
 
     // LandingHero
-    "hero.badge": "Product Dashboard",
-    "hero.title":
-      "The nutrition platform that looks as sharp as the discipline it builds.",
+    "hero.badge": "AI Nutrition Coach",
+    "hero.title": "Eat smart in 3 minutes a day.",
     "hero.subtitle":
-      "EatFit pairs a premium brand surface with a full daily operating system: personalized targets, meal planning, grocery aggregation, and an AI coach that pushes the next best move.",
-    "hero.ctaPrimary": "Start With Clerk",
-    "hero.ctaSecondary": "Explore Dashboard",
-    "hero.board.title": "Today's Operating Board",
-    "hero.board.target": "2,214 kcal target",
-    "hero.board.protein": "Protein",
-    "hero.board.carbs": "Carbs",
-    "hero.board.fat": "Fat",
-    "hero.board.quality": "Plan Quality",
-    "hero.board.qualityDesc":
-      "Structured coaching with risk alerts, next actions, and meal strategy.",
-    "hero.board.flow": "Flow",
-    "hero.board.flow1": "Clerk authentication",
-    "hero.board.flow2": "Supabase persistence",
-    "hero.board.flow3": "FastAPI nutrition engine",
+      "No more staring at the fridge. AI builds personalized meal plans from your body metrics — complete with grocery lists and cooking guides.",
+    "hero.ctaPrimary": "Try Free",
+    "hero.ctaSecondary": "See Demo",
+    "hero.stat1": "3s",
+    "hero.stat1.label": "Meal plan generated",
+    "hero.stat2": "1850",
+    "hero.stat2.label": "kcal precision target",
+    "hero.stat3": "4",
+    "hero.stat3.label": "Meals per day",
+
+    // ProductShowcase
+    "showcase.eyebrow": "Product Preview",
+    "showcase.title": "Your pocket nutritionist",
+    "showcase.subtitle":
+      "Three screens, one workflow — from body data to dinner plate.",
+    "showcase.screen1": "Dashboard",
+    "showcase.screen1.desc": "Calories & macros at a glance",
+    "showcase.screen2": "AI Meal Plan",
+    "showcase.screen2.desc": "Full day of meals in 3 seconds",
+    "showcase.screen3": "Grocery List",
+    "showcase.screen3.desc": "One tap to order fresh ingredients",
 
     // FeatureGrid
-    "features.adaptive.title": "Adaptive macro targets",
+    "features.main.title": "AI Meal Planning",
+    "features.main.body":
+      "Based on your BMI, body fat, activity level, and goals — AI generates breakfast, lunch, dinner, and snacks in 3 seconds. Every recipe comes with detailed steps and nutrition labels.",
+    "features.adaptive.title": "Body Metrics Tracking",
     "features.adaptive.body":
-      "FastAPI computes BMR, TDEE, and macro distribution directly from profile inputs and goal state.",
-    "features.coach.title": "AI coach with structure",
-    "features.coach.body":
-      "Advice is returned with a headline, summary, score, risks, insights, next actions, and meal strategy.",
-    "features.grocery.title": "Grocery built from plan",
+      "Sync with smart scales and wearables. Weight, BMI, and body fat trends visualized clearly.",
+    "features.grocery.title": "One-Tap Grocery",
     "features.grocery.body":
-      "Ingredients are aggregated by category so daily planning turns into an executable shopping list.",
-    "features.security.title": "User data isolation",
+      "Ingredients sorted by category with estimated total. Jump directly to fresh delivery platforms.",
+    "features.security.title": "Allergen Safety",
     "features.security.body":
-      "Clerk secures identity and Supabase RLS isolates every profile, plan snapshot, and coach session.",
+      "Auto-filter allergens — nuts, seafood, gluten — one tap to flag. Protect your family's health.",
 
     // WorkflowStrip
-    "workflow.eyebrow": "Operating Flow",
-    "workflow.step1.title": "01. Capture the profile",
+    "workflow.eyebrow": "3 Steps",
+    "workflow.title": "From body scan to dining table in 3 minutes",
+    "workflow.step1.title": "Input Body Metrics",
     "workflow.step1.body":
-      "Body metrics, activity level, goal, allergens, and preferences are saved to Supabase.",
-    "workflow.step2.title": "02. Generate the day",
+      "Height, weight, body fat, activity level, taste preferences — done in 30 seconds.",
+    "workflow.step2.title": "AI Generates Meals",
     "workflow.step2.body":
-      "The dashboard requests a stateless plan and grocery list from the FastAPI nutrition engine.",
-    "workflow.step3.title": "03. Tighten the loop",
+      "Daily macro targets + breakfast, lunch, dinner, and snacks. Allergens auto-filtered.",
+    "workflow.step3.title": "Shop & Cook",
     "workflow.step3.body":
-      "The AI coach turns context into targeted advice and stores sessions for follow-up reviews.",
+      "Grocery list sorted by category. Cooking steps in large text — easy to read in the kitchen.",
+
+    // PricingSection
+    "pricing.eyebrow": "Pricing",
+    "pricing.title": "Simple, transparent pricing",
+    "pricing.subtitle": "Start free, upgrade anytime.",
+    "pricing.free.name": "Free",
+    "pricing.free.price": "¥0",
+    "pricing.free.period": "/forever",
+    "pricing.free.desc": "Basic metrics + daily meals",
+    "pricing.free.f1": "1 AI meal plan per day",
+    "pricing.free.f2": "Basic body tracking",
+    "pricing.free.f3": "3-day history",
+    "pricing.free.cta": "Get Started",
+    "pricing.pro.name": "Pro",
+    "pricing.pro.price": "¥19.9",
+    "pricing.pro.period": "/mo",
+    "pricing.pro.desc": "Unlimited plans + grocery + AI coach",
+    "pricing.pro.f1": "Unlimited AI meal plans",
+    "pricing.pro.f2": "Smart grocery lists",
+    "pricing.pro.f3": "AI nutrition coach",
+    "pricing.pro.f4": "Allergen management",
+    "pricing.pro.f5": "30-day history",
+    "pricing.pro.cta": "Upgrade to Pro",
+    "pricing.pro.badge": "Most Popular",
+    "pricing.pro2.name": "Professional",
+    "pricing.pro2.price": "¥99",
+    "pricing.pro2.period": "/mo",
+    "pricing.pro2.desc": "Team management + export + priority",
+    "pricing.pro2.f1": "All Pro features",
+    "pricing.pro2.f2": "Multi-profile management",
+    "pricing.pro2.f3": "Data export (CSV/PDF)",
+    "pricing.pro2.f4": "Priority support",
+    "pricing.pro2.f5": "Weekly planning mode",
+    "pricing.pro2.cta": "Contact Us",
+
+    // CTABanner
+    "cta.title": "Let AI decide what to eat",
+    "cta.subtitle": "3 minutes a day to healthy eating — starting today.",
+    "cta.button": "Try EatFit Free",
 
     // AppDownload
     "download.eyebrow": "Download",
@@ -81,33 +127,41 @@ export const translations: Record<Lang, TranslationDict> = {
 
     // FaqList
     "faq.eyebrow": "FAQ",
-    "faq.heading": "Built for a real product surface, not a one-page demo.",
-    "faq.q1": "Where is user data stored?",
+    "faq.heading": "Everything you want to know",
+    "faq.q1": "How does the AI meal plan work?",
     "faq.a1":
-      "Web user data is stored in Supabase under row-level security policies bound to the Clerk user identity.",
-    "faq.q2": "What powers the nutrition logic?",
+      "EatFit uses your body metrics (BMI, body fat, activity level) and goals (fat loss, muscle gain, maintenance) to calculate daily calorie and macro targets, then generates a full day of meals that fit those targets.",
+    "faq.q2": "Can I set allergens and food preferences?",
     "faq.a2":
-      "The existing FastAPI backend handles nutrition targets, meal planning, grocery aggregation, and AI coaching orchestration.",
-    "faq.q3": "Can the dashboard be used without a profile?",
+      "Yes. Mark allergens (nuts, seafood, gluten, etc.) and disliked ingredients in your profile. The AI will automatically filter them from all meal plans.",
+    "faq.q3": "Does it support weekly meal planning?",
     "faq.a3":
-      "You can sign in and browse the shell, but planning and coaching stay locked until the nutrition profile is saved.",
+      "Pro and Professional plans support weekly planning — generate 7 days of meals at once and get a consolidated grocery list for the entire week.",
+    "faq.q4": "Where is my data stored?",
+    "faq.a4":
+      "All profile data is encrypted and stored securely. Your body metrics and meal plans are private to your account and never shared with third parties.",
+    "faq.q5": "Can I cancel my subscription anytime?",
+    "faq.a5":
+      "Yes. Subscriptions can be cancelled at any time from your account settings. You keep access until the end of the current billing period.",
+    "faq.q6": "What's the difference between Pro and Professional?",
+    "faq.a6":
+      "Pro is for individuals — unlimited meal plans, grocery lists, and AI coaching. Professional adds multi-profile management, data export, weekly planning, and priority support for families or small teams.",
 
     // Footer
     "footer.desc":
-      "Personalized nutrition planning, meal generation, and AI coaching — powered by Clerk, Supabase, and FastAPI.",
+      "AI-powered personalized nutrition planning, meal generation, and smart grocery lists.",
     "footer.copyright": "© 2026 EatFit. All rights reserved.",
 
     // SignIn / SignUp
     "signin.eyebrow": "EatFit Access",
-    "signin.title": "Sign in to your nutrition operating board.",
+    "signin.title": "Sign in to your nutrition dashboard.",
     "signin.subtitle":
-      "Your dashboard keeps profile data, plan snapshots, grocery output, and AI coaching sessions in one place.",
+      "Your dashboard keeps profile data, meal plans, grocery lists, and AI coaching sessions in one place.",
     "signin.back": "Back to home",
     "signup.eyebrow": "Start Here",
-    "signup.title":
-      "Create the account that unlocks the full EatFit dashboard.",
+    "signup.title": "Create your EatFit account.",
     "signup.subtitle":
-      "Register once, save your profile to Supabase, and use the same plan and coaching loop across every session.",
+      "Register once, save your profile, and get personalized meal plans every day.",
     "signup.back": "Back to home",
 
     // AppShell
@@ -122,7 +176,7 @@ export const translations: Record<Lang, TranslationDict> = {
     "shell.nav.coach": "AI Coach",
     "shell.operatingNote": "Operating note",
     "shell.operatingDesc":
-      "Profile data lives in Supabase. Plans and coaching are computed from your latest inputs through the FastAPI nutrition engine.",
+      "Profile data is saved securely. Plans and coaching are computed from your latest inputs.",
 
     // ProtectedRoute
     "protected.loading": "Loading your workspace...",
@@ -140,7 +194,7 @@ export const translations: Record<Lang, TranslationDict> = {
     "dash.metaGenerated": "Generated from your latest profile",
     "dash.metaDailyTarget": "Daily target",
     "dash.metaBreakfast": "Breakfast to snack coverage",
-    "dash.metaSupabase": "Saved to Supabase",
+    "dash.metaSupabase": "Saved to database",
     "dash.todayLineup": "Today's meal lineup",
     "dash.noPlanYet": "No plan generated yet.",
     "dash.executionSummary": "Execution summary",
@@ -156,7 +210,7 @@ export const translations: Record<Lang, TranslationDict> = {
     "empty.profile.cta": "Set Up Profile",
 
     // ProfilePage
-    "profile.eyebrow": "Supabase",
+    "profile.eyebrow": "Profile",
     "profile.title": "Nutrition profile",
     "profile.name": "Name",
     "profile.age": "Age",
@@ -178,7 +232,7 @@ export const translations: Record<Lang, TranslationDict> = {
     "profile.saving": "Saving...",
     "profile.lastUpdated": "Last updated {date}",
     "profile.createHint":
-      "Create the profile once and EatFit will persist it to Supabase.",
+      "Create the profile once and EatFit will remember it.",
     "profile.noProfileTitle": "No profile row yet",
     "profile.noProfileBody":
       "Once you save the form above, the dashboard will start generating targets, plans, grocery output, and AI coach sessions.",
@@ -187,7 +241,7 @@ export const translations: Record<Lang, TranslationDict> = {
     "plan.eyebrow": "Planner",
     "plan.title": "Daily meal plan",
     "plan.viewing":
-      "Viewing {date}. Every request uses your latest Supabase profile data and the backend meal planner.",
+      "Viewing {date}. Every request uses your latest profile data and the meal planner.",
     "plan.noData": "No data returned for this date.",
     "plan.calories": "Calories",
     "plan.protein": "Protein",
@@ -247,7 +301,7 @@ export const translations: Record<Lang, TranslationDict> = {
     "coach.mealStrategy": "Meal strategy",
     "coach.noResponse":
       "Run a coaching prompt to generate the first structured response.",
-    "coach.sessions.eyebrow": "Supabase history",
+    "coach.sessions.eyebrow": "History",
     "coach.sessions.title": "Saved sessions",
     "coach.noSessions": "No saved sessions yet.",
     "coach.empty.title": "The coach needs your profile context",
@@ -259,7 +313,7 @@ export const translations: Record<Lang, TranslationDict> = {
     "setup.eyebrow": "Configuration required",
     "setup.title": "Finish the environment wiring.",
     "setup.desc":
-      "EatFit Web needs a Clerk publishable key and Supabase frontend credentials in the `web/` environment before authentication and persistence can run end to end.",
+      "EatFit Web needs a Clerk publishable key and Supabase frontend credentials in the environment before authentication and persistence can run end to end.",
     "setup.clerk": "VITE_CLERK_PUBLISHABLE_KEY",
     "setup.supabaseUrl": "VITE_SUPABASE_URL",
     "setup.supabaseKey": "VITE_SUPABASE_ANON_KEY",
@@ -300,54 +354,101 @@ export const translations: Record<Lang, TranslationDict> = {
     "home.brand": "EatFit 吃什么",
     "home.brandTagline": "AI 饮食管家",
     "home.nav.features": "功能",
+    "home.nav.pricing": "定价",
     "home.nav.download": "下载",
     "home.nav.signIn": "登录",
-    "home.nav.getStarted": "开始使用",
+    "home.nav.getStarted": "免费开始",
 
     // LandingHero
-    "hero.badge": "产品面板",
-    "hero.title": "精准营养管理平台，像你的自律一样出色。",
+    "hero.badge": "AI 体测饮食管家",
+    "hero.title": "每天 3 分钟，吃得明明白白",
     "hero.subtitle":
-      "EatFit 提供完整的日常饮食管理系统：个性化营养目标、智能食谱生成、买菜清单聚合，以及 AI 营养顾问为你推送下一步行动。",
-    "hero.ctaPrimary": "立即注册",
-    "hero.ctaSecondary": "了解功能",
-    "hero.board.title": "今日操作面板",
-    "hero.board.target": "目标 2,214 kcal",
-    "hero.board.protein": "蛋白质",
-    "hero.board.carbs": "碳水",
-    "hero.board.fat": "脂肪",
-    "hero.board.quality": "计划评分",
-    "hero.board.qualityDesc": "结构化教练指导，含风险提示、行动建议和饮食策略。",
-    "hero.board.flow": "流程",
-    "hero.board.flow1": "Clerk 身份认证",
-    "hero.board.flow2": "Supabase 数据持久化",
-    "hero.board.flow3": "FastAPI 营养引擎",
+      "不用再盯着冰箱发呆。AI 根据你的体测数据，一键生成个性化食谱、买菜清单和烹饪引导。",
+    "hero.ctaPrimary": "免费体验",
+    "hero.ctaSecondary": "看产品演示",
+    "hero.stat1": "3秒",
+    "hero.stat1.label": "生成一日食谱",
+    "hero.stat2": "1850",
+    "hero.stat2.label": "kcal 精准目标",
+    "hero.stat3": "4餐",
+    "hero.stat3.label": "每日三餐+加餐",
+
+    // ProductShowcase
+    "showcase.eyebrow": "产品预览",
+    "showcase.title": "你的口袋营养师",
+    "showcase.subtitle": "三个界面，一条链路——从体测数据到餐桌",
+    "showcase.screen1": "今日面板",
+    "showcase.screen1.desc": "热量与营养一目了然",
+    "showcase.screen2": "AI 食谱",
+    "showcase.screen2.desc": "3 秒生成一日三餐",
+    "showcase.screen3": "买菜清单",
+    "showcase.screen3.desc": "一键下单食材到家",
 
     // FeatureGrid
-    "features.adaptive.title": "自适应宏量目标",
+    "features.main.title": "AI 智能配餐",
+    "features.main.body":
+      "根据你的 BMI、体脂率、运动量和目标，3 秒生成一日三餐+加餐，每道菜配详细步骤和营养标注。自动避开过敏原和忌口食材。",
+    "features.adaptive.title": "体测数据追踪",
     "features.adaptive.body":
-      "FastAPI 根据体测数据和目标直接计算 BMR、TDEE 和宏量分配。",
-    "features.coach.title": "结构化 AI 顾问",
-    "features.coach.body":
-      "建议包含标题、摘要、评分、风险提示、营养洞察、行动建议和饮食策略。",
-    "features.grocery.title": "从计划生成买菜清单",
+      "对接体脂秤和智能手环，体重、BMI、体脂率变化趋势一目了然。",
+    "features.grocery.title": "一键买菜",
     "features.grocery.body":
-      "食材按类别聚合，每日计划直接转化为可执行的购物清单。",
-    "features.security.title": "用户数据隔离",
+      "食材按类别分类，预估总价，直接跳转生鲜平台下单。",
+    "features.security.title": "过敏原管理",
     "features.security.body":
-      "Clerk 保护身份安全，Supabase RLS 隔离每个档案、计划快照和顾问会话。",
+      "自动过滤过敏食材——坚果、海鲜、麸质一键标记，保护家人健康。",
 
     // WorkflowStrip
-    "workflow.eyebrow": "操作流程",
-    "workflow.step1.title": "01. 录入体测数据",
+    "workflow.eyebrow": "三步搞定",
+    "workflow.title": "从体测到餐桌，只需 3 分钟",
+    "workflow.step1.title": "录入体测",
     "workflow.step1.body":
-      "身体数据、运动量、目标、过敏原和偏好保存到 Supabase。",
-    "workflow.step2.title": "02. 生成今日计划",
+      "身高、体重、体脂率、运动量、口味偏好——30 秒搞定。",
+    "workflow.step2.title": "AI 生成食谱",
     "workflow.step2.body":
-      "面板从 FastAPI 营养引擎获取无状态计划和买菜清单。",
-    "workflow.step3.title": "03. 闭环优化",
+      "每日营养配比 + 早中晚加餐菜谱，自动避开过敏原和忌口。",
+    "workflow.step3.title": "买菜 & 烹饪",
     "workflow.step3.body":
-      "AI 顾问将上下文转化为精准建议，并保存会话供后续复盘。",
+      "买菜清单按类别整理，烹饪步骤大字显示，厨房也能看。",
+
+    // PricingSection
+    "pricing.eyebrow": "定价",
+    "pricing.title": "简单透明的价格",
+    "pricing.subtitle": "免费开始，随时升级",
+    "pricing.free.name": "免费版",
+    "pricing.free.price": "¥0",
+    "pricing.free.period": "/永久",
+    "pricing.free.desc": "基础体测 + 每日食谱",
+    "pricing.free.f1": "每日 1 次 AI 食谱",
+    "pricing.free.f2": "基础体测追踪",
+    "pricing.free.f3": "3 天历史记录",
+    "pricing.free.cta": "免费开始",
+    "pricing.pro.name": "Pro 版",
+    "pricing.pro.price": "¥19.9",
+    "pricing.pro.period": "/月",
+    "pricing.pro.desc": "无限食谱 + 买菜单 + AI 顾问",
+    "pricing.pro.f1": "无限 AI 食谱生成",
+    "pricing.pro.f2": "智能买菜清单",
+    "pricing.pro.f3": "AI 营养顾问",
+    "pricing.pro.f4": "过敏原 & 忌口管理",
+    "pricing.pro.f5": "30 天历史记录",
+    "pricing.pro.cta": "升级 Pro",
+    "pricing.pro.badge": "最受欢迎",
+    "pricing.pro2.name": "专业版",
+    "pricing.pro2.price": "¥99",
+    "pricing.pro2.period": "/月",
+    "pricing.pro2.desc": "团队管理 + 数据导出 + 优先支持",
+    "pricing.pro2.f1": "全部 Pro 功能",
+    "pricing.pro2.f2": "多人档案管理",
+    "pricing.pro2.f3": "数据导出 (CSV/PDF)",
+    "pricing.pro2.f4": "优先客服支持",
+    "pricing.pro2.f5": "周计划模式",
+    "pricing.pro2.cta": "联系开通",
+
+    // CTABanner
+    "cta.title": "让 AI 替你决定吃什么",
+    "cta.subtitle": "从今天起，每天 3 分钟搞定健康饮食",
+    "cta.button": "免费体验 EatFit",
 
     // AppDownload
     "download.eyebrow": "下载",
@@ -368,32 +469,41 @@ export const translations: Record<Lang, TranslationDict> = {
 
     // FaqList
     "faq.eyebrow": "常见问题",
-    "faq.heading": "为真实产品而设计，不是一次性 Demo。",
-    "faq.q1": "用户数据存在哪里？",
+    "faq.heading": "你想知道的，都在这里",
+    "faq.q1": "AI 食谱是怎么生成的？",
     "faq.a1":
-      "Web 端用户数据存储在 Supabase 中，通过绑定 Clerk 用户身份的行级安全策略进行隔离。",
-    "faq.q2": "营养逻辑由什么驱动？",
+      "EatFit 根据你的体测数据（BMI、体脂率、运动量）和目标（减脂、增肌、维持）计算每日热量和宏量营养素目标，然后生成符合目标的一日三餐+加餐食谱。",
+    "faq.q2": "可以设置过敏原和忌口吗？",
     "faq.a2":
-      "现有 FastAPI 后端负责营养目标计算、食谱规划、买菜清单聚合和 AI 顾问调度。",
-    "faq.q3": "没有档案可以使用面板吗？",
+      "可以。在档案中标记过敏原（坚果、海鲜、麸质等）和忌口食材，AI 会自动从所有食谱中过滤。",
+    "faq.q3": "支持一周食谱规划吗？",
     "faq.a3":
-      "可以登录并浏览界面，但在保存营养档案之前，计划和顾问功能将保持锁定。",
+      "Pro 和专业版支持周计划模式——一次性生成 7 天食谱，并汇总一份完整的一周买菜清单。",
+    "faq.q4": "我的数据安全吗？",
+    "faq.a4":
+      "所有档案数据加密存储。你的体测数据和食谱计划仅你本人可见，绝不会分享给第三方。",
+    "faq.q5": "可以随时取消订阅吗？",
+    "faq.a5":
+      "可以。随时在账户设置中取消订阅，取消后当前计费周期结束前仍可使用所有功能。",
+    "faq.q6": "Pro 版和专业版有什么区别？",
+    "faq.a6":
+      "Pro 版面向个人用户——无限食谱、买菜清单和 AI 顾问。专业版增加多人档案管理、数据导出、周计划模式和优先客服，适合家庭或小团队。",
 
     // Footer
     "footer.desc":
-      "个性化营养规划、智能食谱生成和 AI 营养顾问 — 由 Clerk、Supabase 和 FastAPI 驱动。",
+      "AI 驱动的个性化营养规划、智能食谱生成和买菜清单服务。",
     "footer.copyright": "© 2026 EatFit. 保留所有权利。",
 
     // SignIn / SignUp
     "signin.eyebrow": "EatFit 登录",
-    "signin.title": "登录你的营养操作面板。",
+    "signin.title": "登录你的营养面板。",
     "signin.subtitle":
-      "你的面板集中管理档案数据、计划快照、买菜清单和 AI 顾问会话。",
+      "你的面板集中管理档案数据、食谱计划、买菜清单和 AI 顾问会话。",
     "signin.back": "返回首页",
     "signup.eyebrow": "从这里开始",
-    "signup.title": "创建账号，解锁完整的 EatFit 面板。",
+    "signup.title": "创建你的 EatFit 账号。",
     "signup.subtitle":
-      "一次注册，将档案保存到 Supabase，在每次会话中使用相同的计划和顾问循环。",
+      "一次注册，保存档案，每天获得个性化食谱计划。",
     "signup.back": "返回首页",
 
     // AppShell
@@ -408,7 +518,7 @@ export const translations: Record<Lang, TranslationDict> = {
     "shell.nav.coach": "AI 顾问",
     "shell.operatingNote": "运行说明",
     "shell.operatingDesc":
-      "档案数据存储在 Supabase。计划和顾问通过 FastAPI 营养引擎根据最新输入计算。",
+      "档案数据安全存储。计划和顾问根据最新输入实时计算。",
 
     // ProtectedRoute
     "protected.loading": "正在加载工作区...",
@@ -425,7 +535,7 @@ export const translations: Record<Lang, TranslationDict> = {
     "dash.metaGenerated": "根据最新档案生成",
     "dash.metaDailyTarget": "每日目标",
     "dash.metaBreakfast": "从早餐到加餐全覆盖",
-    "dash.metaSupabase": "已保存到 Supabase",
+    "dash.metaSupabase": "已保存到数据库",
     "dash.todayLineup": "今日餐次",
     "dash.noPlanYet": "暂无生成的计划。",
     "dash.executionSummary": "执行摘要",
@@ -441,7 +551,7 @@ export const translations: Record<Lang, TranslationDict> = {
     "empty.profile.cta": "设置档案",
 
     // ProfilePage
-    "profile.eyebrow": "Supabase",
+    "profile.eyebrow": "档案",
     "profile.title": "营养档案",
     "profile.name": "姓名",
     "profile.age": "年龄",
@@ -462,7 +572,7 @@ export const translations: Record<Lang, TranslationDict> = {
     "profile.save": "保存档案",
     "profile.saving": "保存中...",
     "profile.lastUpdated": "最后更新于 {date}",
-    "profile.createHint": "创建一次档案，EatFit 将持久化到 Supabase。",
+    "profile.createHint": "创建一次档案，EatFit 将自动记住。",
     "profile.noProfileTitle": "尚无档案记录",
     "profile.noProfileBody":
       "保存表单后，面板将开始生成目标、计划、买菜清单和 AI 顾问会话。",
@@ -471,7 +581,7 @@ export const translations: Record<Lang, TranslationDict> = {
     "plan.eyebrow": "计划",
     "plan.title": "每日饮食计划",
     "plan.viewing":
-      "查看 {date}。每次请求使用最新的 Supabase 档案数据和后端食谱规划器。",
+      "查看 {date}。每次请求使用最新的档案数据和食谱规划器。",
     "plan.noData": "该日期暂无数据。",
     "plan.calories": "热量",
     "plan.protein": "蛋白质",

@@ -2,10 +2,13 @@ import { EatFitLogo } from "@/components/common/EatFitLogo";
 import { Link } from "react-router-dom";
 
 import { AppDownload } from "@/components/landing/AppDownload";
+import { CTABanner } from "@/components/landing/CTABanner";
 import { FaqList } from "@/components/landing/FaqList";
 import { FeatureGrid } from "@/components/landing/FeatureGrid";
 import { LanguageSwitcher } from "@/components/common/LanguageSwitcher";
 import { LandingHero } from "@/components/landing/LandingHero";
+import { PricingSection } from "@/components/landing/PricingSection";
+import { ProductShowcase } from "@/components/landing/ProductShowcase";
 import { WorkflowStrip } from "@/components/landing/WorkflowStrip";
 import { useLang } from "@/i18n/LanguageContext";
 
@@ -15,6 +18,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-[#FFF9F2] px-4 py-4 text-[#1F1611] md:px-8 md:py-8">
       <div className="mx-auto max-w-[1500px] space-y-4">
+        {/* Header */}
         <header className="flex flex-wrap items-center justify-between gap-4 rounded-[24px] border border-[#F0E6DD] bg-white px-6 py-4 shadow-warm">
           <div className="flex items-center gap-3">
             <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-[#FF6B35]/30 bg-[#FFE5D9]">
@@ -34,6 +38,12 @@ export default function Home() {
               className="rounded-full px-4 py-2 text-sm text-[#6B5544] transition hover:bg-[#FFF5EE] hover:text-[#1F1611]"
             >
               {t("home.nav.features")}
+            </a>
+            <a
+              href="#pricing"
+              className="rounded-full px-4 py-2 text-sm text-[#6B5544] transition hover:bg-[#FFF5EE] hover:text-[#1F1611]"
+            >
+              {t("home.nav.pricing")}
             </a>
             <a
               href="#download"
@@ -57,12 +67,17 @@ export default function Home() {
           </nav>
         </header>
 
+        {/* Landing sections */}
         <LandingHero />
+        <ProductShowcase />
         <FeatureGrid />
         <WorkflowStrip />
+        <PricingSection />
+        <CTABanner />
         <AppDownload />
         <FaqList />
 
+        {/* Footer */}
         <footer className="rounded-[24px] border border-[#F0E6DD] bg-white px-6 py-8 text-sm text-[#6B5544] shadow-warm">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
