@@ -1,4 +1,4 @@
-import { Bot, ChartColumnBig, ClipboardList, ShieldCheck, Sparkles } from "lucide-react";
+import { ChartColumnBig, ClipboardList, ShieldCheck, Sparkles } from "lucide-react";
 
 import { useLang } from "@/i18n/LanguageContext";
 

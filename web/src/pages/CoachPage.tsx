@@ -33,14 +33,6 @@ export function CoachPage() {
   ];
 
   // Build conversation context from history
-  const conversationHistory = useMemo(() => {
-    if (!messages?.length) return [];
-    return messages.map((msg) => ({
-      role: msg.role,
-      content: msg.message,
-    }));
-  }, [messages]);
-
   const latestResponse = useMemo(() => {
     if (coachMutation.data?.response) {
       return coachMutation.data.response;

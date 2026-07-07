@@ -9,7 +9,7 @@ import { useLang } from "@/i18n/LanguageContext";
 import { useSupabaseClient } from "@/providers/AppProviders";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addFoodLog, deleteFoodLog, fetchFoodLogs } from "@/lib/logs";
-import { formatNumber, getMealLabels, todayIso } from "@/lib/format";
+import { formatNumber, getMealLabels } from "@/lib/format";
 import type { MealType } from "@/types/eatfit";
 
 export function FoodLogPage() {
@@ -17,7 +17,7 @@ export function FoodLogPage() {
   const selectedDate = useDashboardStore((s) => s.selectedDate);
   const client = useSupabaseClient();
   const queryClient = useQueryClient();
-  const { lang, t } = useLang();
+  const { lang } = useLang();
 
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({

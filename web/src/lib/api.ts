@@ -4,9 +4,86 @@ import type {
   CoachResponse,
   DailyPlan,
   GroceryList,
+  MealType,
   Recipe,
   UserProfileFormValues,
 } from "@/types/eatfit";
+
+// ---------- Raw API response types (snake_case from backend) ----------
+
+interface RawIngredient {
+  name: string;
+  amount_g: number;
+  category: string;
+}
+
+interface RawRecipe {
+  id: number;
+  name: string;
+  meal_type: MealType;
+  calories: number;
+  protein_g: number;
+  carbs_g: number;
+  fat_g: number;
+  tags: string[];
+  allergens: string[];
+  cook_minutes: number;
+  ingredients: RawIngredient[];
+  steps: string[];
+  image_emoji: string;
+  image_url?: string | null;
+}
+
+interface RawNutritionTarget {
+  bmr: number;
+  tdee: number;
+  target_calories: number;
+  protein_g: number;
+  carbs_g: number;
+  fat_g: number;
+  explanation: string;
+}
+
+interface RawMeal {
+  meal_type: MealType;
+  recipe: RawRecipe;
+}
+
+interface RawPlan {
+  date: string;
+  profile_id: number;
+  target: RawNutritionTarget;
+  meals: RawMeal[];
+  total_calories: number;
+  total_protein_g: number;
+  total_carbs_g: number;
+  total_fat_g: number;
+}
+
+interface RawGroceryItem {
+  name: string;
+  total_amount_g: number;
+  category: string;
+}
+
+interface RawGrocery {
+  date: string;
+  profile_id: number;
+  items: RawGroceryItem[];
+  grouped: Record<string, RawGroceryItem[]>;
+}
+
+interface RawCoachResponse {
+  focus: string;
+  headline: string;
+  summary: string;
+  score: number;
+  risk_alerts: string[];
+  nutrition_insights: string[];
+  next_actions: string[];
+  meal_strategy: string[];
+  disclaimer: string;
+}
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(`${env.apiBaseUrl}${path}`, {
@@ -41,7 +118,7 @@ function toProfilePayload(profile: UserProfileFormValues) {
   };
 }
 
-function mapRecipe(recipe: any): Recipe {
+function mapRecipe(recipe: RawRecipe): Recipe {
   return {
     id: recipe.id,
     name: recipe.name,
@@ -53,7 +130,7 @@ function mapRecipe(recipe: any): Recipe {
     tags: recipe.tags,
     allergens: recipe.allergens,
     cookMinutes: recipe.cook_minutes,
-    ingredients: recipe.ingredients.map((item: any) => ({
+    ingredients: recipe.ingredients.map((item: RawIngredient) => ({
       name: item.name,
       amountG: item.amount_g,
       category: item.category,
@@ -64,7 +141,7 @@ function mapRecipe(recipe: any): Recipe {
   };
 }
 
-function mapPlan(plan: any): DailyPlan {
+function mapPlan(plan: RawPlan): DailyPlan {
   return {
     date: plan.date,
     profileId: plan.profile_id,
@@ -77,7 +154,7 @@ function mapPlan(plan: any): DailyPlan {
       fatG: plan.target.fat_g,
       explanation: plan.target.explanation,
     },
-    meals: plan.meals.map((meal: any) => ({
+    meals: plan.meals.map((meal: RawMeal) => ({
       mealType: meal.meal_type,
       recipe: mapRecipe(meal.recipe),
     })),
@@ -88,11 +165,11 @@ function mapPlan(plan: any): DailyPlan {
   };
 }
 
-function mapGrocery(list: any): GroceryList {
+function mapGrocery(list: RawGrocery): GroceryList {
   return {
     date: list.date,
     profileId: list.profile_id,
-    items: list.items.map((item: any) => ({
+    items: list.items.map((item: RawGroceryItem) => ({
       name: item.name,
       totalAmountG: item.total_amount_g,
       category: item.category,
@@ -100,7 +177,7 @@ function mapGrocery(list: any): GroceryList {
     grouped: Object.fromEntries(
       Object.entries(list.grouped).map(([key, value]) => [
         key,
-        (value as any[]).map((item) => ({
+        (value as RawGroceryItem[]).map((item) => ({
           name: item.name,
           totalAmountG: item.total_amount_g,
           category: item.category,
@@ -110,9 +187,9 @@ function mapGrocery(list: any): GroceryList {
   };
 }
 
-function mapCoach(response: any): CoachResponse {
+function mapCoach(response: RawCoachResponse): CoachResponse {
   return {
-    focus: response.focus,
+    focus: response.focus as CoachResponse["focus"],
     headline: response.headline,
     summary: response.summary,
     score: response.score,
@@ -127,7 +204,7 @@ function mapCoach(response: any): CoachResponse {
 // ---------- Recipe API ----------
 
 export async function fetchRecipes() {
-  const recipes = await request<any[]>("/api/recipes");
+  const recipes = await request<RawRecipe[]>("/api/recipes");
   return recipes.map(mapRecipe);
 }
 
@@ -135,13 +212,13 @@ export async function fetchRecipes() {
 
 export async function fetchPlan(profile: UserProfileFormValues, date: string, profileId?: string) {
   if (profileId) {
-    const payload = await request<any>("/api/web/by-id/plan", {
+    const payload = await request<RawPlan>("/api/web/by-id/plan", {
       method: "POST",
       body: JSON.stringify({ profile_id: profileId, date }),
     });
     return mapPlan(payload);
   }
-  const payload = await request<any>("/api/web/plan", {
+  const payload = await request<RawPlan>("/api/web/plan", {
     method: "POST",
     body: JSON.stringify({ profile: toProfilePayload(profile), date }),
   });
@@ -150,13 +227,13 @@ export async function fetchPlan(profile: UserProfileFormValues, date: string, pr
 
 export async function fetchGrocery(profile: UserProfileFormValues, date: string, profileId?: string) {
   if (profileId) {
-    const payload = await request<any>("/api/web/by-id/grocery", {
+    const payload = await request<RawGrocery>("/api/web/by-id/grocery", {
       method: "POST",
       body: JSON.stringify({ profile_id: profileId, date }),
     });
     return mapGrocery(payload);
   }
-  const payload = await request<any>("/api/web/grocery", {
+  const payload = await request<RawGrocery>("/api/web/grocery", {
     method: "POST",
     body: JSON.stringify({ profile: toProfilePayload(profile), date }),
   });
@@ -170,7 +247,7 @@ export async function fetchCoachAdvice(
   profileId?: string,
 ) {
   if (profileId) {
-    const payload = await request<any>("/api/web/by-id/coach/advice", {
+    const payload = await request<RawCoachResponse>("/api/web/by-id/coach/advice", {
       method: "POST",
       body: JSON.stringify({
         profile_id: profileId,
@@ -180,7 +257,7 @@ export async function fetchCoachAdvice(
     });
     return mapCoach(payload);
   }
-  const payload = await request<any>("/api/web/coach/advice", {
+  const payload = await request<RawCoachResponse>("/api/web/coach/advice", {
     method: "POST",
     body: JSON.stringify({
       profile: toProfilePayload(profile),

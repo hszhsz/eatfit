@@ -1,16 +1,48 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 import type {
+  ActivityLevel,
   CoachMessage,
   CoachResponse,
   CoachSession,
   DailyPlan,
+  Goal,
   GroceryList,
   UserProfile,
   UserProfileFormValues,
 } from "@/types/eatfit";
 
-function mapProfile(row: any): UserProfile {
+interface RawProfileRow {
+  id: string;
+  clerk_user_id: string;
+  name: string;
+  gender: "male" | "female";
+  age: number;
+  height_cm: number | string;
+  weight_kg: number | string;
+  body_fat_pct: number | string | null;
+  activity_level: ActivityLevel;
+  goal: Goal;
+  allergens: string[] | null;
+  disliked_tags: string[] | null;
+  diet_preference: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+interface RawPlanSnapshot {
+  id: string;
+  profile_id: string;
+  plan_date: string;
+  target: unknown;
+  meals: unknown;
+  total_calories: number;
+  total_protein_g: number;
+  total_carbs_g: number;
+  total_fat_g: number;
+}
+
+function mapProfile(row: RawProfileRow): UserProfile {
   return {
     id: row.id,
     clerkUserId: row.clerk_user_id,
@@ -127,7 +159,7 @@ export async function getPlanSnapshot(
     throw error;
   }
 
-  return data as any | null;
+  return data as RawPlanSnapshot | null;
 }
 
 export async function saveGrocerySnapshot(

@@ -14,7 +14,7 @@ export function ProgressPage() {
   const { data: profile } = useCurrentProfile();
   const client = useSupabaseClient();
   const queryClient = useQueryClient();
-  const { lang, t } = useLang();
+  const { lang } = useLang();
   const [weightInput, setWeightInput] = useState("");
 
   const { data: weightLogs, isLoading } = useQuery({

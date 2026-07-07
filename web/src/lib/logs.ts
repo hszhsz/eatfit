@@ -24,7 +24,31 @@ export interface WeightLog {
   createdAt: string;
 }
 
-function mapFoodLog(row: any): FoodLog {
+interface RawFoodLogRow {
+  id: string;
+  profile_id: string;
+  log_date: string;
+  meal_type: FoodLog["mealType"];
+  food_name: string;
+  calories: number | string;
+  protein_g: number | string;
+  carbs_g: number | string;
+  fat_g: number | string;
+  source: string | null;
+  recipe_id: number | null;
+  created_at: string;
+}
+
+interface RawWeightLogRow {
+  id: string;
+  profile_id: string;
+  log_date: string;
+  weight_kg: number | string;
+  note: string | null;
+  created_at: string;
+}
+
+function mapFoodLog(row: RawFoodLogRow): FoodLog {
   return {
     id: row.id,
     profileId: row.profile_id,
@@ -41,7 +65,7 @@ function mapFoodLog(row: any): FoodLog {
   };
 }
 
-function mapWeightLog(row: any): WeightLog {
+function mapWeightLog(row: RawWeightLogRow): WeightLog {
   return {
     id: row.id,
     profileId: row.profile_id,
