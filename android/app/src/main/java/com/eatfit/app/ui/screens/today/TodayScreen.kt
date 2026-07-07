@@ -16,10 +16,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoAwesome
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -31,12 +30,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,9 +49,11 @@ import com.eatfit.app.ui.components.LoadingState
 import com.eatfit.app.ui.components.MacroBar
 import com.eatfit.app.ui.theme.CalorieOrange
 import com.eatfit.app.ui.theme.CarbsAmber
-import com.eatfit.app.ui.theme.CardGreen
 import com.eatfit.app.ui.theme.FatPurple
 import com.eatfit.app.ui.theme.ProteinBlue
+import com.eatfit.app.ui.theme.WarmPrimary
+import com.eatfit.app.ui.theme.WarmPrimaryLight
+import com.eatfit.app.ui.theme.WarmSubtle
 import com.eatfit.app.util.Labels
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -68,16 +71,15 @@ fun TodayScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("EatFit 今日饮食") },
+                title = { Text("今日饮食", fontWeight = FontWeight.Bold) },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.background,
+                    titleContentColor = MaterialTheme.colorScheme.onBackground,
+                ),
                 actions = {
-                    IconButton(onClick = onOpenGrocery) {
-                        Icon(Icons.Default.ShoppingCart, contentDescription = "买菜清单")
-                    }
-                    IconButton(onClick = onOpenProfile) {
-                        Icon(Icons.Default.Person, contentDescription = "我的")
-                    }
                     IconButton(onClick = onOpenSettings) {
-                        Icon(Icons.Default.Settings, contentDescription = "设置")
+                        Icon(Icons.Default.Settings, contentDescription = "设置",
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 },
             )
@@ -127,7 +129,7 @@ private fun DailyHeroCard(
     onOpenGrocery: () -> Unit,
 ) {
     Card(
-        colors = CardDefaults.cardColors(containerColor = CardGreen),
+        colors = CardDefaults.cardColors(containerColor = WarmPrimaryLight),
         shape = RoundedCornerShape(28.dp),
     ) {
         Column(
@@ -155,10 +157,10 @@ private fun DailyHeroCard(
                 Box(
                     modifier = Modifier
                         .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.12f))
+                        .background(WarmPrimary.copy(alpha = 0.12f))
                         .padding(12.dp),
                 ) {
-                    Icon(Icons.Default.AutoAwesome, contentDescription = null)
+                    Icon(Icons.Default.AutoAwesome, contentDescription = null, tint = WarmPrimary)
                 }
             }
             Text(
@@ -167,11 +169,20 @@ private fun DailyHeroCard(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                Button(onClick = onOpenCoach, modifier = Modifier.weight(1f)) {
+                Button(
+                    onClick = onOpenCoach,
+                    modifier = Modifier.weight(1f),
+                    colors = ButtonDefaults.buttonColors(containerColor = WarmPrimary),
+                    shape = RoundedCornerShape(16.dp),
+                ) {
                     Icon(Icons.Default.AutoAwesome, contentDescription = null, modifier = Modifier.size(18.dp))
                     Text(" AI 营养顾问")
                 }
-                FilledTonalButton(onClick = onOpenGrocery, modifier = Modifier.weight(1f)) {
+                FilledTonalButton(
+                    onClick = onOpenGrocery,
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(16.dp),
+                ) {
                     Text("买菜清单")
                 }
             }
@@ -199,7 +210,7 @@ private fun NutritionSummaryCard(plan: DailyPlan) {
     Card(
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            containerColor = MaterialTheme.colorScheme.surface,
         ),
     ) {
         Column(Modifier.padding(18.dp)) {
@@ -249,7 +260,7 @@ private fun MealCard(meal: MealItem, onClick: () -> Unit) {
         ) {
             Surface(
                 shape = CircleShape,
-                color = MaterialTheme.colorScheme.primaryContainer,
+                color = WarmPrimaryLight,
                 modifier = Modifier.size(56.dp),
             ) {
                 Box(contentAlignment = Alignment.Center) {
@@ -264,7 +275,7 @@ private fun MealCard(meal: MealItem, onClick: () -> Unit) {
                 Text(
                     Labels.meal(meal.mealType),
                     style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = WarmPrimary,
                     fontWeight = FontWeight.SemiBold,
                 )
                 Text(
@@ -282,7 +293,7 @@ private fun MealCard(meal: MealItem, onClick: () -> Unit) {
             Text(
                 "查看",
                 style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.primary,
+                color = WarmPrimary,
                 modifier = Modifier.padding(start = 8.dp),
             )
         }

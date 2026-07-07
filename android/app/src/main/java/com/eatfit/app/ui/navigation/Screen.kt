@@ -1,7 +1,10 @@
 package com.eatfit.app.ui.navigation
 
 sealed class Screen(val route: String) {
+    data object Splash : Screen("splash")
+    data object Login : Screen("login")
     data object Onboarding : Screen("onboarding")
+    data object Home : Screen("home")
     data object Today : Screen("today")
     data object Coach : Screen("coach")
     data object Grocery : Screen("grocery")

@@ -23,8 +23,8 @@ android {
         applicationId = "com.eatfit.app"
         minSdk = 24
         targetSdk = 34
-        versionCode = 2
-        versionName = "1.1"
+        versionCode = 3
+        versionName = "2.0"
         vectorDrawables { useSupportLibrary = true }
 
         // Default backend URL — user can override in app settings.
@@ -105,6 +105,7 @@ dependencies {
 
     // DataStore for local profile id persistence
     implementation("androidx.datastore:datastore-preferences:1.1.1")
+    implementation("androidx.core:core-splashscreen:1.0.1")
 
     debugImplementation("androidx.compose.ui:ui-tooling")
 

@@ -52,7 +52,7 @@ import com.eatfit.app.data.model.CoachResponse
 import com.eatfit.app.ui.components.ErrorState
 import com.eatfit.app.ui.components.LoadingState
 import com.eatfit.app.ui.theme.CalorieOrange
-import com.eatfit.app.ui.theme.CardGreen
+import com.eatfit.app.ui.theme.WarmPrimaryLight
 import com.eatfit.app.ui.theme.ProteinBlue
 
 private val focusOptions = listOf(
@@ -181,7 +181,7 @@ private fun HeroCard(
     onSelectFocus: (String) -> Unit,
 ) {
     Card(
-        colors = CardDefaults.cardColors(containerColor = CardGreen),
+        colors = CardDefaults.cardColors(containerColor = WarmPrimaryLight),
         shape = RoundedCornerShape(28.dp),
     ) {
         Column(

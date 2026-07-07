@@ -12,10 +12,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,6 +31,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.eatfit.app.ui.theme.WarmPrimary
+import com.eatfit.app.ui.theme.WarmPrimaryLight
+import com.eatfit.app.ui.theme.WarmSubtle
 import com.eatfit.app.util.Labels
 import com.eatfit.app.util.Tags
 
@@ -53,7 +59,7 @@ fun OnboardingScreen(
     ) {
         Text("🥗 EatFit 吃什么", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
         Text(
-            "录入你的身体数据,AI 立即为你生成今日个性化食谱。",
+            "录入你的身体数据，AI 立即为你生成今日个性化食谱。",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -64,6 +70,10 @@ fun OnboardingScreen(
             label = { Text("昵称") },
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = WarmPrimary,
+                focusedLabelColor = WarmPrimary,
+            ),
         )
 
         SectionTitle("性别")
@@ -81,6 +91,10 @@ fun OnboardingScreen(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 singleLine = true,
                 modifier = Modifier.weight(1f),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = WarmPrimary,
+                    focusedLabelColor = WarmPrimary,
+                ),
             )
             OutlinedTextField(
                 value = state.bodyFatPct,
@@ -89,6 +103,10 @@ fun OnboardingScreen(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 singleLine = true,
                 modifier = Modifier.weight(1f),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = WarmPrimary,
+                    focusedLabelColor = WarmPrimary,
+                ),
             )
         }
 
@@ -100,6 +118,10 @@ fun OnboardingScreen(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 singleLine = true,
                 modifier = Modifier.weight(1f),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = WarmPrimary,
+                    focusedLabelColor = WarmPrimary,
+                ),
             )
             OutlinedTextField(
                 value = state.weightKg,
@@ -108,6 +130,10 @@ fun OnboardingScreen(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 singleLine = true,
                 modifier = Modifier.weight(1f),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = WarmPrimary,
+                    focusedLabelColor = WarmPrimary,
+                ),
             )
         }
 
@@ -132,6 +158,10 @@ fun OnboardingScreen(
                     selected = tag in state.allergens,
                     onClick = { viewModel.toggleAllergen(tag) },
                     label = { Text(tag) },
+                    colors = FilterChipDefaults.filterChipColors(
+                        selectedContainerColor = WarmPrimaryLight,
+                        selectedLabelColor = WarmPrimary,
+                    ),
                 )
             }
         }
@@ -156,6 +186,8 @@ fun OnboardingScreen(
             onClick = { viewModel.submit(isEdit, onDone) },
             enabled = state.isValid && !state.submitting,
             modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(containerColor = WarmPrimary),
+            shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp),
         ) {
             if (state.submitting) {
                 CircularProgressIndicator(
@@ -191,6 +223,10 @@ private fun SegmentChips(
                 selected = key == selected,
                 onClick = { onSelect(key) },
                 label = { Text(label) },
+                colors = FilterChipDefaults.filterChipColors(
+                    selectedContainerColor = WarmPrimaryLight,
+                    selectedLabelColor = WarmPrimary,
+                ),
             )
         }
     }
