@@ -71,6 +71,16 @@ export function RecipesPage() {
                   key={recipe.id}
                   className="rounded-[24px] border border-[#F0E6DD] bg-white p-5 shadow-warm"
                 >
+                  {recipe.imageUrl && (
+                    <div className="mb-4 overflow-hidden rounded-2xl">
+                      <img
+                        src={recipe.imageUrl}
+                        alt={recipe.name}
+                        className="h-40 w-full object-cover"
+                        loading="lazy"
+                      />
+                    </div>
+                  )}
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">

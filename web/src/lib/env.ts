@@ -1,5 +1,5 @@
 export const env = {
-  apiBaseUrl: import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000",
+  apiBaseUrl: import.meta.env.VITE_API_BASE_URL || "https://backend-auushsk3z-jackhes-projects-5ded530b.vercel.app",
   clerkPublishableKey: import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || "",
   supabaseUrl: import.meta.env.VITE_SUPABASE_URL || "",
   supabaseAnonKey: import.meta.env.VITE_SUPABASE_ANON_KEY || "",

@@ -1,5 +1,11 @@
 import Foundation
 
+/// App-level configuration constants.
+enum EatFitConfig {
+    /// Production backend URL. Users no longer need to configure this manually.
+    static let defaultBaseURL = "https://backend-auushsk3z-jackhes-projects-5ded530b.vercel.app"
+}
+
 @MainActor
 final class AppStore: ObservableObject {
     @Published private(set) var profileId: Int?
@@ -12,7 +18,7 @@ final class AppStore: ObservableObject {
     private let baseURLKey = "eatfit.base_url"
 
     init() {
-        baseURLString = UserDefaults.standard.string(forKey: baseURLKey) ?? "http://127.0.0.1:8000"
+        baseURLString = UserDefaults.standard.string(forKey: baseURLKey) ?? EatFitConfig.defaultBaseURL
         profileId = UserDefaults.standard.object(forKey: profileIdKey) as? Int
         loadStoredProfile()
     }

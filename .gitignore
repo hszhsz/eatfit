@@ -1,3 +1,4 @@
 eatfit.db
 keystore.properties
 *.jks
+.vercel

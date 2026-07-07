@@ -52,6 +52,7 @@ data class Recipe(
     val ingredients: List<IngredientItem> = emptyList(),
     val steps: List<String> = emptyList(),
     @SerialName("image_emoji") val imageEmoji: String = "🍽️",
+    @SerialName("image_url") val imageURL: String? = null,
 )
 
 @Serializable

@@ -103,6 +103,7 @@ class RecipeOut(BaseModel):
     ingredients: List[IngredientItem]
     steps: List[str]
     image_emoji: str = "🍽️"
+    image_url: Optional[str] = None
 
 
 

@@ -136,6 +136,7 @@ struct Recipe: Codable, Identifiable, Hashable {
     let ingredients: [IngredientItem]
     let steps: [String]
     let imageEmoji: String
+    let imageURL: String?
 }
 
 struct MealItem: Codable, Hashable, Identifiable {

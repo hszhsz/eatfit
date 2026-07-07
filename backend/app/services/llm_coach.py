@@ -11,7 +11,7 @@ from app.schemas import CoachFocus, CoachRequest, CoachResponse, DailyPlanOut, N
 
 
 DEFAULT_BASE_URL = "https://ark.cn-beijing.volces.com/api/coding/v3"
-DEFAULT_MODEL = "minimax-m3"
+DEFAULT_MODEL = "doubao-1-5-pro-32k-250115"
 DISCLAIMER = "建议仅作饮食管理参考，存在慢病、孕期或特殊医疗情况时应咨询医生或注册营养师。"
 
 

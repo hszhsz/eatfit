@@ -15,7 +15,7 @@ export function CTABanner() {
         {t("cta.subtitle")}
       </p>
       <Link
-        to="/sign-up"
+        to="/app"
         className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-[#FF6B35] transition hover:-translate-y-0.5 hover:bg-[#FFF9F2]"
       >
         {t("cta.button")}

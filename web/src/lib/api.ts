@@ -60,6 +60,7 @@ function mapRecipe(recipe: any): Recipe {
     })),
     steps: recipe.steps,
     imageEmoji: recipe.image_emoji,
+    imageUrl: recipe.image_url ?? null,
   };
 }
 

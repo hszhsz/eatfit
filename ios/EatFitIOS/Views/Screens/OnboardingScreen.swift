@@ -14,16 +14,6 @@ struct OnboardingScreen: View {
                         .foregroundStyle(.secondary)
                 }
 
-                CardSection(title: "后端地址") {
-                    TextField("http://127.0.0.1:8000", text: $store.baseURLString)
-                        .textInputAutocapitalization(.never)
-                        .keyboardType(.URL)
-                        .autocorrectionDisabled()
-                    Text("iOS 模拟器默认可用 `127.0.0.1`；真机调试请改为电脑局域网 IP。")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                }
-
                 ProfileFormView(draft: $viewModel.draft)
 
                 if let errorMessage = viewModel.errorMessage {
@@ -32,7 +22,6 @@ struct OnboardingScreen: View {
                 }
 
                 Button {
-                    store.updateBaseURL(store.baseURLString)
                     Task {
                         _ = await viewModel.submit(using: store)
                     }

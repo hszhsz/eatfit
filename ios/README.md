@@ -30,14 +30,9 @@ open EatFitIOS.xcodeproj
 在 Xcode 中：
 - 选择目标设备（模拟器或真机）
 - 点击 Run ▶
+- 后端地址已硬编码为生产环境 URL，无需手动配置
 
-### 4. 配置后端地址
-
-首次进入 App 时，在 Onboarding 页面填写后端地址：
-- **iOS 模拟器**：`http://127.0.0.1:8000`
-- **iPhone 真机**：改为电脑局域网 IP，例如 `http://192.168.1.100:8000`
-
-### 5. 构建 IPA（需要 Apple Developer 账号）
+### 4. 构建 IPA（需要 Apple Developer 账号）
 
 ```bash
 # Archive

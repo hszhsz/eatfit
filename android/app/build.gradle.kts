@@ -28,7 +28,7 @@ android {
         vectorDrawables { useSupportLibrary = true }
 
         // Default backend URL — user can override in app settings.
-        buildConfigField("String", "API_BASE_URL_DEFAULT", "\"http://10.0.2.2:8000/\"")
+        buildConfigField("String", "API_BASE_URL_DEFAULT", "\"https://backend-auushsk3z-jackhes-projects-5ded530b.vercel.app/\"")
     }
 
     signingConfigs {

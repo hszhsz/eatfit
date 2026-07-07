@@ -63,6 +63,7 @@ export interface Recipe {
   ingredients: IngredientItem[];
   steps: string[];
   imageEmoji: string;
+  imageUrl?: string | null;
 }
 
 export interface MealItem {

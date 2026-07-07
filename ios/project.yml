@@ -16,6 +16,7 @@ targets:
         excludes:
           - Resources
           - Preview Content
+      - path: EatFitIOS/Assets.xcassets
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.eatfit.ios

@@ -7,16 +7,6 @@ struct ProfileScreen: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
-                CardSection(title: "服务地址") {
-                    TextField("http://127.0.0.1:8000", text: $store.baseURLString)
-                        .textInputAutocapitalization(.never)
-                        .keyboardType(.URL)
-                        .autocorrectionDisabled()
-                    Text("真机需要将地址改成电脑局域网 IP，修改后立即生效。")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                }
-
                 if let profile = store.profile {
                     HStack(spacing: 12) {
                         MetricCard(title: "目标", value: profile.goal.label, tint: .orange)
@@ -37,7 +27,6 @@ struct ProfileScreen: View {
                 }
 
                 Button {
-                    store.updateBaseURL(store.baseURLString)
                     Task {
                         _ = await viewModel.save(using: store)
                     }
