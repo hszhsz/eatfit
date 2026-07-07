@@ -36,15 +36,27 @@ from app.supabase_client import get_supabase
 router = APIRouter(prefix="/api/web", tags=["web"])
 
 def _compute_target_from_profile(profile: dict | Any) -> NutritionTarget:
+    if isinstance(profile, dict):
+        gender = Gender(profile["gender"])
+        age = profile["age"]
+        height_cm = profile["height_cm"]
+        weight_kg = profile["weight_kg"]
+        activity_level = ActivityLevel(profile["activity_level"])
+        goal = Goal(profile["goal"])
+    else:
+        gender = Gender(profile.gender)
+        age = profile.age
+        height_cm = profile.height_cm
+        weight_kg = profile.weight_kg
+        activity_level = ActivityLevel(profile.activity_level)
+        goal = Goal(profile.goal)
     return compute_target(
-        gender=Gender(profile.gender if isinstance(profile, dict) else profile.gender),
-        age=profile.age if isinstance(profile, dict) else profile.age,
-        height_cm=profile.height_cm if isinstance(profile, dict) else profile.height_cm,
-        weight_kg=profile.weight_kg if isinstance(profile, dict) else profile.weight_kg,
-        activity_level=ActivityLevel(
-            profile.activity_level if isinstance(profile, dict) else profile.activity_level
-        ),
-        goal=Goal(profile.goal if isinstance(profile, dict) else profile.goal),
+        gender=gender,
+        age=age,
+        height_cm=height_cm,
+        weight_kg=weight_kg,
+        activity_level=activity_level,
+        goal=goal,
     )
 
 
@@ -114,12 +126,12 @@ def _build_plan(profile: dict | Any, target: NutritionTarget, plan_date: str | N
 
 @router.post("/target", response_model=NutritionTarget)
 def get_target(body: WebTargetRequest):
-    return _compute_target_from_profile(body.profile.dict())
+    return _compute_target_from_profile(body.profile.model_dump(mode="json"))
 
 
 @router.post("/plan", response_model=DailyPlanOut)
 def get_plan(body: WebPlanRequest):
-    profile = body.profile.dict()
+    profile = body.profile.model_dump(mode="json")
     target = _compute_target_from_profile(profile)
     return _build_plan(profile, target, body.date)
 
@@ -132,7 +144,7 @@ def get_grocery(body: WebPlanRequest):
 
 @router.post("/coach/advice", response_model=CoachResponse)
 def get_advice(body: WebCoachAdviceRequest):
-    profile = body.profile.dict()
+    profile = body.profile.model_dump(mode="json")
     target = _compute_target_from_profile(profile)
     plan = _build_plan(profile, target, body.date)
     return generate_coach_advice(_profile_namespace(profile), target, plan, body.request)
