@@ -76,13 +76,23 @@ final class OnboardingViewModel: ObservableObject {
         errorMessage = nil
         defer { isSubmitting = false }
 
-        do {
-            let profile = try await store.makeClient().createProfile(payload)
-            store.handleProfileSaved(profile)
-            return true
-        } catch {
-            errorMessage = error.localizedDescription
-            return false
-        }
+        // Save profile locally — no network call needed
+        let profile = UserProfile(
+            id: 0,
+            name: payload.name,
+            gender: payload.gender,
+            age: payload.age,
+            heightCm: payload.heightCm,
+            weightKg: payload.weightKg,
+            bodyFatPct: payload.bodyFatPct,
+            activityLevel: payload.activityLevel,
+            goal: payload.goal,
+            allergens: payload.allergens,
+            dislikedTags: payload.dislikedTags,
+            dietPreference: payload.dietPreference,
+            createdAt: nil
+        )
+        store.handleProfileSaved(profile)
+        return true
     }
 }

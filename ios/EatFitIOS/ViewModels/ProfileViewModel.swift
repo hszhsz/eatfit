@@ -10,21 +10,14 @@ final class ProfileViewModel: ObservableObject {
 
     func load(from store: AppStore) async {
         guard let cached = store.profile else {
-            do {
-                try await store.refreshProfile()
-                if let profile = store.profile {
-                    draft = ProfileDraft(profile: profile)
-                }
-            } catch {
-                errorMessage = error.localizedDescription
-            }
+            errorMessage = "尚未创建档案。"
             return
         }
         draft = ProfileDraft(profile: cached)
     }
 
     func save(using store: AppStore) async -> Bool {
-        guard let profileId = store.profileId else {
+        guard store.profile != nil else {
             errorMessage = "尚未创建档案。"
             return false
         }
@@ -38,15 +31,26 @@ final class ProfileViewModel: ObservableObject {
         successMessage = nil
         defer { isSaving = false }
 
-        do {
-            let profile = try await store.makeClient().updateProfile(id: profileId, payload: payload)
-            store.handleProfileSaved(profile)
-            draft = ProfileDraft(profile: profile)
-            successMessage = "档案已更新。"
-            return true
-        } catch {
-            errorMessage = error.localizedDescription
-            return false
-        }
+        // Save profile locally — no network call needed
+        let existing = store.profile
+        let profile = UserProfile(
+            id: existing?.id ?? 0,
+            name: payload.name,
+            gender: payload.gender,
+            age: payload.age,
+            heightCm: payload.heightCm,
+            weightKg: payload.weightKg,
+            bodyFatPct: payload.bodyFatPct,
+            activityLevel: payload.activityLevel,
+            goal: payload.goal,
+            allergens: payload.allergens,
+            dislikedTags: payload.dislikedTags,
+            dietPreference: payload.dietPreference,
+            createdAt: existing?.createdAt
+        )
+        store.handleProfileSaved(profile)
+        draft = ProfileDraft(profile: profile)
+        successMessage = "档案已更新。"
+        return true
     }
 }

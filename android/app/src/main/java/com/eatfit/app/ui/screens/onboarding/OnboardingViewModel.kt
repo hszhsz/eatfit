@@ -2,12 +2,14 @@ package com.eatfit.app.ui.screens.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.eatfit.app.data.model.UserProfile
 import com.eatfit.app.data.model.UserProfileCreate
 import com.eatfit.app.data.repository.EatFitRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -53,55 +55,55 @@ class OnboardingViewModel @Inject constructor(
         }
     }
 
-    /** Loads an existing profile into the form for editing. */
-    fun loadExisting(id: Int) {
+    /** Loads an existing locally-stored profile into the form for editing. */
+    fun loadExisting() {
         viewModelScope.launch {
-            repository.getProfile(id).onSuccess { p ->
+            val stored = repository.profileFlow.first()
+            if (stored != null) {
                 _state.update {
                     it.copy(
-                        name = p.name,
-                        gender = p.gender,
-                        age = p.age.toString(),
-                        heightCm = p.heightCm.toInt().toString(),
-                        weightKg = p.weightKg.toInt().toString(),
-                        bodyFatPct = p.bodyFatPct?.toInt()?.toString() ?: "",
-                        activityLevel = p.activityLevel,
-                        goal = p.goal,
-                        allergens = p.allergens.toSet(),
-                        vegetarian = p.dietPreference == "vegetarian",
+                        name = stored.name,
+                        gender = stored.gender,
+                        age = stored.age.toString(),
+                        heightCm = stored.heightCm.toInt().toString(),
+                        weightKg = stored.weightKg.toInt().toString(),
+                        bodyFatPct = stored.bodyFatPct?.toInt()?.toString() ?: "",
+                        activityLevel = stored.activityLevel,
+                        goal = stored.goal,
+                        allergens = stored.allergens.toSet(),
+                        vegetarian = stored.dietPreference == "vegetarian",
                     )
                 }
             }
         }
     }
 
-    fun submit(existingId: Int?, onDone: () -> Unit) {
+    fun submit(isEdit: Boolean, onDone: () -> Unit) {
         val s = _state.value
         if (!s.isValid) {
             _state.update { it.copy(error = "请完整填写姓名、年龄、身高、体重") }
             return
         }
         _state.update { it.copy(submitting = true, error = null) }
-        val body = UserProfileCreate(
-            name = s.name.trim(),
-            gender = s.gender,
-            age = s.age.toInt(),
-            heightCm = s.heightCm.toDouble(),
-            weightKg = s.weightKg.toDouble(),
-            bodyFatPct = s.bodyFatPct.toDoubleOrNull(),
-            activityLevel = s.activityLevel,
-            goal = s.goal,
-            allergens = s.allergens.toList(),
-            dislikedTags = emptyList(),
-            dietPreference = if (s.vegetarian) "vegetarian" else "normal",
-        )
         viewModelScope.launch {
-            val result = if (existingId != null) {
-                repository.updateProfile(existingId, body)
-            } else {
-                repository.createProfile(body)
+            val existingId = if (isEdit) repository.profileIdFlow.first() else null
+            val profile = UserProfile(
+                id = existingId ?: 0,
+                name = s.name.trim(),
+                gender = s.gender,
+                age = s.age.toInt(),
+                heightCm = s.heightCm.toDouble(),
+                weightKg = s.weightKg.toDouble(),
+                bodyFatPct = s.bodyFatPct.toDoubleOrNull(),
+                activityLevel = s.activityLevel,
+                goal = s.goal,
+                allergens = s.allergens.toList(),
+                dislikedTags = emptyList(),
+                dietPreference = if (s.vegetarian) "vegetarian" else "normal",
+            )
+            runCatching {
+                repository.saveProfile(profile)
             }
-            result
                 .onSuccess {
                     _state.update { it.copy(submitting = false) }
                     onDone()
@@ -110,7 +112,7 @@ class OnboardingViewModel @Inject constructor(
                     _state.update {
                         it.copy(
                             submitting = false,
-                            error = "保存失败:${e.message ?: "请检查后端是否已启动"}",
+                            error = "保存失败:${e.message ?: "未知错误"}",
                         )
                     }
                 }

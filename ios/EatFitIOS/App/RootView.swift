@@ -8,7 +8,7 @@ struct RootView: View {
             if store.isBootstrapping {
                 ProgressView("正在加载 EatFit")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else if store.profileId == nil {
+            } else if store.profile == nil {
                 NavigationStack {
                     OnboardingScreen()
                 }

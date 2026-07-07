@@ -8,21 +8,19 @@ final class AppStore: ObservableObject {
     @Published private(set) var isBootstrapping = true
 
     private let profileIdKey = "eatfit.profile_id"
+    private let profileJsonKey = "eatfit.profile_json"
     private let baseURLKey = "eatfit.base_url"
 
     init() {
         baseURLString = UserDefaults.standard.string(forKey: baseURLKey) ?? "http://127.0.0.1:8000"
         profileId = UserDefaults.standard.object(forKey: profileIdKey) as? Int
+        loadStoredProfile()
     }
 
     func boot() async {
         defer { isBootstrapping = false }
-        guard profileId != nil else { return }
-        do {
-            try await refreshProfile()
-        } catch {
-            profile = nil
-        }
+        // Profile is loaded locally; no network fetch needed.
+        // If there's no stored profile, the UI will show onboarding.
     }
 
     func makeClient() -> APIClient {
@@ -39,16 +37,32 @@ final class AppStore: ObservableObject {
         profileId = profile.id
         self.profile = profile
         UserDefaults.standard.set(profile.id, forKey: profileIdKey)
-    }
-
-    func refreshProfile() async throws {
-        guard let profileId else { return }
-        profile = try await makeClient().getProfile(id: profileId)
+        saveProfileToUserDefaults(profile)
     }
 
     func clearSession() {
         profileId = nil
         profile = nil
         UserDefaults.standard.removeObject(forKey: profileIdKey)
+        UserDefaults.standard.removeObject(forKey: profileJsonKey)
+    }
+
+    // MARK: - Local profile persistence
+
+    private func loadStoredProfile() {
+        guard let data = UserDefaults.standard.data(forKey: profileJsonKey) else { return }
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        if let stored = try? decoder.decode(UserProfile.self, from: data) {
+            profile = stored
+        }
+    }
+
+    private func saveProfileToUserDefaults(_ profile: UserProfile) {
+        let encoder = JSONEncoder()
+        encoder.keyEncodingStrategy = .convertToSnakeCase
+        if let data = try? encoder.encode(profile) {
+            UserDefaults.standard.set(data, forKey: profileJsonKey)
+        }
     }
 }

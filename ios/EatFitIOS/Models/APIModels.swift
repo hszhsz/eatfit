@@ -185,3 +185,40 @@ struct CoachResponse: Codable {
     let mealStrategy: [String]
     let disclaimer: String
 }
+
+// MARK: - Web Request Bodies
+
+struct WebTargetRequest: Codable {
+    let profile: UserProfilePayload
+}
+
+struct WebPlanRequest: Codable {
+    let profile: UserProfilePayload
+    let date: String?
+}
+
+struct WebCoachAdviceRequest: Codable {
+    let profile: UserProfilePayload
+    let date: String?
+    let request: CoachRequest
+}
+
+// MARK: - UserProfilePayload convenience
+
+extension UserProfilePayload {
+    init(from profile: UserProfile) {
+        self.init(
+            name: profile.name,
+            gender: profile.gender,
+            age: profile.age,
+            heightCm: profile.heightCm,
+            weightKg: profile.weightKg,
+            bodyFatPct: profile.bodyFatPct,
+            activityLevel: profile.activityLevel,
+            goal: profile.goal,
+            allergens: profile.allergens,
+            dislikedTags: profile.dislikedTags,
+            dietPreference: profile.dietPreference
+        )
+    }
+}

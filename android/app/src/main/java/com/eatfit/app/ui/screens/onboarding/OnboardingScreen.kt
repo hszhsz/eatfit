@@ -34,14 +34,14 @@ import com.eatfit.app.util.Tags
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun OnboardingScreen(
-    existingProfileId: Int?,
+    isEdit: Boolean,
     onDone: () -> Unit,
     viewModel: OnboardingViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
 
-    LaunchedEffect(existingProfileId) {
-        if (existingProfileId != null) viewModel.loadExisting(existingProfileId)
+    LaunchedEffect(isEdit) {
+        if (isEdit) viewModel.loadExisting()
     }
 
     Column(
@@ -153,7 +153,7 @@ fun OnboardingScreen(
         }
 
         Button(
-            onClick = { viewModel.submit(existingProfileId, onDone) },
+            onClick = { viewModel.submit(isEdit, onDone) },
             enabled = state.isValid && !state.submitting,
             modifier = Modifier.fillMaxWidth(),
         ) {
@@ -163,7 +163,7 @@ fun OnboardingScreen(
                     strokeWidth = 2.dp,
                 )
             }
-            Text(if (existingProfileId != null) "保存并查看食谱" else "生成我的今日食谱")
+            Text(if (isEdit) "保存并查看食谱" else "生成我的今日食谱")
         }
     }
 }

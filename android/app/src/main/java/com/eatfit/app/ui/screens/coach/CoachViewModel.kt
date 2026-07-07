@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eatfit.app.data.model.CoachRequest
 import com.eatfit.app.data.model.CoachResponse
+import com.eatfit.app.data.model.UserProfileCreate
 import com.eatfit.app.data.repository.EatFitRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -45,15 +46,30 @@ class CoachViewModel @Inject constructor(
     fun requestAdvice() {
         _state.update { it.copy(loading = true, error = null) }
         viewModelScope.launch {
-            val profileId = repository.profileIdFlow.first()
-            if (profileId == null) {
+            val profile = repository.profileFlow.first()
+            if (profile == null) {
                 _state.update { it.copy(loading = false, error = "尚未创建档案") }
                 return@launch
             }
+            val createBody = with(profile) {
+                UserProfileCreate(
+                    name = name,
+                    gender = gender,
+                    age = age,
+                    heightCm = heightCm,
+                    weightKg = weightKg,
+                    bodyFatPct = bodyFatPct,
+                    activityLevel = activityLevel,
+                    goal = goal,
+                    allergens = allergens,
+                    dislikedTags = dislikedTags,
+                    dietPreference = dietPreference,
+                )
+            }
             val snapshot = _state.value
             repository.getCoachAdvice(
-                profileId = profileId,
-                body = CoachRequest(
+                profile = createBody,
+                request = CoachRequest(
                     message = snapshot.input.takeIf { it.isNotBlank() },
                     focus = snapshot.selectedFocus,
                 ),

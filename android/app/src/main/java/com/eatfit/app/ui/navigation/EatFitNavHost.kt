@@ -22,7 +22,7 @@ import com.eatfit.app.ui.screens.today.TodayScreen
 fun EatFitNavHost() {
     val navController = rememberNavController()
     val appViewModel: AppViewModel = hiltViewModel()
-    val profileId by appViewModel.profileId.collectAsState()
+    val profile by appViewModel.profile.collectAsState()
 
     // If a profile already exists, jump straight to Today; otherwise onboard.
     val startDestination = Screen.Onboarding.route
@@ -30,7 +30,7 @@ fun EatFitNavHost() {
     NavHost(navController = navController, startDestination = startDestination) {
         composable(Screen.Onboarding.route) {
             OnboardingScreen(
-                existingProfileId = profileId,
+                isEdit = profile != null,
                 onDone = {
                     navController.navigate(Screen.Today.route) {
                         popUpTo(Screen.Onboarding.route) { inclusive = true }

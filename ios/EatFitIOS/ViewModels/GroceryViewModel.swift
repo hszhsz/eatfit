@@ -7,7 +7,7 @@ final class GroceryViewModel: ObservableObject {
     @Published var errorMessage: String?
 
     func load(using store: AppStore) async {
-        guard let profileId = store.profileId else {
+        guard let profile = store.profile else {
             errorMessage = "尚未创建档案。"
             groceryList = nil
             return
@@ -18,7 +18,8 @@ final class GroceryViewModel: ObservableObject {
         defer { isLoading = false }
 
         do {
-            groceryList = try await store.makeClient().getGroceryList(profileId: profileId)
+            let payload = UserProfilePayload(from: profile)
+            groceryList = try await store.makeClient().getGroceryList(profile: payload)
         } catch {
             groceryList = nil
             errorMessage = error.localizedDescription

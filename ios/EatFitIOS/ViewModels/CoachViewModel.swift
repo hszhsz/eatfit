@@ -14,7 +14,7 @@ final class CoachViewModel: ObservableObject {
     }
 
     func requestAdvice(using store: AppStore) async {
-        guard let profileId = store.profileId else {
+        guard let profile = store.profile else {
             errorMessage = "尚未创建档案。"
             response = nil
             return
@@ -25,8 +25,9 @@ final class CoachViewModel: ObservableObject {
         defer { isLoading = false }
 
         do {
+            let payload = UserProfilePayload(from: profile)
             response = try await store.makeClient().getCoachAdvice(
-                profileId: profileId,
+                profile: payload,
                 request: CoachRequest(
                     message: input.trimmingCharacters(in: .whitespacesAndNewlines).nilIfEmpty,
                     focus: selectedFocus

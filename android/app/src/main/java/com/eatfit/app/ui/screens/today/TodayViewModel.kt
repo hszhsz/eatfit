@@ -34,12 +34,27 @@ class TodayViewModel @Inject constructor(
     fun load() {
         _state.update { it.copy(loading = true, error = null) }
         viewModelScope.launch {
-            val id = repository.profileIdFlow.first()
-            if (id == null) {
+            val profile = repository.profileFlow.first()
+            if (profile == null) {
                 _state.update { it.copy(loading = false, error = "尚未创建档案") }
                 return@launch
             }
-            repository.getDailyPlan(id)
+            val createBody = with(profile) {
+                com.eatfit.app.data.model.UserProfileCreate(
+                    name = name,
+                    gender = gender,
+                    age = age,
+                    heightCm = heightCm,
+                    weightKg = weightKg,
+                    bodyFatPct = bodyFatPct,
+                    activityLevel = activityLevel,
+                    goal = goal,
+                    allergens = allergens,
+                    dislikedTags = dislikedTags,
+                    dietPreference = dietPreference,
+                )
+            }
+            repository.getDailyPlan(createBody)
                 .onSuccess { plan -> _state.update { it.copy(loading = false, plan = plan) } }
                 .onFailure { e ->
                     _state.update {

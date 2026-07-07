@@ -7,7 +7,7 @@ final class TodayViewModel: ObservableObject {
     @Published var errorMessage: String?
 
     func load(using store: AppStore) async {
-        guard let profileId = store.profileId else {
+        guard let profile = store.profile else {
             errorMessage = "尚未创建档案。"
             plan = nil
             return
@@ -18,7 +18,8 @@ final class TodayViewModel: ObservableObject {
         defer { isLoading = false }
 
         do {
-            plan = try await store.makeClient().getDailyPlan(profileId: profileId)
+            let payload = UserProfilePayload(from: profile)
+            plan = try await store.makeClient().getDailyPlan(profile: payload)
         } catch {
             plan = nil
             errorMessage = error.localizedDescription

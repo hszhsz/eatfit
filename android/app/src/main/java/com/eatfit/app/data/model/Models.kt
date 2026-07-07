@@ -4,6 +4,22 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
+data class WebTargetRequest(val profile: UserProfileCreate)
+
+@Serializable
+data class WebPlanRequest(
+    val profile: UserProfileCreate,
+    val date: String? = null,
+)
+
+@Serializable
+data class WebCoachAdviceRequest(
+    val profile: UserProfileCreate,
+    val date: String? = null,
+    val request: CoachRequest,
+)
+
+@Serializable
 data class NutritionTarget(
     val bmr: Double,
     val tdee: Double,

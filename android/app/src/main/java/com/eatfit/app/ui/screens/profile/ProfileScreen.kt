@@ -20,7 +20,7 @@ import com.eatfit.app.ui.screens.onboarding.OnboardingScreen
 
 /**
  * The profile editing screen reuses the onboarding form, pre-filled with the
- * current profile. Saving updates the body metrics and re-derives the plan.
+ * current profile. Saving updates the local storage and re-derives the plan.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,7 +29,7 @@ fun ProfileScreen(
     onSaved: () -> Unit,
     appViewModel: AppViewModel = hiltViewModel(),
 ) {
-    val profileId by appViewModel.profileId.collectAsState()
+    val profile by appViewModel.profile.collectAsState()
 
     Scaffold(
         topBar = {
@@ -43,14 +43,14 @@ fun ProfileScreen(
             )
         },
     ) { padding ->
-        val id = profileId
-        if (id == null) {
+        val p = profile
+        if (p == null) {
             LoadingState(Modifier.padding(padding))
         } else {
             // Reuse the onboarding form in edit mode.
             androidx.compose.foundation.layout.Box(Modifier.padding(padding)) {
                 OnboardingScreen(
-                    existingProfileId = id,
+                    isEdit = true,
                     onDone = onSaved,
                 )
             }

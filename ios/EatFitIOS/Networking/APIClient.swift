@@ -73,21 +73,7 @@ struct APIClient {
         return try decoder.decode(Response.self, from: data)
     }
 
-    func createProfile(_ payload: UserProfilePayload) async throws -> UserProfile {
-        try await send("/api/profiles", method: "POST", body: payload)
-    }
-
-    func getProfile(id: Int) async throws -> UserProfile {
-        try await send("/api/profiles/\(id)")
-    }
-
-    func updateProfile(id: Int, payload: UserProfilePayload) async throws -> UserProfile {
-        try await send("/api/profiles/\(id)", method: "PUT", body: payload)
-    }
-
-    func getTarget(id: Int) async throws -> NutritionTarget {
-        try await send("/api/profiles/\(id)/target")
-    }
+    // MARK: - Recipes (unchanged)
 
     func listRecipes(mealType: MealType? = nil, tag: String? = nil) async throws -> [Recipe] {
         var queryItems: [URLQueryItem] = []
@@ -104,18 +90,22 @@ struct APIClient {
         try await send("/api/recipes/\(id)")
     }
 
-    func getDailyPlan(profileId: Int, date: String? = nil) async throws -> DailyPlan {
-        let queryItems = date.map { [URLQueryItem(name: "date", value: $0)] } ?? []
-        return try await send("/api/plan/\(profileId)", queryItems: queryItems)
+    // MARK: - Web endpoints (stateless POST)
+
+    func getTarget(profile: UserProfilePayload) async throws -> NutritionTarget {
+        try await send("/api/web/target", method: "POST", body: WebTargetRequest(profile: profile))
     }
 
-    func getGroceryList(profileId: Int, date: String? = nil) async throws -> GroceryList {
-        let queryItems = date.map { [URLQueryItem(name: "date", value: $0)] } ?? []
-        return try await send("/api/plan/\(profileId)/grocery", queryItems: queryItems)
+    func getDailyPlan(profile: UserProfilePayload, date: String? = nil) async throws -> DailyPlan {
+        try await send("/api/web/plan", method: "POST", body: WebPlanRequest(profile: profile, date: date))
     }
 
-    func getCoachAdvice(profileId: Int, request: CoachRequest) async throws -> CoachResponse {
-        try await send("/api/coach/\(profileId)/advice", method: "POST", body: request)
+    func getGroceryList(profile: UserProfilePayload, date: String? = nil) async throws -> GroceryList {
+        try await send("/api/web/grocery", method: "POST", body: WebPlanRequest(profile: profile, date: date))
+    }
+
+    func getCoachAdvice(profile: UserProfilePayload, date: String? = nil, request: CoachRequest) async throws -> CoachResponse {
+        try await send("/api/web/coach/advice", method: "POST", body: WebCoachAdviceRequest(profile: profile, date: date, request: request))
     }
 }
 
