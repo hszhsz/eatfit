@@ -1,0 +1,135 @@
+<!--pages/onboarding/onboarding.wxml-->
+<view class="container">
+
+  <!-- 步骤指示器 -->
+  <view class="steps flex-row justify-between px-lg py-lg">
+    <view class="step-item flex-col items-center">
+      <view class="step-dot {{step >= 1 ? 'active' : ''}}">1</view>
+      <text class="text-xs {{step >= 1 ? 'text-orange' : 'text-gray'}}">基础信息</text>
+    </view>
+    <view class="step-line {{step >= 2 ? 'active' : ''}}"></view>
+    <view class="step-item flex-col items-center">
+      <view class="step-dot {{step >= 2 ? 'active' : ''}}">2</view>
+      <text class="text-xs {{step >= 2 ? 'text-orange' : 'text-gray'}}">身体数据</text>
+    </view>
+    <view class="step-line {{step >= 3 ? 'active' : ''}}"></view>
+    <view class="step-item flex-col items-center">
+      <view class="step-dot {{step >= 3 ? 'active' : ''}}">3</view>
+      <text class="text-xs {{step >= 3 ? 'text-orange' : 'text-gray'}}">目标偏好</text>
+    </view>
+  </view>
+
+  <!-- Step 1: 基础信息 -->
+  <view wx:if="{{step === 1}}" class="form-section px-lg">
+    <view class="form-group mb-lg">
+      <text class="text-sm text-gray mb-sm">姓名</text>
+      <input class="form-input" placeholder="你的称呼" value="{{form.name}}" data-field="name" bindinput="onInput" />
+    </view>
+
+    <view class="form-group mb-lg">
+      <text class="text-sm text-gray mb-sm">性别</text>
+      <radio-group bindchange="onGenderChange">
+        <label class="radio-label">
+          <radio value="male" checked="{{form.gender === 'male'}}" color="#ff8a3d" /> 男
+        </label>
+        <label class="radio-label">
+          <radio value="female" checked="{{form.gender === 'female'}}" color="#ff8a3d" /> 女
+        </label>
+      </radio-group>
+    </view>
+
+    <view class="form-group mb-lg">
+      <text class="text-sm text-gray mb-sm">年龄</text>
+      <input class="form-input" type="number" placeholder="10-100 岁" value="{{form.age}}" data-field="age" bindinput="onInput" />
+    </view>
+
+    <button class="btn-primary mt-lg" bindtap="nextStep">下一步</button>
+  </view>
+
+  <!-- Step 2: 身体数据 -->
+  <view wx:if="{{step === 2}}" class="form-section px-lg">
+    <view class="form-group mb-lg">
+      <text class="text-sm text-gray mb-sm">身高 (cm)</text>
+      <input class="form-input" type="digit" placeholder="100-250" value="{{form.heightCm}}" data-field="heightCm" bindinput="onInput" />
+    </view>
+
+    <view class="form-group mb-lg">
+      <text class="text-sm text-gray mb-sm">体重 (kg)</text>
+      <input class="form-input" type="digit" placeholder="30-250" value="{{form.weightKg}}" data-field="weightKg" bindinput="onInput" />
+    </view>
+
+    <view class="form-group mb-lg">
+      <text class="text-sm text-gray mb-sm">体脂率 (%) <text class="text-xs text-gray">选填</text></text>
+      <input class="form-input" type="digit" placeholder="如 18.5" value="{{form.bodyFatPct}}" data-field="bodyFatPct" bindinput="onInput" />
+    </view>
+
+    <view class="form-group mb-lg">
+      <text class="text-sm text-gray mb-sm">活动水平</text>
+      <picker mode="selector" range="{{activityOptions}}" range-key="label" bindchange="onActivityChange">
+        <view class="form-picker">
+          <text>{{activityOptions[activityIndex].label}}</text>
+          <text class="text-gray">›</text>
+        </view>
+      </picker>
+    </view>
+
+    <view class="flex-row gap-md mt-lg">
+      <button class="btn-secondary flex-1" bindtap="prevStep">上一步</button>
+      <button class="btn-primary flex-1" bindtap="nextStep">下一步</button>
+    </view>
+  </view>
+
+  <!-- Step 3: 目标偏好 -->
+  <view wx:if="{{step === 3}}" class="form-section px-lg">
+    <view class="form-group mb-lg">
+      <text class="text-sm text-gray mb-sm">目标</text>
+      <view class="option-grid">
+        <view wx:for="{{goalOptions}}" wx:key="value"
+          class="option-chip {{form.goal === item.value ? 'active' : ''}}"
+          data-value="{{item.value}}" bindtap="onGoalSelect">
+          <text>{{item.label}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="form-group mb-lg">
+      <text class="text-sm text-gray mb-sm">饮食偏好</text>
+      <view class="option-grid">
+        <view wx:for="{{dietOptions}}" wx:key="value"
+          class="option-chip {{form.dietPreference === item.value ? 'active' : ''}}"
+          data-value="{{item.value}}" bindtap="onDietSelect">
+          <text>{{item.label}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="form-group mb-lg">
+      <text class="text-sm text-gray mb-sm">过敏原 <text class="text-xs text-gray">可多选</text></text>
+      <view class="chip-row flex-row gap-sm" style="flex-wrap: wrap;">
+        <view wx:for="{{allergenOptions}}" wx:key="*this"
+          class="chip {{form.allergens.includes(item) ? 'active' : ''}}"
+          data-value="{{item}}" bindtap="onAllergenToggle">
+          <text>{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="form-group mb-lg">
+      <text class="text-sm text-gray mb-sm">忌口 <text class="text-xs text-gray">可多选</text></text>
+      <view class="chip-row flex-row gap-sm" style="flex-wrap: wrap;">
+        <view wx:for="{{dislikedOptions}}" wx:key="*this"
+          class="chip {{form.dislikedTags.includes(item) ? 'active' : ''}}"
+          data-value="{{item}}" bindtap="onDislikedToggle">
+          <text>{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="flex-row gap-md mt-lg">
+      <button class="btn-secondary flex-1" bindtap="prevStep">上一步</button>
+      <button class="btn-primary flex-1" bindtap="submit" disabled="{{submitting}}">
+        {{submitting ? '保存中…' : '完成录入'}}
+      </button>
+    </view>
+  </view>
+</view>

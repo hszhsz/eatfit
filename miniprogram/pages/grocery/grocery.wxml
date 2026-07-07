@@ -1,0 +1,41 @@
+<!--pages/grocery/grocery.wxml-->
+<view class="container">
+  <!-- Loading -->
+  <view wx:if="{{loading}}" class="loading-wrap">
+    <view class="loading-dot"></view>
+    <text class="text-sm text-gray mt-sm">生成买菜清单…</text>
+  </view>
+
+  <!-- 未录入体测 -->
+  <view wx:elif="{{!profile}}" class="empty-state">
+    <text class="text-6xl">🛒</text>
+    <text class="text-sm text-gray mt-md">请先录入体测数据</text>
+    <button class="btn-primary mt-lg" bindtap="goOnboarding">去录入</button>
+  </view>
+
+  <!-- 买菜清单 -->
+  <block wx:elif="{{grocery}}">
+    <view class="header flex-row justify-between px-md py-md">
+      <view class="flex-col">
+        <text class="text-lg font-bold">{{grocery.items.length}} 种食材</text>
+        <text class="text-xs text-gray">基于今日食谱生成</text>
+      </view>
+      <button class="btn-secondary copy-btn" bindtap="copyList">复制清单</button>
+    </view>
+
+    <view class="grocery-list px-md">
+      <view wx:for="{{grocery.grouped}}" wx:key="*this" wx:for-item="items" wx:for-index="category" class="category-section mb-md">
+        <view class="category-header flex-row items-center gap-sm">
+          <text class="text-base font-semibold">{{category}}</text>
+          <text class="text-xs text-gray">{{items.length}} 项</text>
+        </view>
+        <view class="bg-card-flat p-lg">
+          <view wx:for="{{items}}" wx:key="name" wx:for-item="item" class="grocery-row flex-row justify-between">
+            <text class="text-sm">{{item.name}}</text>
+            <text class="text-sm text-gray">{{item.totalAmountG}}g</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

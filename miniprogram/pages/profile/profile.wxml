@@ -1,0 +1,118 @@
+<!--pages/profile/profile.wxml-->
+<view class="container">
+
+  <!-- 未录入 -->
+  <view wx:if="{{!profile}}" class="empty-state">
+    <text class="text-6xl">👤</text>
+    <text class="text-sm text-gray mt-md">还未录入体测数据</text>
+    <button class="btn-primary mt-lg" bindtap="goOnboarding">开始录入</button>
+  </view>
+
+  <!-- 已有数据 -->
+  <block wx:else>
+    <!-- 用户卡片 -->
+    <view class="user-card bg-card p-lg mx-md mb-md">
+      <view class="flex-row items-center gap-md">
+        <view class="avatar">{{profile.name ? profile.name[0] : '👤'}}</view>
+        <view class="flex-col flex-1">
+          <text class="text-lg font-bold">{{profile.name}}</text>
+          <text class="text-xs text-gray">{{profile.gender === 'male' ? '男' : '女'}} · {{profile.age}}岁</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 身体数据 -->
+    <view class="section mx-md mb-md">
+      <text class="text-base font-semibold mb-sm">身体数据</text>
+      <view class="bg-card-flat p-lg">
+        <view class="data-row flex-row justify-between">
+          <text class="text-sm text-gray">身高</text>
+          <text class="text-sm font-semibold">{{profile.heightCm}} cm</text>
+        </view>
+        <view class="data-row flex-row justify-between">
+          <text class="text-sm text-gray">体重</text>
+          <text class="text-sm font-semibold">{{profile.weightKg}} kg</text>
+        </view>
+        <view class="data-row flex-row justify-between" wx:if="{{profile.bodyFatPct}}">
+          <text class="text-sm text-gray">体脂率</text>
+          <text class="text-sm font-semibold">{{profile.bodyFatPct}}%</text>
+        </view>
+        <view class="data-row flex-row justify-between">
+          <text class="text-sm text-gray">活动水平</text>
+          <text class="text-sm font-semibold">{{activityLabels[profile.activityLevel]}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 目标 -->
+    <view class="section mx-md mb-md">
+      <text class="text-base font-semibold mb-sm">目标设定</text>
+      <view class="bg-card-flat p-lg">
+        <view class="data-row flex-row justify-between">
+          <text class="text-sm text-gray">当前目标</text>
+          <text class="text-sm font-semibold text-orange">{{goalLabels[profile.goal]}}</text>
+        </view>
+        <view class="data-row flex-row justify-between" wx:if="{{profile.dietPreference}}">
+          <text class="text-sm text-gray">饮食偏好</text>
+          <text class="text-sm font-semibold">{{profile.dietPreference === 'vegetarian' ? '素食' : '正常'}}</text>
+        </view>
+        <view class="data-row flex-row justify-between" wx:if="{{profile.allergens.length > 0}}">
+          <text class="text-sm text-gray">过敏原</text>
+          <text class="text-sm font-semibold">{{profile.allergens}}</text>
+        </view>
+        <view class="data-row flex-row justify-between" wx:if="{{profile.dislikedTags.length > 0}}">
+          <text class="text-sm text-gray">忌口</text>
+          <text class="text-sm font-semibold">{{profile.dislikedTags}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 营养目标 -->
+    <view wx:if="{{target}}" class="section mx-md mb-md">
+      <text class="text-base font-semibold mb-sm">每日营养目标</text>
+      <view class="target-grid bg-card-flat p-lg">
+        <view class="target-cell">
+          <text class="text-2xl font-bold text-orange">{{target.targetCalories}}</text>
+          <text class="text-xs text-gray">目标 kcal</text>
+        </view>
+        <view class="target-cell">
+          <text class="text-lg font-bold">{{target.bmr}}</text>
+          <text class="text-xs text-gray">BMR</text>
+        </view>
+        <view class="target-cell">
+          <text class="text-lg font-bold">{{target.tdee}}</text>
+          <text class="text-xs text-gray">TDEE</text>
+        </view>
+      </view>
+      <view class="macro-grid bg-card-flat p-lg mt-sm">
+        <view class="macro-cell">
+          <text class="text-lg font-bold text-orange">{{target.proteinG}}g</text>
+          <text class="text-xs text-gray">蛋白质</text>
+        </view>
+        <view class="macro-cell">
+          <text class="text-lg font-bold">{{target.carbsG}}g</text>
+          <text class="text-xs text-gray">碳水</text>
+        </view>
+        <view class="macro-cell">
+          <text class="text-lg font-bold">{{target.fatG}}g</text>
+          <text class="text-xs text-gray">脂肪</text>
+        </view>
+      </view>
+      <view class="bg-card-flat p-lg mt-sm">
+        <text class="text-xs text-gray-light">{{target.explanation}}</text>
+      </view>
+    </view>
+
+    <!-- 操作 -->
+    <view class="actions mx-md mb-lg">
+      <button class="btn-secondary mb-sm" bindtap="goOnboarding">编辑体测数据</button>
+      <button class="btn-danger" bindtap="onReset">清除数据</button>
+    </view>
+
+    <!-- 关于 -->
+    <view class="about px-md pb-lg">
+      <text class="text-xs text-gray">EatFit 吃什么 · AI 体测饮食管家</text>
+      <text class="text-xs text-gray mt-sm">v1.0.0 · 数据仅供参考，不构成医学建议</text>
+    </view>
+  </block>
+</view>

@@ -1,0 +1,47 @@
+<!--pages/recipes/recipes.wxml-->
+<view class="container">
+  <!-- 筛选条 -->
+  <scroll-view scroll-x class="filter-bar" enhanced show-scrollbar="{{false}}">
+    <view class="filter-list flex-row gap-sm">
+      <view wx:for="{{filters}}" wx:key="value"
+        class="filter-chip {{activeFilter === item.value ? 'active' : ''}}"
+        data-value="{{item.value}}" bindtap="onFilterTap">
+        <text>{{item.label}}</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- Loading -->
+  <view wx:if="{{loading}}" class="loading-wrap">
+    <view class="loading-dot"></view>
+    <text class="text-sm text-gray mt-sm">加载食谱库…</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view wx:elif="{{filteredRecipes.length === 0}}" class="empty-state">
+    <text class="text-6xl">🍽️</text>
+    <text class="text-sm text-gray mt-md">暂无食谱</text>
+  </view>
+
+  <!-- 食谱列表 -->
+  <view wx:else class="recipe-list px-md">
+    <view wx:for="{{filteredRecipes}}" wx:key="id"
+      class="recipe-card bg-card-flat p-md mb-sm flex-row gap-md"
+      data-id="{{item.id}}" bindtap="onRecipeTap">
+      <view class="recipe-emoji-box {{item.mealType}}">
+        <text class="recipe-emoji">{{item.imageEmoji}}</text>
+      </view>
+      <view class="flex-1 flex-col">
+        <text class="text-xs text-orange">{{item.mealType === 'breakfast' ? '早餐' : item.mealType === 'lunch' ? '午餐' : item.mealType === 'dinner' ? '晚餐' : '加餐'}} · {{item.cookMinutes}}min</text>
+        <text class="text-base font-semibold mt-sm">{{item.name}}</text>
+        <view class="flex-row gap-sm mt-sm">
+          <text class="tag" wx:for="{{item.tags}}" wx:key="*this" wx:for-item="tag">{{tag}}</text>
+        </view>
+      </view>
+      <view class="flex-col items-center justify-center">
+        <text class="text-lg font-bold">{{item.calories}}</text>
+        <text class="text-xs text-gray">kcal</text>
+      </view>
+    </view>
+  </view>
+</view>

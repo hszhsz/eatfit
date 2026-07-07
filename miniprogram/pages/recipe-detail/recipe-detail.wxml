@@ -1,0 +1,73 @@
+<!--pages/recipe-detail/recipe-detail.wxml-->
+<view class="container">
+  <view wx:if="{{loading}}" class="loading-wrap">
+    <view class="loading-dot"></view>
+    <text class="text-sm text-gray mt-sm">加载中…</text>
+  </view>
+
+  <block wx:elif="{{recipe}}">
+    <!-- 头部 -->
+    <view class="hero {{recipe.mealType}}">
+      <view class="hero-emoji">
+        <text>{{recipe.imageEmoji}}</text>
+      </view>
+      <view class="hero-info">
+        <text class="text-xs text-orange">{{mealLabel}} · {{recipe.cookMinutes}} 分钟</text>
+        <text class="text-xl font-bold mt-sm text-white">{{recipe.name}}</text>
+        <view class="flex-row gap-sm mt-sm">
+          <text class="tag" wx:for="{{recipe.tags}}" wx:key="*this" wx:for-item="tag">{{tag}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 营养信息 -->
+    <view class="section mx-md mb-md">
+      <text class="text-base font-semibold mb-sm">营养成分</text>
+      <view class="nutrition-grid bg-card-flat p-lg">
+        <view class="nutri-cell">
+          <text class="text-2xl font-bold text-orange">{{recipe.calories}}</text>
+          <text class="text-xs text-gray">kcal</text>
+        </view>
+        <view class="nutri-cell">
+          <text class="text-lg font-bold">{{recipe.proteinG}}</text>
+          <text class="text-xs text-gray">蛋白质(g)</text>
+        </view>
+        <view class="nutri-cell">
+          <text class="text-lg font-bold">{{recipe.carbsG}}</text>
+          <text class="text-xs text-gray">碳水(g)</text>
+        </view>
+        <view class="nutri-cell">
+          <text class="text-lg font-bold">{{recipe.fatG}}</text>
+          <text class="text-xs text-gray">脂肪(g)</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 食材清单 -->
+    <view class="section mx-md mb-md">
+      <text class="text-base font-semibold mb-sm">食材清单</text>
+      <view class="bg-card-flat p-lg">
+        <view wx:for="{{recipe.ingredients}}" wx:key="name" class="ingredient-row flex-row justify-between">
+          <text class="text-sm">{{item.name}}</text>
+          <text class="text-sm text-gray">{{item.amountG}}g · {{item.category}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 烹饪步骤 -->
+    <view class="section mx-md mb-lg">
+      <text class="text-base font-semibold mb-sm">烹饪步骤</text>
+      <view class="bg-card-flat p-lg">
+        <view wx:for="{{recipe.steps}}" wx:key="*this" wx:for-item="step" wx:for-index="idx" class="step-row">
+          <view class="step-num">{{idx + 1}}</view>
+          <text class="text-sm flex-1">{{step}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 过敏原提示 -->
+    <view wx:if="{{recipe.allergens.length > 0}}" class="allergen-alert mx-md mb-lg">
+      <text class="text-sm">⚠️ 含过敏原：{{recipe.allergens}}</text>
+    </view>
+  </block>
+</view>

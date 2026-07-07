@@ -1,4 +1,7 @@
+node_modules/
+miniprogram_npm/
+.DS_Store
+*.log
 eatfit.db
-keystore.properties
-*.jks
-.vercel
+android/keystore.properties
+.vercel/

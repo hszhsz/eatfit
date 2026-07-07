@@ -1,0 +1,99 @@
+<!--pages/coach/coach.wxml-->
+<view class="container">
+
+  <!-- 未录入体测 -->
+  <view wx:if="{{!profile}}" class="empty-state">
+    <text class="text-6xl">🤖</text>
+    <text class="text-sm text-gray mt-md">请先录入体测数据</text>
+    <button class="btn-primary mt-lg" bindtap="goOnboarding">去录入</button>
+  </view>
+
+  <block wx:else>
+    <!-- 焦点选择 -->
+    <view class="section px-md py-md">
+      <text class="text-base font-semibold mb-sm">选择咨询方向</text>
+      <view class="focus-grid">
+        <view wx:for="{{focusOptions}}" wx:key="value"
+          class="focus-chip {{selectedFocus === item.value ? 'active' : ''}}"
+          data-value="{{item.value}}" bindtap="onFocusTap">
+          <text class="focus-emoji">{{item.emoji}}</text>
+          <text class="focus-label">{{item.label}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 补充说明 -->
+    <view class="section px-md mb-md">
+      <text class="text-sm text-gray mb-sm">补充说明 <text class="text-xs text-gray">选填</text></text>
+      <textarea class="message-input" placeholder="今天吃了什么？有什么困惑？想怎么调整？"
+        value="{{userMessage}}" bindinput="onMessageInput" maxlength="300" />
+    </view>
+
+    <!-- 生成按钮 -->
+    <view class="px-md mb-lg">
+      <button class="btn-primary" bindtap="getAdvice" disabled="{{loading}}">
+        {{loading ? 'AI 分析中…' : '🤖 获取 AI 教练建议'}}
+      </button>
+    </view>
+
+    <!-- Loading -->
+    <view wx:if="{{loading}}" class="loading-wrap">
+      <view class="loading-dot"></view>
+      <text class="text-sm text-gray mt-sm">AI 正在分析你的饮食数据…</text>
+    </view>
+
+    <!-- 建议结果 -->
+    <view wx:if="{{advice}}" class="advice-section px-md">
+      <!-- 头部评分 -->
+      <view class="advice-hero bg-card p-lg mb-md">
+        <view class="flex-row justify-between items-center">
+          <view class="flex-1">
+            <text class="text-xs text-orange">{{advice.focus === 'daily_review' ? '今日复盘' : advice.focus === 'meal_strategy' ? '下一餐策略' : advice.focus === 'eating_out' ? '外食选择' : '嘴馋管理'}}</text>
+            <text class="text-lg font-bold mt-sm text-white">{{advice.headline}}</text>
+          </view>
+          <view class="score-ring {{advice.score >= 80 ? 'good' : advice.score >= 60 ? 'ok' : 'bad'}}">
+            <text class="score-num">{{advice.score}}</text>
+          </view>
+        </view>
+        <text class="text-sm text-gray-light mt-md">{{advice.summary}}</text>
+      </view>
+
+      <!-- 风险提醒 -->
+      <view wx:if="{{advice.riskAlerts.length > 0}}" class="advice-card bg-card-flat p-lg mb-md">
+        <text class="text-sm font-semibold mb-sm">⚠️ 风险提醒</text>
+        <view wx:for="{{advice.riskAlerts}}" wx:key="*this" class="advice-item">
+          <text class="text-sm text-gray-light">• {{item}}</text>
+        </view>
+      </view>
+
+      <!-- 营养洞察 -->
+      <view wx:if="{{advice.nutritionInsights.length > 0}}" class="advice-card bg-card-flat p-lg mb-md">
+        <text class="text-sm font-semibold mb-sm">💡 营养洞察</text>
+        <view wx:for="{{advice.nutritionInsights}}" wx:key="*this" class="advice-item">
+          <text class="text-sm text-gray-light">• {{item}}</text>
+        </view>
+      </view>
+
+      <!-- 下一步行动 -->
+      <view wx:if="{{advice.nextActions.length > 0}}" class="advice-card bg-card-flat p-lg mb-md">
+        <text class="text-sm font-semibold mb-sm">✅ 建议行动</text>
+        <view wx:for="{{advice.nextActions}}" wx:key="*this" class="advice-item">
+          <text class="text-sm text-gray-light">{{index + 1}}. {{item}}</text>
+        </view>
+      </view>
+
+      <!-- 餐次策略 -->
+      <view wx:if="{{advice.mealStrategy.length > 0}}" class="advice-card bg-card-flat p-lg mb-md">
+        <text class="text-sm font-semibold mb-sm">🍽️ 餐次策略</text>
+        <view wx:for="{{advice.mealStrategy}}" wx:key="*this" class="advice-item">
+          <text class="text-sm text-gray-light">• {{item}}</text>
+        </view>
+      </view>
+
+      <!-- 免责声明 -->
+      <view class="disclaimer px-md mb-lg">
+        <text class="text-xs text-gray">{{advice.disclaimer}}</text>
+      </view>
+    </view>
+  </block>
+</view>

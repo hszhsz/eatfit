@@ -1,0 +1,16 @@
+{
+  "miniprogramRoot": "miniprogram/",
+  "projectname": "eatfit-miniprogram",
+  "description": "EatFit 吃什么 · AI 体测饮食管家",
+  "appid": "touristappid",
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true,
+    "newFeature": true
+  },
+  "compileType": "miniprogram",
+  "libVersion": "3.5.0"
+}

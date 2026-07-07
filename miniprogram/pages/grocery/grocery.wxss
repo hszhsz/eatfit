@@ -1,0 +1,47 @@
+/* pages/grocery/grocery.wxss */
+.container {
+  min-height: 100vh;
+  padding-bottom: 40rpx;
+}
+
+.loading-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120rpx 0;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100rpx 48rpx;
+}
+.text-6xl { font-size: 96rpx; }
+
+.header {
+  align-items: center;
+}
+.copy-btn {
+  font-size: 26rpx;
+  padding: 12rpx 32rpx;
+}
+
+.grocery-list {
+  padding-top: 8rpx;
+}
+.category-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+.category-header {
+  padding-left: 8rpx;
+}
+.grocery-row {
+  padding: 14rpx 0;
+  border-bottom: 1rpx solid #1a1a1a;
+}
+.grocery-row:last-child {
+  border-bottom: none;
+}

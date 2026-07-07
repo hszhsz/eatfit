@@ -1,0 +1,127 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+
+  <!-- 顶部问候 -->
+  <view class="top-bar">
+    <view class="text-sm text-gray">{{dateLabel}} · 早安</view>
+    <view class="text-2xl font-bold mt-sm">今天吃 <text class="gradient-text">什么</text></view>
+  </view>
+
+  <!-- Loading -->
+  <view wx:if="{{loading}}" class="loading-wrap">
+    <view class="loading-dot"></view>
+    <text class="text-sm text-gray mt-sm">正在生成今日食谱…</text>
+  </view>
+
+  <!-- 未录入体测 -->
+  <view wx:elif="{{!profile}}" class="empty-state">
+    <view class="empty-emoji">🥗</view>
+    <view class="text-lg font-semibold mt-md">开始你的饮食管理</view>
+    <view class="text-sm text-gray mt-sm">录入身体数据，AI 为你生成个性化食谱</view>
+    <button class="btn-primary mt-lg" bindtap="goOnboarding">立即开始</button>
+  </view>
+
+  <!-- 有数据 -->
+  <block wx:else>
+    <!-- 体测卡片 -->
+    <view class="profile-card bg-card p-lg mx-md mb-md">
+      <view class="flex-row justify-between mb-sm">
+        <text class="text-sm text-gray">🎯 目标</text>
+        <text class="text-sm font-semibold">{{profile.goal === 'lose_fat' ? '减脂' : profile.goal === 'gain_muscle' ? '增肌' : '保持'}}</text>
+      </view>
+      <view class="flex-row justify-between mb-sm">
+        <text class="text-sm text-gray">🔥 今日卡路里</text>
+        <text class="text-sm font-semibold">{{plan.totalCalories || 0}} <text class="text-xs text-gray">/ {{target.targetCalories || 0}} kcal</text></text>
+      </view>
+      <view class="progress-track">
+        <view class="progress-fill-orange" style="width: {{nutritionPct}}%;"></view>
+      </view>
+      <view class="profile-stats flex-row justify-between mt-md">
+        <view class="mini-stat">
+          <text class="text-xl font-bold text-orange">{{profile.weightKg}}</text>
+          <text class="text-xs text-gray">体重(kg)</text>
+        </view>
+        <view class="mini-stat">
+          <text class="text-xl font-bold text-orange">{{profile.heightCm}}</text>
+          <text class="text-xs text-gray">身高(cm)</text>
+        </view>
+        <view class="mini-stat">
+          <text class="text-xl font-bold text-orange">{{profile.age}}</text>
+          <text class="text-xs text-gray">年龄</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 营养摄入 -->
+    <view class="section mx-md mb-md">
+      <view class="flex-row justify-between mb-sm">
+        <text class="text-base font-semibold">今日营养摄入</text>
+        <text class="text-xs text-gray">已摄入 {{nutritionPct}}%</text>
+      </view>
+      <view class="nutrition-card bg-card-flat p-lg flex-row gap-lg">
+        <!-- 圆环 -->
+        <view class="ring-wrap">
+          <view class="ring-svg">
+            <view class="ring-bg"></view>
+            <view class="ring-fg" style="background: conic-gradient(#ff8a3d 0% {{nutritionPct}}%, #1f1f1f {{nutritionPct}}% 100%);"></view>
+          </view>
+          <view class="ring-center">
+            <text class="text-lg font-bold text-orange">{{nutritionPct}}%</text>
+            <text class="text-xs text-gray">完成</text>
+          </view>
+        </view>
+        <!-- 营养明细 -->
+        <view class="flex-1 flex-col gap-sm">
+          <view class="nutri-row flex-row justify-between">
+            <text class="text-sm text-gray-light">🥩 蛋白质</text>
+            <text class="text-sm font-semibold">{{plan.totalProteinG || 0}}g <text class="text-xs text-gray">/ {{target.proteinG || 0}}g</text></text>
+          </view>
+          <view class="nutri-row flex-row justify-between">
+            <text class="text-sm text-gray-light">🍚 碳水</text>
+            <text class="text-sm font-semibold">{{plan.totalCarbsG || 0}}g <text class="text-xs text-gray">/ {{target.carbsG || 0}}g</text></text>
+          </view>
+          <view class="nutri-row flex-row justify-between">
+            <text class="text-sm text-gray-light">🥑 脂肪</text>
+            <text class="text-sm font-semibold">{{plan.totalFatG || 0}}g <text class="text-xs text-gray">/ {{target.fatG || 0}}g</text></text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 今日食谱 -->
+    <view class="section mx-md mb-lg">
+      <view class="flex-row justify-between mb-sm">
+        <text class="text-base font-semibold">今日食谱</text>
+        <text class="text-xs text-gray">{{plan.meals.length}} 餐</text>
+      </view>
+      <view wx:for="{{plan.meals}}" wx:key="mealType" class="meal-card bg-card-flat p-md mb-sm flex-row gap-md" bindtap="goRecipeDetail" data-id="{{item.recipe.id}}">
+        <view class="meal-emoji-box {{item.mealType}}">
+          <text class="meal-emoji">{{item.recipe.imageEmoji}}</text>
+        </view>
+        <view class="flex-1 flex-col">
+          <text class="text-xs text-orange">{{mealLabels[item.mealType]}}</text>
+          <text class="text-base font-semibold mt-sm">{{item.recipe.name}}</text>
+          <view class="flex-row gap-sm mt-sm">
+            <text class="tag" wx:for="{{item.recipe.tags}}" wx:key="*this" wx:for-item="tag">{{tag}}</text>
+          </view>
+        </view>
+        <view class="meal-cal flex-col items-center justify-center">
+          <text class="text-lg font-bold">{{item.recipe.calories}}</text>
+          <text class="text-xs text-gray">kcal</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 快捷入口 -->
+    <view class="shortcuts mx-md mb-lg flex-row gap-md">
+      <view class="shortcut-card bg-card-flat p-md flex-1 flex-col items-center" bindtap="goCoach">
+        <text class="text-2xl">🤖</text>
+        <text class="text-sm mt-sm">AI 教练</text>
+      </view>
+      <view class="shortcut-card bg-card-flat p-md flex-1 flex-col items-center" bindtap="goGrocery">
+        <text class="text-2xl">🛒</text>
+        <text class="text-sm mt-sm">买菜清单</text>
+      </view>
+    </view>
+  </block>
+</view>

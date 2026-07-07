@@ -1,0 +1,124 @@
+/* pages/index/index.wxss */
+.container {
+  min-height: 100vh;
+  padding-bottom: 40rpx;
+}
+
+.top-bar {
+  padding: 24rpx 32rpx 16rpx;
+}
+
+.loading-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 0;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100rpx 48rpx;
+}
+.empty-emoji {
+  font-size: 96rpx;
+}
+
+/* ===== 体测卡片 ===== */
+.profile-card {
+  /* uses bg-card from global */
+}
+.profile-stats {
+  padding-top: 16rpx;
+  border-top: 1rpx solid #1f1f1f;
+}
+.mini-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+.mini-stat text {
+  display: block;
+}
+
+/* ===== 营养圆环 ===== */
+.nutrition-card {
+  align-items: center;
+}
+.ring-wrap {
+  position: relative;
+  width: 160rpx;
+  height: 160rpx;
+  flex-shrink: 0;
+}
+.ring-svg {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+}
+.ring-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #1f1f1f;
+}
+.ring-fg {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+.ring-center {
+  position: absolute;
+  inset: 20rpx;
+  border-radius: 50%;
+  background: #141414;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.ring-center text {
+  display: block;
+}
+.nutri-row {
+  padding: 6rpx 0;
+}
+
+/* ===== 食谱卡片 ===== */
+.meal-card {
+  align-items: center;
+}
+.meal-emoji-box {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.meal-emoji-box.breakfast { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.meal-emoji-box.lunch { background: linear-gradient(135deg, #22c55e, #15803d); }
+.meal-emoji-box.dinner { background: linear-gradient(135deg, #3b82f6, #1e40af); }
+.meal-emoji-box.snack { background: linear-gradient(135deg, #a855f7, #7e22ce); }
+.meal-emoji {
+  font-size: 48rpx;
+}
+.meal-cal text {
+  display: block;
+}
+
+/* ===== 快捷入口 ===== */
+.shortcut-card {
+  /* bg-card-flat from global */
+}
+
+/* 间距工具 */
+.mx-md { margin-left: 24rpx; margin-right: 24rpx; }
+.mb-md { margin-bottom: 16rpx; }
+.mb-lg { margin-bottom: 24rpx; }

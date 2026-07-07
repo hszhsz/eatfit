@@ -1,0 +1,48 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/onboarding/onboarding",
+    "pages/recipes/recipes",
+    "pages/recipe-detail/recipe-detail",
+    "pages/grocery/grocery",
+    "pages/coach/coach",
+    "pages/profile/profile"
+  ],
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#0a0a0a",
+    "navigationBarTitleText": "吃什么",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#0a0a0a"
+  },
+  "tabBar": {
+    "color": "#6b7280",
+    "selectedColor": "#ff8a3d",
+    "backgroundColor": "#0a0a0a",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "今日"
+      },
+      {
+        "pagePath": "pages/recipes/recipes",
+        "text": "食谱"
+      },
+      {
+        "pagePath": "pages/grocery/grocery",
+        "text": "买菜"
+      },
+      {
+        "pagePath": "pages/coach/coach",
+        "text": "教练"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}
