@@ -28,9 +28,7 @@ export function AppDownload() {
             </p>
           </div>
           <a
-            href="https://github.com/hszhsz/eatfit/releases/tag/v2.0"
-            target="_blank"
-            rel="noreferrer"
+            href="/downloads/eatfit-android-v2.0.apk"
             className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[#FF6B35] px-5 py-2.5 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#E55329]"
           >
             <Download className="h-4 w-4" />
