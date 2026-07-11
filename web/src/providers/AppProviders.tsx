@@ -31,7 +31,10 @@ function SupabaseProvider({ children }: PropsWithChildren) {
 
     return createSupabaseClient(async () => {
       try {
-        return await getToken({ template: "supabase" });
+        // Use Clerk session tokens so Supabase can validate them via the
+        // current third-party Clerk integration instead of the deprecated
+        // custom JWT template flow.
+        return await getToken();
       } catch {
         return null;
       }
