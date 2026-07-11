@@ -58,12 +58,12 @@ export function ProductShowcase() {
 function PhoneFrame({ children }: { children: ReactNode }) {
   return (
     <div className="relative w-full max-w-[270px]">
-      <div className="absolute left-0 top-[104px] h-14 w-1.5 rounded-r-full bg-[#2C1A11] shadow-[2px_0_6px_rgba(0,0,0,0.2)]" />
-      <div className="absolute left-0 top-[150px] h-10 w-1 rounded-r-full bg-[#3A2418]" />
-      <div className="absolute right-0 top-[136px] h-16 w-1.5 rounded-l-full bg-[#2C1A11] shadow-[-2px_0_6px_rgba(0,0,0,0.18)]" />
+      <div className="absolute left-0 top-[104px] h-14 w-1.5 rounded-r-full bg-[#8F7C70] shadow-[2px_0_6px_rgba(95,76,62,0.18)]" />
+      <div className="absolute left-0 top-[150px] h-10 w-1 rounded-r-full bg-[#A39287]" />
+      <div className="absolute right-0 top-[136px] h-16 w-1.5 rounded-l-full bg-[#8F7C70] shadow-[-2px_0_6px_rgba(95,76,62,0.16)]" />
 
-      <div className="relative rounded-[42px] bg-[linear-gradient(160deg,#3B2316_0%,#120A07_38%,#2B170F_68%,#0F0907_100%)] p-[7px] shadow-[0_28px_60px_rgba(31,22,17,0.22),0_10px_20px_rgba(255,107,53,0.12)] ring-1 ring-[#4A2E20]/20">
-        <div className="pointer-events-none absolute inset-[7px] rounded-[35px] bg-[linear-gradient(180deg,rgba(255,255,255,0.16),transparent_18%,transparent_82%,rgba(255,255,255,0.08))]" />
+      <div className="relative rounded-[42px] bg-[linear-gradient(160deg,#E6D8CC_0%,#BFA99A_24%,#8E776A_52%,#D9C8BC_78%,#7A655A_100%)] p-[7px] shadow-[0_28px_60px_rgba(88,67,54,0.18),0_10px_20px_rgba(255,107,53,0.10)] ring-1 ring-[#E9DDD2]/70">
+        <div className="pointer-events-none absolute inset-[7px] rounded-[35px] bg-[linear-gradient(180deg,rgba(255,255,255,0.34),transparent_16%,transparent_82%,rgba(101,78,64,0.14))]" />
 
         <div className="relative aspect-[9/19.5] overflow-hidden rounded-[35px] bg-[linear-gradient(180deg,#F8F3ED_0%,#F6EFE8_100%)]">
           <div className="absolute inset-x-0 top-0 h-20 bg-[linear-gradient(180deg,rgba(255,255,255,0.75),rgba(255,255,255,0))]" />
@@ -82,7 +82,7 @@ function PhoneFrame({ children }: { children: ReactNode }) {
               {children}
             </div>
 
-            <div className="mx-auto mt-3 h-1.5 w-24 rounded-full bg-[#2B1A11]/78" />
+            <div className="mx-auto mt-3 h-1.5 w-24 rounded-full bg-[#8E776A]/68" />
           </div>
         </div>
       </div>
