@@ -23,3 +23,9 @@ dist-ssr
 *.sln
 *.sw?
 .vercel
+
+# Vercel CLI runtime files (auto-generated on every vercel deploy)
+.env.production
+config.json
+telemetry-device.json
+telemetry-session.json
