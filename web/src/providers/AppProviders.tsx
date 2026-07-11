@@ -34,11 +34,40 @@ function SupabaseProvider({ children }: PropsWithChildren) {
         // Use Clerk session tokens so Supabase can validate them via the
         // current third-party Clerk integration instead of the deprecated
         // custom JWT template flow.
-        return await getToken();
-      } catch {
+        const token = await getToken();
+        if (!token) {
+          // No active session → return null so supabase-js falls back to the
+          // anonymous (anon) key, which RLS will reject for write operations.
+          return null;
+        }
+        return token;
+      } catch (error) {
+        // Clerk's session storage can throw IndexedDB errors like
+        // "No suitable key or wrong key type" when the browser's local
+        // schema is stale (e.g. after a Clerk version bump or a hard
+        // refresh). Surface the failure so callers can show a helpful
+        // "please sign out and back in" message instead of a generic
+        // 401/403 from Supabase.
+        const message =
+          error instanceof Error ? error.message : String(error);
+        console.warn(
+          "[eatfit] Failed to retrieve Clerk session token:",
+          message,
+        );
+        if (
+          typeof message === "string" &&
+          /no suitable key|wrong key type/i.test(message)
+        ) {
+          throw new Error(
+            "CLERK_SESSION_STORAGE_ERROR: Your browser has stale Clerk " +
+              "session data. Please sign out and sign back in to refresh it.",
+          );
+        }
         return null;
       }
     });
+    // We intentionally only depend on `getToken`; the client only needs
+    // to be rebuilt when the getToken function reference changes.
   }, [getToken]);
 
   return (

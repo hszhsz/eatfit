@@ -194,7 +194,14 @@ export function ProfilePage() {
               {isSaving ? t("profile.saving") : t("profile.save")}
             </button>
             {saveError ? (
-              <div className="text-sm text-red-500">{String(saveError.message)}</div>
+              <div className="text-sm text-red-500">
+                {String(saveError.message)}
+                {String(saveError.message).startsWith("CLERK_SESSION_STORAGE_ERROR") ? (
+                  <div className="mt-1 text-xs text-[#6B5544]">
+                    Tip: open <a href="/sign-in" className="underline">/sign-in</a> in a new tab, sign out, then sign back in to refresh the local session.
+                  </div>
+                ) : null}
+              </div>
             ) : profile ? (
               <div className="text-sm text-[#6B5544]">
                 {t("profile.lastUpdated", { date: new Date(profile.updatedAt).toLocaleString() })}
