@@ -8,8 +8,11 @@ import {
 } from "@tanstack/react-query";
 import {
   createContext,
+  useCallback,
   useContext,
   useMemo,
+  useRef,
+  useState,
   type PropsWithChildren,
 } from "react";
 import { BrowserRouter } from "react-router-dom";
@@ -22,8 +25,22 @@ import { LanguageProvider } from "@/i18n/LanguageContext";
 const queryClient = new QueryClient();
 const SupabaseContext = createContext<SupabaseClient | null>(null);
 
+/**
+ * Stores the most recent Clerk token-retrieval error so the UI can surface a
+ * helpful recovery tip instead of just a generic Supabase 401/403.
+ */
+const ClerkSessionErrorContext = createContext<string | null>(null);
+
 function SupabaseProvider({ children }: PropsWithChildren) {
   const { getToken } = useAuth();
+  const lastErrorRef = useRef<string | null>(null);
+  const [, forceRender] = useState(0);
+
+  const setError = useCallback((msg: string | null) => {
+    lastErrorRef.current = msg;
+    forceRender((n) => n + 1);
+  }, []);
+
   const client = useMemo(() => {
     if (!hasSupabase) {
       return null;
@@ -31,65 +48,54 @@ function SupabaseProvider({ children }: PropsWithChildren) {
 
     return createSupabaseClient(async () => {
       try {
-        // Use Clerk session tokens so Supabase can validate them via the
-        // current third-party Clerk integration instead of the deprecated
-        // custom JWT template flow.
         const token = await getToken();
         if (!token) {
-          // No active session → return null so supabase-js falls back to the
-          // anonymous (anon) key, which RLS will reject for write operations.
           return null;
         }
+        // Token retrieved successfully — clear any previous error.
+        setError(null);
         return token;
       } catch (error) {
-        // Clerk's session storage can throw IndexedDB errors like
-        // "No suitable key or wrong key type" when the browser's local
-        // schema is stale (e.g. after a Clerk version bump or a hard
-        // refresh). Surface the failure so callers can show a helpful
-        // "please sign out and back in" message instead of a generic
-        // 401/403 from Supabase.
         const message =
           error instanceof Error ? error.message : String(error);
-        const stack = error instanceof Error ? error.stack : undefined;
-        // Use console.error so it shows up red in devtools even if
-        // warnings are filtered, and include the full stack so we can
-        // pinpoint where the IndexedDB error is being thrown from.
         console.error(
           "[eatfit] Failed to retrieve Clerk session token:",
           message,
         );
+        const stack = error instanceof Error ? error.stack : undefined;
         if (stack) {
           console.error("[eatfit] Stack:", stack);
         }
-        if (
-          typeof message === "string" &&
-          /no suitable key|wrong key type/i.test(message)
-        ) {
-          throw new Error(
-            "CLERK_SESSION_STORAGE_ERROR: Your browser has stale Clerk " +
-              "session data. Please sign out and sign back in to refresh it.",
-          );
-        }
-        // Re-throw unknown errors so the real root cause isn't hidden
-        // behind a generic 42501 from Supabase.
-        throw error instanceof Error
-          ? new Error(`CLERK_GET_TOKEN_FAILED: ${message}`)
-          : new Error("CLERK_GET_TOKEN_FAILED: unknown error");
+
+        // Persist the error so the UI can show a recovery tip. We return
+        // null so supabase-js falls back to the anon key (RLS will then
+        // produce a 401/403 for writes — still confusing, but at least
+        // the user sees the tip alongside it).
+        setError(message);
+        return null;
       }
     });
-    // We intentionally only depend on `getToken`; the client only needs
-    // to be rebuilt when the getToken function reference changes.
-  }, [getToken]);
+  }, [getToken, setError]);
 
   return (
     <SupabaseContext.Provider value={client}>
-      {children}
+      <ClerkSessionErrorContext.Provider value={lastErrorRef.current}>
+        {children}
+      </ClerkSessionErrorContext.Provider>
     </SupabaseContext.Provider>
   );
 }
 
 export function useSupabaseClient() {
   return useContext(SupabaseContext);
+}
+
+/**
+ * Returns the most recent Clerk session error message (e.g. IndexedDB
+ * "No suitable key or wrong key type"), or null if token retrieval succeeded.
+ */
+export function useClerkSessionError() {
+  return useContext(ClerkSessionErrorContext);
 }
 
 export function AppProviders({ children }: PropsWithChildren) {

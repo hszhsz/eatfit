@@ -5,6 +5,7 @@ import { z } from "zod";
 
 import { EmptyState } from "@/components/common/EmptyState";
 import { SectionCard } from "@/components/common/SectionCard";
+import { useClerkSessionError } from "@/providers/AppProviders";
 import { useCurrentProfile } from "@/hooks/useCurrentProfile";
 import { getActivityLabels, getGoalLabels, joinTags, splitTags } from "@/lib/format";
 import type { UserProfileFormValues } from "@/types/eatfit";
@@ -46,6 +47,7 @@ const defaultValues: ProfileFormSchema = {
 
 export function ProfilePage() {
   const { data: profile, saveProfile, isSaving, saveError } = useCurrentProfile();
+  const clerkSessionError = useClerkSessionError();
   const { lang, t } = useLang();
   const form = useForm<ProfileFormSchema>({
     resolver: zodResolver(profileSchema),
@@ -95,6 +97,30 @@ export function ProfilePage() {
 
   return (
     <div className="space-y-6">
+      {clerkSessionError ? (
+        <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4">
+          <div className="flex items-start gap-3">
+            <span className="mt-0.5 text-lg">⚠️</span>
+            <div>
+              <div className="text-sm font-semibold text-amber-800">
+                {t("profile.clerkSessionErrorTitle")}
+              </div>
+              <div className="mt-1 text-xs text-amber-700">
+                {t("profile.clerkSessionErrorBody")}
+              </div>
+              <div className="mt-2">
+                <a
+                  href="/sign-in"
+                  className="inline-block rounded-full bg-amber-600 px-4 py-1.5 text-xs font-semibold text-white transition hover:bg-amber-700"
+                >
+                  {t("profile.signOutAndBack")}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
       <SectionCard title={t("profile.title")} eyebrow={t("profile.eyebrow")}>
         <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">

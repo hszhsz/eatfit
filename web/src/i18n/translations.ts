@@ -236,6 +236,10 @@ export const translations: Record<Lang, TranslationDict> = {
     "profile.noProfileTitle": "No profile row yet",
     "profile.noProfileBody":
       "Once you save the form above, the dashboard will start generating targets, plans, grocery output, and AI coach sessions.",
+    "profile.clerkSessionErrorTitle": "Session error detected",
+    "profile.clerkSessionErrorBody":
+      "Clerk's local session storage is not working correctly. This often happens when browser IndexedDB data becomes stale after an app update. Sign out and sign back in to fix it.",
+    "profile.signOutAndBack": "Sign out & back in →",
 
     // PlanPage
     "plan.eyebrow": "Planner",
@@ -576,6 +580,10 @@ export const translations: Record<Lang, TranslationDict> = {
     "profile.noProfileTitle": "尚无档案记录",
     "profile.noProfileBody":
       "保存表单后，面板将开始生成目标、计划、买菜清单和 AI 顾问会话。",
+    "profile.clerkSessionErrorTitle": "检测到会话错误",
+    "profile.clerkSessionErrorBody":
+      "Clerk 本地会话存储工作异常，通常发生在 App 更新后浏览器 IndexedDB 数据过期。请退出登录并重新登录以修复。",
+    "profile.signOutAndBack": "退出并重新登录 →",
 
     // PlanPage
     "plan.eyebrow": "计划",
