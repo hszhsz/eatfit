@@ -123,6 +123,15 @@ class SupabaseClient:
 
     # ---------- Profiles ----------
 
+    @staticmethod
+    def _parse_profile_row(row: dict[str, Any]) -> dict[str, Any]:
+        """Parse JSON-string fields from Supabase row back to Python lists."""
+        for field in ("allergens", "disliked_tags"):
+            val = row.get(field)
+            if isinstance(val, str):
+                row[field] = json.loads(val)
+        return row
+
     def fetch_profile(self, profile_id: str) -> dict | None:
         """Fetch a profile by UUID. Returns None if not found."""
         if not self.available:
@@ -135,7 +144,7 @@ class SupabaseClient:
             )
             resp.raise_for_status()
             rows = resp.json()
-            return rows[0] if rows else None
+            return self._parse_profile_row(rows[0]) if rows else None
         except Exception:
             return None
 
@@ -151,7 +160,7 @@ class SupabaseClient:
             )
             resp.raise_for_status()
             rows = resp.json()
-            return rows[0] if rows else None
+            return self._parse_profile_row(rows[0]) if rows else None
         except Exception:
             return None
 
@@ -191,7 +200,7 @@ class SupabaseClient:
             )
             resp.raise_for_status()
             rows = resp.json()
-            return rows[0] if rows else row
+            return self._parse_profile_row(rows[0]) if rows else row
         except httpx.HTTPStatusError as e:
             detail = e.response.text
             raise RuntimeError(f"Supabase upsert failed ({e.response.status_code}): {detail}")
