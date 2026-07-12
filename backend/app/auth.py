@@ -62,7 +62,7 @@ def verify_clerk_token(token: str) -> dict:
     Raises HTTPException(401) if the token is invalid or expired.
     """
     try:
-        from python_jose import jwt, jwk, JWTError
+        from jose import jwt, jwk, JWTError
     except ImportError:
         raise HTTPException(
             status_code=500,
