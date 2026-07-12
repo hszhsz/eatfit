@@ -23,7 +23,6 @@ function StructuredCard({ response }: { response: CoachResponse }) {
 
   return (
     <div className="mt-2 space-y-2">
-      {/* Score badge */}
       <div className="flex items-center gap-2">
         <span className="text-xs uppercase tracking-[0.2em] text-[#9C8B7A]">{t("coach.score")}</span>
         <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${
@@ -35,22 +34,16 @@ function StructuredCard({ response }: { response: CoachResponse }) {
         </span>
       </div>
 
-      {/* Section cards */}
       <div className="grid gap-2 sm:grid-cols-2">
         {sections.map((section) =>
           section.items && section.items.length > 0 ? (
-            <div
-              key={section.key}
-              className={`rounded-xl border px-3 py-2 ${section.color}`}
-            >
+            <div key={section.key} className={`rounded-xl border px-3 py-2 ${section.color}`}>
               <div className="mb-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-[#9C8B7A]">
                 {section.label}
               </div>
               <ul className="space-y-1">
                 {section.items.map((item, i) => (
-                  <li key={i} className="text-xs text-[#6B5544] leading-relaxed">
-                    • {item}
-                  </li>
+                  <li key={i} className="text-xs text-[#6B5544] leading-relaxed">• {item}</li>
                 ))}
               </ul>
             </div>
@@ -58,7 +51,6 @@ function StructuredCard({ response }: { response: CoachResponse }) {
         )}
       </div>
 
-      {/* Disclaimer */}
       {response.disclaimer && (
         <p className="text-[10px] text-[#C4B5A5] italic">{response.disclaimer}</p>
       )}
@@ -74,9 +66,8 @@ function ChatBubble({ msg }: { msg: CoachMessage }) {
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
       <div className={`max-w-[88%] ${isUser ? "order-1" : ""}`}>
-        {/* Message text */}
         <div
-              className={`rounded-2xl px-4 py-3.5 text-sm leading-relaxed ${
+          className={`rounded-2xl px-4 py-3.5 text-sm leading-relaxed ${
             isUser
               ? "bg-[#FF6B35] text-white rounded-br-md"
               : "border border-[#F0E6DD] bg-white text-[#1F1611] rounded-bl-md"
@@ -84,11 +75,7 @@ function ChatBubble({ msg }: { msg: CoachMessage }) {
         >
           {msg.message}
         </div>
-
-        {/* Structured response card (assistant only) */}
-        {hasStructured && (
-          <StructuredCard response={msg.structuredPayload!} />
-        )}
+        {hasStructured && <StructuredCard response={msg.structuredPayload!} />}
       </div>
     </div>
   );
@@ -109,17 +96,84 @@ function TypingBubble() {
   );
 }
 
+/** Focus label helper */
+const FOCUS_LABELS: Record<string, string> = {
+  daily_review: "每日复盘",
+  meal_strategy: "饮食策略",
+  eating_out: "外食建议",
+  cravings: "嘴馋应对",
+};
+
+/** Session history sidebar */
+function SessionSidebar({
+  sessions,
+  activeSessionId,
+  onSelect,
+  onNew,
+}: {
+  sessions: { id: string; title: string; focus: string; createdAt: string }[];
+  activeSessionId: string | null;
+  onSelect: (id: string) => void;
+  onNew: () => void;
+}) {
+  const { t } = useLang();
+
+  return (
+    <div className="flex h-full flex-col">
+      {/* New chat button */}
+      <button
+        type="button"
+        onClick={onNew}
+        className="mb-3 w-full rounded-2xl bg-[#FF6B35] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#E55329]"
+      >
+        + {t("coach.sessions.newChat")}
+      </button>
+
+      {/* Session list */}
+      <div className="flex-1 overflow-y-auto space-y-1.5">
+        {sessions.length === 0 ? (
+          <p className="py-8 text-center text-xs text-[#9C8B7A]">
+            {t("coach.noSessions")}
+          </p>
+        ) : (
+          sessions.map((session) => (
+            <button
+              key={session.id}
+              type="button"
+              onClick={() => onSelect(session.id)}
+              className={`w-full rounded-2xl px-3 py-2.5 text-left transition ${
+                activeSessionId === session.id
+                  ? "border border-[#FF6B35]/30 bg-[#FFE5D9]"
+                  : "border border-transparent hover:bg-[#FFF5EE]"
+              }`}
+            >
+              <div className="truncate text-sm font-medium text-[#1F1611]">
+                {session.title}
+              </div>
+              <div className="mt-1 flex items-center gap-2 text-xs text-[#9C8B7A]">
+                <span>{new Date(session.createdAt).toLocaleDateString("zh-CN", { month: "short", day: "numeric" })}</span>
+                <span className="rounded-full bg-[#F0E6DD] px-1.5 py-0.5 text-[10px]">
+                  {FOCUS_LABELS[session.focus] || session.focus}
+                </span>
+              </div>
+            </button>
+          ))
+        )}
+      </div>
+    </div>
+  );
+}
+
 export function CoachPage() {
   const { data: profile } = useCurrentProfile();
   const { t } = useLang();
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // State
   const [input, setInput] = useState("");
   const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
-  // Data
   const { data: sessions = [] } = useCoachSessions(profile);
   const { data: messages = [] } = useCoachMessages(activeSessionId);
   const chatMutation = useCoachChatMutation(profile);
@@ -156,15 +210,12 @@ export function CoachPage() {
     );
   }
 
-  const activeSession = sessions.find((s) => s.id === activeSessionId);
-
   async function handleSend() {
     const trimmed = input.trim();
     if (!trimmed || chatMutation.isPending) return;
 
     setInput("");
 
-    // Optimistically scroll
     setTimeout(() => {
       if (scrollRef.current) {
         scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -176,7 +227,6 @@ export function CoachPage() {
       sessionId: activeSessionId ?? undefined,
     });
 
-    // If this was a new session, switch to it
     if (!activeSessionId && result.sessionId) {
       setActiveSessionId(result.sessionId);
     }
@@ -189,108 +239,124 @@ export function CoachPage() {
   }
 
   return (
-    <div className="flex h-[calc(100vh-10rem)] flex-col">
-      {/* Top bar: session selector + new chat */}
-      <div className="mb-4 flex items-center gap-3">
-        <select
-          value={activeSessionId ?? ""}
-          onChange={(e) => setActiveSessionId(e.target.value || null)}
-          className="flex-1 rounded-2xl border border-[#F0E6DD] bg-white px-4 py-2.5 text-sm text-[#1F1611] outline-none focus:border-[#FF6B35]/40"
-        >
-          <option value="">{t("coach.sessions.newChat")}</option>
-          {sessions.map((s) => (
-            <option key={s.id} value={s.id}>
-              {s.title} — {new Date(s.createdAt).toLocaleDateString()}
-            </option>
-          ))}
-        </select>
-        <button
-          type="button"
-          onClick={handleNewSession}
-          className="shrink-0 rounded-2xl border border-[#F0E6DD] bg-white px-4 py-2.5 text-sm text-[#6B5544] transition hover:bg-[#FFF5EE] hover:text-[#1F1611]"
-        >
-          + {t("coach.sessions.newChat")}
-        </button>
-      </div>
-
-      {/* Chat area */}
+    <div className="flex h-[calc(100vh-5rem)] gap-4">
+      {/* Sidebar */}
       <div
-        ref={scrollRef}
-        className="flex-1 overflow-y-auto rounded-[24px] border border-[#F0E6DD] bg-[#FFFBF7] p-4"
+        className={`shrink-0 transition-all duration-200 ${
+          sidebarOpen ? "w-60" : "w-0 overflow-hidden"
+        }`}
       >
-        {messages.length === 0 && !activeSessionId ? (
-          <div className="flex h-full flex-col items-center justify-center text-center">
-            <div className="mb-4 text-5xl">🥗</div>
-            <h3 className="mb-2 font-serif text-xl text-[#1F1611]">
-              {t("coach.sessions.greeting")}
-            </h3>
-            <p className="max-w-md text-sm text-[#6B5544]">
-              {t("coach.sessions.greetingDesc")}
-            </p>
-            {/* Quick start prompts */}
-            <div className="mt-6 flex flex-wrap justify-center gap-2">
-              {[
-                "帮我复盘今天的饮食",
-                "推荐适合我的减脂食谱",
-                "我现在想吃东西怎么办",
-                "明天该怎么安排三餐",
-              ].map((prompt) => (
-                <button
-                  key={prompt}
-                  type="button"
-                  onClick={() => {
-                    setInput(prompt);
-                    setTimeout(() => inputRef.current?.focus(), 50);
-                  }}
-                  className="rounded-full border border-[#F0E6DD] bg-white px-4 py-2 text-sm text-[#6B5544] transition hover:bg-[#FFF5EE]"
-                >
-                  {prompt}
-                </button>
-              ))}
-            </div>
-          </div>
-        ) : messages.length === 0 ? (
-          <div className="flex h-full items-center justify-center text-sm text-[#9C8B7A]">
-            {t("coach.sessions.emptyChat")}
-          </div>
-        ) : (
-          <div className="space-y-5">
-            {messages.map((msg) => (
-              <ChatBubble key={msg.id} msg={msg} />
-            ))}
-            {chatMutation.isPending && <TypingBubble />}
-          </div>
-        )}
+        <div className="h-full w-60 rounded-[24px] border border-[#F0E6DD] bg-white p-3">
+          <SessionSidebar
+            sessions={sessions}
+            activeSessionId={activeSessionId}
+            onSelect={setActiveSessionId}
+            onNew={handleNewSession}
+          />
+        </div>
       </div>
 
-      {/* Input bar */}
-      <div className="mt-4 flex gap-2">
-        <input
-          ref={inputRef}
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              handleSend();
-            }
-          }}
-          placeholder={t("coach.sessions.inputPlaceholder")}
-          disabled={chatMutation.isPending}
-          className="flex-1 rounded-full border border-[#F0E6DD] bg-white px-5 py-3.5 text-sm text-[#1F1611] outline-none placeholder:text-[#C4B5A5] focus:border-[#FF6B35]/40 disabled:opacity-50"
-        />
-        <button
-          type="button"
-          onClick={handleSend}
-          disabled={!input.trim() || chatMutation.isPending}
-          className="shrink-0 rounded-full bg-[#FF6B35] p-3.5 text-white transition hover:bg-[#E55329] disabled:opacity-50"
+      {/* Main chat column */}
+      <div className="flex min-w-0 flex-1 flex-col">
+        {/* Top bar: session title + sidebar toggle */}
+        <div className="mb-3 flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setSidebarOpen((v) => !v)}
+            className="rounded-xl border border-[#F0E6DD] bg-white px-2.5 py-2 text-sm text-[#6B5544] transition hover:bg-[#FFF5EE]"
+            title={sidebarOpen ? "收起会话列表" : "展开会话列表"}
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="1" y="2" width="14" height="2" rx="1" fill="currentColor"/>
+              <rect x="1" y="7" width="14" height="2" rx="1" fill="currentColor"/>
+              <rect x="1" y="12" width="14" height="2" rx="1" fill="currentColor"/>
+            </svg>
+          </button>
+          <div className="flex-1 truncate text-sm font-medium text-[#1F1611]">
+            {activeSessionId
+              ? sessions.find((s) => s.id === activeSessionId)?.title ?? t("coach.sessions.title")
+              : t("coach.sessions.newChat")}
+          </div>
+        </div>
+
+        {/* Chat area */}
+        <div
+          ref={scrollRef}
+          className="flex-1 overflow-y-auto rounded-[24px] border border-[#F0E6DD] bg-[#FFFBF7] p-5"
         >
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M2 10L18 2L10 18L8 12L2 10Z" fill="currentColor" />
-            <path d="M10 18L8 12L18 2L10 18Z" fill="currentColor" fillOpacity="0.6" />
-          </svg>
-        </button>
+          {messages.length === 0 && !activeSessionId ? (
+            <div className="flex h-full flex-col items-center justify-center text-center">
+              <div className="mb-4 text-5xl">🥗</div>
+              <h3 className="mb-2 font-serif text-xl text-[#1F1611]">
+                {t("coach.sessions.greeting")}
+              </h3>
+              <p className="max-w-md text-sm text-[#6B5544]">
+                {t("coach.sessions.greetingDesc")}
+              </p>
+              <div className="mt-6 flex flex-wrap justify-center gap-2">
+                {[
+                  "帮我复盘今天的饮食",
+                  "推荐适合我的减脂食谱",
+                  "我现在想吃东西怎么办",
+                  "明天该怎么安排三餐",
+                ].map((prompt) => (
+                  <button
+                    key={prompt}
+                    type="button"
+                    onClick={() => {
+                      setInput(prompt);
+                      setTimeout(() => inputRef.current?.focus(), 50);
+                    }}
+                    className="rounded-full border border-[#F0E6DD] bg-white px-4 py-2 text-sm text-[#6B5544] transition hover:bg-[#FFF5EE]"
+                  >
+                    {prompt}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : messages.length === 0 ? (
+            <div className="flex h-full items-center justify-center text-sm text-[#9C8B7A]">
+              {t("coach.sessions.emptyChat")}
+            </div>
+          ) : (
+            <div className="space-y-5">
+              {messages.map((msg) => (
+                <ChatBubble key={msg.id} msg={msg} />
+              ))}
+              {chatMutation.isPending && <TypingBubble />}
+            </div>
+          )}
+        </div>
+
+        {/* Input bar */}
+        <div className="mt-4 flex gap-2">
+          <input
+            ref={inputRef}
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleSend();
+              }
+            }}
+            placeholder={t("coach.sessions.inputPlaceholder")}
+            disabled={chatMutation.isPending}
+            className="flex-1 rounded-full border border-[#F0E6DD] bg-white px-5 py-3.5 text-sm text-[#1F1611] outline-none placeholder:text-[#C4B5A5] focus:border-[#FF6B35]/40 disabled:opacity-50"
+          />
+          <button
+            type="button"
+            onClick={handleSend}
+            disabled={!input.trim() || chatMutation.isPending}
+            className="shrink-0 rounded-full bg-[#FF6B35] p-3.5 text-white transition hover:bg-[#E55329] disabled:opacity-50"
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 10L18 2L10 18L8 12L2 10Z" fill="currentColor" />
+              <path d="M10 18L8 12L18 2L10 18Z" fill="currentColor" fillOpacity="0.6" />
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   );
