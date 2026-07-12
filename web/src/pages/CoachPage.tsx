@@ -197,7 +197,7 @@ export function CoachPage() {
           onChange={(e) => setActiveSessionId(e.target.value || null)}
           className="flex-1 rounded-2xl border border-[#F0E6DD] bg-white px-4 py-2.5 text-sm text-[#1F1611] outline-none focus:border-[#FF6B35]/40"
         >
-          <option value="">{t("coach.sessions.newChat") ?? "新对话"}</option>
+          <option value="">{t("coach.sessions.newChat")}</option>
           {sessions.map((s) => (
             <option key={s.id} value={s.id}>
               {s.title} — {new Date(s.createdAt).toLocaleDateString()}
@@ -209,7 +209,7 @@ export function CoachPage() {
           onClick={handleNewSession}
           className="shrink-0 rounded-2xl border border-[#F0E6DD] bg-white px-4 py-2.5 text-sm text-[#6B5544] transition hover:bg-[#FFF5EE] hover:text-[#1F1611]"
         >
-          + {t("coach.sessions.newChat") ?? "新对话"}
+          + {t("coach.sessions.newChat")}
         </button>
       </div>
 
@@ -222,11 +222,10 @@ export function CoachPage() {
           <div className="flex h-full flex-col items-center justify-center text-center">
             <div className="mb-4 text-5xl">🥗</div>
             <h3 className="mb-2 font-serif text-xl text-[#1F1611]">
-              {t("coach.sessions.greeting") ?? "你好！我是 EatFit AI 营养顾问"}
+              {t("coach.sessions.greeting")}
             </h3>
             <p className="max-w-md text-sm text-[#6B5544]">
-              {t("coach.sessions.greetingDesc") ??
-                "告诉我你今天吃了什么、有什么目标或困扰，我会结合你的体测数据给出个性化建议。"}
+              {t("coach.sessions.greetingDesc")}
             </p>
             {/* Quick start prompts */}
             <div className="mt-6 flex flex-wrap justify-center gap-2">
@@ -252,7 +251,7 @@ export function CoachPage() {
           </div>
         ) : messages.length === 0 ? (
           <div className="flex h-full items-center justify-center text-sm text-[#9C8B7A]">
-            {t("coach.sessions.emptyChat") ?? "开始对话吧 👇"}
+            {t("coach.sessions.emptyChat")}
           </div>
         ) : (
           <div className="space-y-4">
@@ -277,7 +276,7 @@ export function CoachPage() {
               handleSend();
             }
           }}
-          placeholder={t("coach.sessions.inputPlaceholder") ?? "输入你的问题..."}
+          placeholder={t("coach.sessions.inputPlaceholder")}
           disabled={chatMutation.isPending}
           className="flex-1 rounded-full border border-[#F0E6DD] bg-white px-5 py-3 text-sm text-[#1F1611] outline-none placeholder:text-[#C4B5A5] focus:border-[#FF6B35]/40 disabled:opacity-50"
         />

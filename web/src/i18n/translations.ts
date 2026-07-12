@@ -314,6 +314,12 @@ export const translations: Record<Lang, TranslationDict> = {
     "coach.empty.body":
       "Save a profile first so the AI advice can anchor to your calories, macros, goal, allergens, and meal plan.",
     "coach.empty.cta": "Go to Profile",
+    "coach.sessions.newChat": "New Chat",
+    "coach.sessions.greeting": "Hello! I'm your EatFit AI nutrition coach",
+    "coach.sessions.greetingDesc":
+      "Tell me what you ate today, your goals and concerns — I'll give you personalized advice based on your body metrics.",
+    "coach.sessions.emptyChat": "Start a conversation 👇",
+    "coach.sessions.inputPlaceholder": "Type your question...",
 
     // SetupMissingPage
     "setup.eyebrow": "Configuration required",
@@ -657,6 +663,12 @@ export const translations: Record<Lang, TranslationDict> = {
     "coach.empty.body":
       "先保存档案，AI 建议才能基于你的热量、宏量、目标、过敏原和饮食计划。",
     "coach.empty.cta": "前往档案",
+    "coach.sessions.newChat": "新对话",
+    "coach.sessions.greeting": "你好！我是 EatFit AI 营养顾问",
+    "coach.sessions.greetingDesc":
+      "告诉我你今天吃了什么、有什么目标或困扰，我会结合你的体测数据给出个性化建议。",
+    "coach.sessions.emptyChat": "开始对话吧 👇",
+    "coach.sessions.inputPlaceholder": "输入你的问题...",
 
     // SetupMissingPage
     "setup.eyebrow": "需要配置",
