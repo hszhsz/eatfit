@@ -50,6 +50,7 @@ app = FastAPI(
 _ALLOWED_ORIGINS = [
     "https://eatfit-web-jackhes-projects-5ded530b.vercel.app",
     "https://eatfit-app.vercel.app",
+    "https://eatfit-frontend.vercel.app",
     "https://eatfit-jackhes-projects-5ded530b.vercel.app",
     "https://web-iota-beige-57.vercel.app",
     "http://localhost:5173",
@@ -61,7 +62,7 @@ _ALLOWED_ORIGINS = [
 app.add_middleware(
     CORSMiddleware,
     allow_origins=_ALLOWED_ORIGINS,
-    allow_origin_regex=r"https://web-.*\.vercel\.app",  # allow Vercel preview deployments
+    allow_origin_regex=r"https://(web|eatfit)-.*\.vercel\.app",  # allow Vercel preview deployments
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
