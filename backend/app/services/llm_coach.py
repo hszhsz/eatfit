@@ -11,7 +11,7 @@ from app.schemas import CoachFocus, CoachRequest, CoachResponse, DailyPlanOut, N
 
 
 DEFAULT_BASE_URL = "https://api.moonshot.cn/v1"
-DEFAULT_MODEL = "kimi-2.7-code"
+DEFAULT_MODEL = "kimi-k2.7-code"
 DISCLAIMER = "建议仅作饮食管理参考，存在慢病、孕期或特殊医疗情况时应咨询医生或注册营养师。"
 
 
@@ -192,7 +192,7 @@ def generate_coach_advice(profile: Any, target: NutritionTarget, plan: DailyPlan
             {"role": "user", "content": user_prompt},
         ],
         "temperature": 0.4,
-        "max_tokens": 2800,
+        "max_tokens": 6000,
     }
 
     try:
