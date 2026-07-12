@@ -191,7 +191,7 @@ def generate_coach_advice(profile: Any, target: NutritionTarget, plan: DailyPlan
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt},
         ],
-        "temperature": 0.4,
+        "temperature": 1.0,
         "max_tokens": 6000,
     }
 
@@ -212,5 +212,8 @@ def generate_coach_advice(profile: Any, target: NutritionTarget, plan: DailyPlan
         raw_json = _extract_json_block(text)
         parsed = CoachResponse.model_validate_json(raw_json)
         return parsed.model_copy(update={"disclaimer": DISCLAIMER})
-    except Exception:
+    except Exception as exc:
+        import traceback
+        print(f"[EatFit] LLM coach error: {exc}")
+        traceback.print_exc()
         return _local_fallback(profile, plan, request)
