@@ -172,7 +172,7 @@ class SupabaseClient:
         """Upsert a profile by clerk_user_id. Returns the upserted row."""
         if not self.available:
             raise RuntimeError("Supabase not configured")
-        # Use the same shape the profiles table expects
+
         row = {
             "clerk_user_id": clerk_user_id,
             "name": data["name"],
@@ -188,17 +188,27 @@ class SupabaseClient:
             "diet_preference": data.get("diet_preference"),
             "updated_at": data.get("updated_at", datetime.now(timezone.utc).isoformat()),
         }
+
         try:
-            resp = httpx.post(
-                f"{self.url}/rest/v1/profiles",
-                headers={
-                    **self._headers,
-                    "Prefer": "resolution=merge-duplicates,return=representation",
-                },
-                json=row,
-                timeout=10.0,
-            )
-            resp.raise_for_status()
+            existing = self.fetch_profile_by_clerk(clerk_user_id)
+            if existing:
+                # PATCH existing row
+                resp = httpx.patch(
+                    f"{self.url}/rest/v1/profiles?clerk_user_id=eq.{clerk_user_id}",
+                    headers={**self._headers, "Prefer": "return=representation"},
+                    json=row,
+                    timeout=10.0,
+                )
+                resp.raise_for_status()
+            else:
+                # POST new row
+                resp = httpx.post(
+                    f"{self.url}/rest/v1/profiles",
+                    headers={**self._headers, "Prefer": "return=representation"},
+                    json=row,
+                    timeout=10.0,
+                )
+                resp.raise_for_status()
             rows = resp.json()
             return self._parse_profile_row(rows[0]) if rows else row
         except httpx.HTTPStatusError as e:
