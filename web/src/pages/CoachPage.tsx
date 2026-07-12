@@ -76,7 +76,7 @@ function ChatBubble({ msg }: { msg: CoachMessage }) {
       <div className={`max-w-[88%] ${isUser ? "order-1" : ""}`}>
         {/* Message text */}
         <div
-          className={`rounded-2xl px-4 py-3 text-sm leading-relaxed ${
+              className={`rounded-2xl px-4 py-3.5 text-sm leading-relaxed ${
             isUser
               ? "bg-[#FF6B35] text-white rounded-br-md"
               : "border border-[#F0E6DD] bg-white text-[#1F1611] rounded-bl-md"
@@ -254,7 +254,7 @@ export function CoachPage() {
             {t("coach.sessions.emptyChat")}
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-5">
             {messages.map((msg) => (
               <ChatBubble key={msg.id} msg={msg} />
             ))}
@@ -264,7 +264,7 @@ export function CoachPage() {
       </div>
 
       {/* Input bar */}
-      <div className="mt-3 flex gap-2">
+      <div className="mt-4 flex gap-2">
         <input
           ref={inputRef}
           type="text"
@@ -278,13 +278,13 @@ export function CoachPage() {
           }}
           placeholder={t("coach.sessions.inputPlaceholder")}
           disabled={chatMutation.isPending}
-          className="flex-1 rounded-full border border-[#F0E6DD] bg-white px-5 py-3 text-sm text-[#1F1611] outline-none placeholder:text-[#C4B5A5] focus:border-[#FF6B35]/40 disabled:opacity-50"
+          className="flex-1 rounded-full border border-[#F0E6DD] bg-white px-5 py-3.5 text-sm text-[#1F1611] outline-none placeholder:text-[#C4B5A5] focus:border-[#FF6B35]/40 disabled:opacity-50"
         />
         <button
           type="button"
           onClick={handleSend}
           disabled={!input.trim() || chatMutation.isPending}
-          className="shrink-0 rounded-full bg-[#FF6B35] p-3 text-white transition hover:bg-[#E55329] disabled:opacity-50"
+          className="shrink-0 rounded-full bg-[#FF6B35] p-3.5 text-white transition hover:bg-[#E55329] disabled:opacity-50"
         >
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M2 10L18 2L10 18L8 12L2 10Z" fill="currentColor" />
