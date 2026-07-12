@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import { AppShell } from "@/components/layout/AppShell";
 import { ProtectedRoute } from "@/components/layout/ProtectedRoute";
 import { useLang } from "@/i18n/LanguageContext";
-import { env, hasSupabase } from "@/lib/env";
+import { env } from "@/lib/env";
 import { CoachPage } from "@/pages/CoachPage";
 import { DashboardHome } from "@/pages/DashboardHome";
 import { FoodLogPage } from "@/pages/FoodLogPage";
@@ -29,8 +29,6 @@ function SetupMissingPage() {
         </p>
         <div className="mt-6 rounded-2xl bg-[#FFF5EE] p-4 text-sm text-[#6B5544]">
           <div>{t("setup.clerk")}: {env.clerkPublishableKey ? t("setup.configured") : t("setup.missing")}</div>
-          <div>{t("setup.supabaseUrl")}: {env.supabaseUrl ? t("setup.configured") : t("setup.missing")}</div>
-          <div>{t("setup.supabaseKey")}: {hasSupabase ? t("setup.configured") : t("setup.missing")}</div>
         </div>
       </div>
     </div>

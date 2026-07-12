@@ -8,94 +8,49 @@ import {
 } from "@tanstack/react-query";
 import React, {
   createContext,
-  useCallback,
   useContext,
   useMemo,
-  useRef,
-  useState,
   type PropsWithChildren,
 } from "react";
 import { BrowserRouter } from "react-router-dom";
-import type { SupabaseClient } from "@supabase/supabase-js";
 
-import { hasSupabase } from "@/lib/env";
-import { createSupabaseClient } from "@/lib/supabase";
+import { createApiClient, type ApiClient } from "@/lib/api-client";
 import { LanguageProvider } from "@/i18n/LanguageContext";
 
 const queryClient = new QueryClient();
-const SupabaseContext = createContext<SupabaseClient | null>(null);
+const ApiContext = createContext<ApiClient | null>(null);
 
-/**
- * Stores the most recent Clerk token-retrieval error so the UI can surface a
- * helpful recovery tip instead of just a generic Supabase 401/403.
- */
-const ClerkSessionErrorContext = createContext<string | null>(null);
-
-function SupabaseProvider({ children }: PropsWithChildren) {
+function ApiProvider({ children }: PropsWithChildren) {
   const { session } = useSession();
-  const lastErrorRef = useRef<string | null>(null);
-  const [, forceRender] = useState(0);
 
-  const setError = useCallback((msg: string | null) => {
-    lastErrorRef.current = msg;
-    forceRender((n) => n + 1);
-  }, []);
-
-  const client = useMemo(() => {
-    if (!hasSupabase) {
-      return null;
-    }
-
-    return createSupabaseClient(async () => {
+  const api = useMemo(() => {
+    return createApiClient(async () => {
       try {
         const token = await session?.getToken();
         if (!token) {
+          console.warn("[eatfit] Clerk session token is null — user may need to sign in.");
           return null;
         }
-        // Token retrieved successfully — clear any previous error.
-        setError(null);
         return token;
       } catch (error) {
-        const message =
-          error instanceof Error ? error.message : String(error);
-        console.error(
-          "[eatfit] Failed to retrieve Clerk session token:",
-          message,
+        const message = error instanceof Error ? error.message : String(error);
+        console.error("[eatfit] Failed to get Clerk token:", message);
+        throw new Error(
+          `Session storage error: ${message}. Try signing out and back in, or clear browser data for this site.`,
         );
-        const stack = error instanceof Error ? error.stack : undefined;
-        if (stack) {
-          console.error("[eatfit] Stack:", stack);
-        }
-
-        // Persist the error so the UI can show a recovery tip. We return
-        // null so supabase-js falls back to the anon key (RLS will then
-        // produce a 401/403 for writes — still confusing, but at least
-        // the user sees the tip alongside it).
-        setError(message);
-        return null;
       }
     });
-  }, [session, setError]);
+  }, [session]);
 
   return (
-    <SupabaseContext.Provider value={client}>
-      <ClerkSessionErrorContext.Provider value={lastErrorRef.current}>
-        {children}
-      </ClerkSessionErrorContext.Provider>
-    </SupabaseContext.Provider>
+    <ApiContext.Provider value={api}>
+      {children}
+    </ApiContext.Provider>
   );
 }
 
-export function useSupabaseClient() {
-  return useContext(SupabaseContext);
-}
-
-/**
- * Returns the most recent Clerk session error message (e.g. IndexedDB
- * "No suitable key or wrong key type"), or null if token retrieval succeeded.
- */
-export function useClerkSessionError() {
-  return useContext(ClerkSessionErrorContext);
+export function useApi(): ApiClient | null {
+  return useContext(ApiContext);
 }
 
 // publishableKey is auto-detected from VITE_CLERK_PUBLISHABLE_KEY.
@@ -114,11 +69,11 @@ export function AppProviders({ children }: PropsWithChildren) {
       afterSignOutUrl="/"
     >
       <QueryClientProvider client={queryClient}>
-        <SupabaseProvider>
+        <ApiProvider>
           <LanguageProvider>
             <BrowserRouter>{children}</BrowserRouter>
           </LanguageProvider>
-        </SupabaseProvider>
+        </ApiProvider>
       </QueryClientProvider>
     </_ClerkProvider>
   );

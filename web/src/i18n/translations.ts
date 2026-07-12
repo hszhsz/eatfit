@@ -240,6 +240,8 @@ export const translations: Record<Lang, TranslationDict> = {
     "profile.clerkSessionErrorBody":
       "Clerk's local session storage is not working correctly. This often happens when browser IndexedDB data becomes stale after an app update. Sign out and sign back in to fix it.",
     "profile.signOutAndBack": "Sign out & back in →",
+    "profile.cannotSaveSession": "Cannot save — session unavailable. Sign out and sign back in first.",
+    "profile.loadError": "Failed to load profile. Please try refreshing the page.",
 
     // PlanPage
     "plan.eyebrow": "Planner",
@@ -584,6 +586,8 @@ export const translations: Record<Lang, TranslationDict> = {
     "profile.clerkSessionErrorBody":
       "Clerk 本地会话存储工作异常，通常发生在 App 更新后浏览器 IndexedDB 数据过期。请退出登录并重新登录以修复。",
     "profile.signOutAndBack": "退出并重新登录 →",
+    "profile.cannotSaveSession": "无法保存 — 会话不可用，请先退出并重新登录。",
+    "profile.loadError": "加载个人资料失败，请刷新页面重试。",
 
     // PlanPage
     "plan.eyebrow": "计划",

@@ -1,18 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { fetchCoachAdvice, fetchGrocery, fetchPlan, fetchRecipes } from "@/lib/api";
-import {
-  createCoachExchange,
-  getPlanSnapshot,
-  listCoachMessages,
-  listCoachSessions,
-  saveGrocerySnapshot,
-  savePlanSnapshot,
-} from "@/lib/data";
-import { useSupabaseClient } from "@/providers/AppProviders";
 import type {
   CoachRequest,
-  DailyPlan,
   UserProfile,
 } from "@/types/eatfit";
 
@@ -24,95 +14,50 @@ export function useRecipes() {
 }
 
 export function usePlan(profile: UserProfile | null, selectedDate: string) {
-  const client = useSupabaseClient();
-
   return useQuery({
     queryKey: ["plan", profile?.id, selectedDate],
     queryFn: async () => {
-      if (!profile) {
-        return null;
-      }
-
-      // Try Supabase snapshot first (cached)
-      if (client) {
-        const snapshot = await getPlanSnapshot(client, profile.id, selectedDate);
-        if (snapshot?.meals) {
-          return {
-            date: snapshot.plan_date,
-            profileId: 0,
-            target: snapshot.target,
-            meals: snapshot.meals,
-            totalCalories: Number(snapshot.total_calories),
-            totalProteinG: Number(snapshot.total_protein_g),
-            totalCarbsG: Number(snapshot.total_carbs_g),
-            totalFatG: Number(snapshot.total_fat_g),
-          } as DailyPlan;
-        }
-      }
-
-      // Fetch from backend (by-id if we have Supabase profile.id, else full profile)
-      const plan = await fetchPlan(profile, selectedDate, profile.id);
-      if (client) {
-        await savePlanSnapshot(client, profile.id, plan);
-      }
-      return plan;
+      if (!profile) return null;
+      return fetchPlan(profile, selectedDate, profile.id);
     },
     enabled: Boolean(profile),
   });
 }
 
 export function useGrocery(profile: UserProfile | null, selectedDate: string) {
-  const client = useSupabaseClient();
-
   return useQuery({
     queryKey: ["grocery", profile?.id, selectedDate],
     queryFn: async () => {
-      if (!profile) {
-        return null;
-      }
-
-      const grocery = await fetchGrocery(profile, selectedDate, profile.id);
-      if (client) {
-        await saveGrocerySnapshot(client, profile.id, grocery);
-      }
-      return grocery;
+      if (!profile) return null;
+      return fetchGrocery(profile, selectedDate, profile.id);
     },
     enabled: Boolean(profile),
   });
 }
 
 export function useCoachSessions(profile: UserProfile | null) {
-  const client = useSupabaseClient();
-
   return useQuery({
     queryKey: ["coach-sessions", profile?.id],
     queryFn: async () => {
-      if (!client || !profile) {
-        return [];
-      }
-      return listCoachSessions(client, profile.id);
+      // TODO: migrate coach session CRUD from Supabase to backend API
+      return [];
     },
-    enabled: Boolean(client && profile),
+    enabled: Boolean(profile),
   });
 }
 
 export function useCoachMessages(sessionId?: string) {
-  const client = useSupabaseClient();
-
   return useQuery({
     queryKey: ["coach-messages", sessionId],
     queryFn: async () => {
-      if (!client || !sessionId) {
-        return [];
-      }
-      return listCoachMessages(client, sessionId);
+      // TODO: migrate coach message CRUD from Supabase to backend API
+      return [];
     },
-    enabled: Boolean(client && sessionId),
+    enabled: Boolean(sessionId),
   });
 }
 
 export function useCoachMutation(profile: UserProfile | null, date: string) {
-  const client = useSupabaseClient();
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -120,22 +65,8 @@ export function useCoachMutation(profile: UserProfile | null, date: string) {
       if (!profile) {
         throw new Error("Profile is required before using the coach.");
       }
-
       const response = await fetchCoachAdvice(profile, date, payload, profile.id);
-      let sessionId: string | null = null;
-
-      if (client) {
-        sessionId = await createCoachExchange(
-          client,
-          profile.id,
-          response.headline,
-          payload.focus,
-          payload.message || "",
-          response,
-        );
-      }
-
-      return { response, sessionId };
+      return { response, sessionId: null as string | null };
     },
     onSuccess: () => {
       queryClient.invalidateQueries({

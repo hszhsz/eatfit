@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import json
 import os
+from datetime import datetime, timezone
 from typing import Any
 
 import httpx
@@ -153,6 +154,62 @@ class SupabaseClient:
             return rows[0] if rows else None
         except Exception:
             return None
+
+    # ---------- Coach Sessions & Messages ----------
+
+    # ---------- Profile CRUD ----------
+
+    def upsert_profile(self, clerk_user_id: str, data: dict) -> dict:
+        """Upsert a profile by clerk_user_id. Returns the upserted row."""
+        if not self.available:
+            raise RuntimeError("Supabase not configured")
+        # Use the same shape the profiles table expects
+        row = {
+            "clerk_user_id": clerk_user_id,
+            "name": data["name"],
+            "gender": data["gender"],
+            "age": data["age"],
+            "height_cm": data["height_cm"],
+            "weight_kg": data["weight_kg"],
+            "body_fat_pct": data.get("body_fat_pct"),
+            "activity_level": data["activity_level"],
+            "goal": data["goal"],
+            "allergens": json.dumps(data.get("allergens", [])),
+            "disliked_tags": json.dumps(data.get("disliked_tags", [])),
+            "diet_preference": data.get("diet_preference"),
+            "updated_at": data.get("updated_at", datetime.now(timezone.utc).isoformat()),
+        }
+        try:
+            resp = httpx.post(
+                f"{self.url}/rest/v1/profiles",
+                headers={
+                    **self._headers,
+                    "Prefer": "resolution=merge-duplicates,return=representation",
+                },
+                json=row,
+                timeout=10.0,
+            )
+            resp.raise_for_status()
+            rows = resp.json()
+            return rows[0] if rows else row
+        except httpx.HTTPStatusError as e:
+            detail = e.response.text
+            raise RuntimeError(f"Supabase upsert failed ({e.response.status_code}): {detail}")
+
+    def delete_profile(self, clerk_user_id: str) -> None:
+        """Delete a profile by clerk_user_id."""
+        if not self.available:
+            raise RuntimeError("Supabase not configured")
+        try:
+            resp = httpx.delete(
+                f"{self.url}/rest/v1/profiles?clerk_user_id=eq.{clerk_user_id}",
+                headers=self._headers,
+                timeout=10.0,
+            )
+            resp.raise_for_status()
+        except httpx.HTTPStatusError as e:
+            detail = e.response.text
+            raise RuntimeError(f"Supabase delete failed ({e.response.status_code}): {detail}")
 
     # ---------- Coach Sessions & Messages ----------
 

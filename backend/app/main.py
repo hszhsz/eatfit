@@ -16,7 +16,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.recipe_store import get_all_recipes
 from app.supabase_client import get_supabase
-from app.routers import recipes, web
+from app.routers import recipes, web, data
 
 
 @asynccontextmanager
@@ -48,6 +48,7 @@ app = FastAPI(
 
 # CORS — explicit origins only (no wildcard + credentials, which is invalid)
 _ALLOWED_ORIGINS = [
+    "https://eatfit-jackhes-projects-5ded530b.vercel.app",
     "https://web-iota-beige-57.vercel.app",
     "https://web-84hacftff-jackhes-projects-5ded530b.vercel.app",
     "https://web-gw2xbfvo1-jackhes-projects-5ded530b.vercel.app",
@@ -69,6 +70,7 @@ app.add_middleware(
 # Only register routers that the frontend actually uses
 app.include_router(recipes.router)
 app.include_router(web.router)
+app.include_router(data.router)
 
 
 @app.get("/")
