@@ -5,3 +5,5 @@ miniprogram_npm/
 eatfit.db
 android/keystore.properties
 .vercel/
+.vercel
+.env*

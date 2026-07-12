@@ -50,10 +50,17 @@ function SupabaseProvider({ children }: PropsWithChildren) {
         // 401/403 from Supabase.
         const message =
           error instanceof Error ? error.message : String(error);
-        console.warn(
+        const stack = error instanceof Error ? error.stack : undefined;
+        // Use console.error so it shows up red in devtools even if
+        // warnings are filtered, and include the full stack so we can
+        // pinpoint where the IndexedDB error is being thrown from.
+        console.error(
           "[eatfit] Failed to retrieve Clerk session token:",
           message,
         );
+        if (stack) {
+          console.error("[eatfit] Stack:", stack);
+        }
         if (
           typeof message === "string" &&
           /no suitable key|wrong key type/i.test(message)
@@ -63,7 +70,11 @@ function SupabaseProvider({ children }: PropsWithChildren) {
               "session data. Please sign out and sign back in to refresh it.",
           );
         }
-        return null;
+        // Re-throw unknown errors so the real root cause isn't hidden
+        // behind a generic 42501 from Supabase.
+        throw error instanceof Error
+          ? new Error(`CLERK_GET_TOKEN_FAILED: ${message}`)
+          : new Error("CLERK_GET_TOKEN_FAILED: unknown error");
       }
     });
     // We intentionally only depend on `getToken`; the client only needs

@@ -196,7 +196,7 @@ export function ProfilePage() {
             {saveError ? (
               <div className="text-sm text-red-500">
                 {String(saveError.message)}
-                {String(saveError.message).startsWith("CLERK_SESSION_STORAGE_ERROR") ? (
+                {/CLERK_SESSION_STORAGE_ERROR|no suitable key|wrong key type/i.test(String(saveError.message)) ? (
                   <div className="mt-1 text-xs text-[#6B5544]">
                     Tip: open <a href="/sign-in" className="underline">/sign-in</a> in a new tab, sign out, then sign back in to refresh the local session.
                   </div>
