@@ -48,10 +48,10 @@ app = FastAPI(
 
 # CORS — explicit origins only (no wildcard + credentials, which is invalid)
 _ALLOWED_ORIGINS = [
+    "https://eatfit-web-jackhes-projects-5ded530b.vercel.app",
+    "https://eatfit-app.vercel.app",
     "https://eatfit-jackhes-projects-5ded530b.vercel.app",
     "https://web-iota-beige-57.vercel.app",
-    "https://web-84hacftff-jackhes-projects-5ded530b.vercel.app",
-    "https://web-gw2xbfvo1-jackhes-projects-5ded530b.vercel.app",
     "http://localhost:5173",
     "http://localhost:3210",
     "http://127.0.0.1:5173",
