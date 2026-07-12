@@ -232,6 +232,105 @@ class SupabaseClient:
 
     # ---------- Coach Sessions & Messages ----------
 
+    def create_coach_session(self, profile_id: str, title: str, focus: str) -> dict | None:
+        """Create a new coach session. Returns the created row."""
+        if not self.available:
+            return None
+        try:
+            now = datetime.now(timezone.utc).isoformat()
+            payload = {
+                "profile_id": profile_id,
+                "title": title,
+                "focus": focus,
+                "created_at": now,
+                "updated_at": now,
+            }
+            resp = httpx.post(
+                f"{self.url}/rest/v1/coach_sessions",
+                headers={**self._headers, "Prefer": "return=representation"},
+                json=payload,
+                timeout=10.0,
+            )
+            resp.raise_for_status()
+            rows = resp.json()
+            return rows[0] if rows else None
+        except Exception:
+            return None
+
+    def fetch_coach_sessions(self, profile_id: str) -> list[dict]:
+        """Fetch all coach sessions for a profile, ordered by most recent."""
+        if not self.available:
+            return []
+        try:
+            resp = httpx.get(
+                f"{self.url}/rest/v1/coach_sessions?profile_id=eq.{profile_id}&order=updated_at.desc&select=*",
+                headers=self._headers,
+                timeout=10.0,
+            )
+            resp.raise_for_status()
+            return resp.json()
+        except Exception:
+            return []
+
+    def create_coach_message(
+        self,
+        session_id: str,
+        role: str,
+        message: str,
+        structured_payload: dict | None = None,
+    ) -> dict | None:
+        """Save a coach message. Returns the created row."""
+        if not self.available:
+            return None
+        try:
+            payload = {
+                "session_id": session_id,
+                "role": role,
+                "message": message,
+                "structured_payload": json.dumps(structured_payload) if structured_payload else None,
+                "created_at": datetime.now(timezone.utc).isoformat(),
+            }
+            resp = httpx.post(
+                f"{self.url}/rest/v1/coach_messages",
+                headers={**self._headers, "Prefer": "return=representation"},
+                json=payload,
+                timeout=10.0,
+            )
+            resp.raise_for_status()
+            rows = resp.json()
+            return rows[0] if rows else None
+        except Exception:
+            return None
+
+    def fetch_coach_messages(self, session_id: str) -> list[dict]:
+        """Fetch all messages for a coach session, ordered by creation time."""
+        if not self.available:
+            return []
+        try:
+            resp = httpx.get(
+                f"{self.url}/rest/v1/coach_messages?session_id=eq.{session_id}&order=created_at.asc&select=*",
+                headers=self._headers,
+                timeout=10.0,
+            )
+            resp.raise_for_status()
+            return resp.json()
+        except Exception:
+            return []
+
+    def touch_coach_session(self, session_id: str) -> None:
+        """Update updated_at on a session to keep it fresh."""
+        if not self.available:
+            return
+        try:
+            httpx.patch(
+                f"{self.url}/rest/v1/coach_sessions?id=eq.{session_id}",
+                headers=self._headers,
+                json={"updated_at": datetime.now(timezone.utc).isoformat()},
+                timeout=10.0,
+            )
+        except Exception:
+            pass
+
     def fetch_recent_coach_messages(self, profile_id: str, limit: int = 10) -> list[dict]:
         """Fetch recent coach messages for a profile's latest session.
 

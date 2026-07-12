@@ -186,3 +186,18 @@ class CoachByIdRequest(BaseModel):
     profile_id: str = Field(..., description="Supabase profile UUID")
     request: CoachRequest
     date: Optional[str] = None
+
+
+class CoachChatRequest(BaseModel):
+    profile_id: str = Field(..., description="Supabase profile UUID")
+    message: str = Field(..., min_length=1, description="用户消息")
+    session_id: Optional[str] = Field(None, description="已有 session id，不传则自动创建")
+    date: Optional[str] = None
+
+
+class CoachChatResponse(BaseModel):
+    session_id: str
+    session_title: str
+    user_message_id: str
+    assistant_message_id: str
+    response: CoachResponse

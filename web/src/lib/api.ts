@@ -1,7 +1,10 @@
 import { env } from "@/lib/env";
 import type {
+  CoachChatResponse,
   CoachRequest,
   CoachResponse,
+  CoachSession,
+  CoachMessage,
   DailyPlan,
   GroceryList,
   MealType,
@@ -266,4 +269,94 @@ export async function fetchCoachAdvice(
     }),
   });
   return mapCoach(payload);
+}
+
+// ---------- Coach Chat API ----------
+
+interface RawCoachChatResponse {
+  session_id: string;
+  session_title: string;
+  user_message_id: string;
+  assistant_message_id: string;
+  response: RawCoachResponse;
+}
+
+interface RawCoachSession {
+  id: string;
+  profile_id: string;
+  title: string;
+  focus: string;
+  created_at: string;
+  updated_at: string;
+}
+
+interface RawCoachMessage {
+  id: string;
+  session_id: string;
+  role: "user" | "assistant";
+  message: string;
+  structured_payload: RawCoachResponse | null;
+  created_at: string;
+}
+
+function mapCoachSession(raw: RawCoachSession): CoachSession {
+  return {
+    id: raw.id,
+    profileId: raw.profile_id,
+    title: raw.title,
+    focus: raw.focus as CoachSession["focus"],
+    createdAt: raw.created_at,
+    updatedAt: raw.updated_at,
+  };
+}
+
+function mapCoachMessage(raw: RawCoachMessage): CoachMessage {
+  return {
+    id: raw.id,
+    sessionId: raw.session_id,
+    role: raw.role,
+    message: raw.message,
+    structuredPayload: raw.structured_payload
+      ? mapCoach(raw.structured_payload)
+      : null,
+    createdAt: raw.created_at,
+  };
+}
+
+export async function sendCoachChatMessage(
+  profileId: string,
+  message: string,
+  sessionId?: string,
+  date?: string,
+): Promise<CoachChatResponse & { response: CoachResponse }> {
+  const raw = await request<RawCoachChatResponse>("/api/web/by-id/coach/chat", {
+    method: "POST",
+    body: JSON.stringify({
+      profile_id: profileId,
+      message,
+      session_id: sessionId || undefined,
+      date: date || undefined,
+    }),
+  });
+  return {
+    sessionId: raw.session_id,
+    sessionTitle: raw.session_title,
+    userMessageId: raw.user_message_id,
+    assistantMessageId: raw.assistant_message_id,
+    response: mapCoach(raw.response),
+  };
+}
+
+export async function fetchCoachSessions(profileId: string): Promise<CoachSession[]> {
+  const data = await request<RawCoachSession[]>(
+    `/api/web/by-id/coach/sessions?profile_id=${encodeURIComponent(profileId)}`,
+  );
+  return data.map(mapCoachSession);
+}
+
+export async function fetchCoachMessages(sessionId: string): Promise<CoachMessage[]> {
+  const data = await request<RawCoachMessage[]>(
+    `/api/web/by-id/coach/sessions/${encodeURIComponent(sessionId)}/messages`,
+  );
+  return data.map(mapCoachMessage);
 }

@@ -1,10 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { fetchCoachAdvice, fetchGrocery, fetchPlan, fetchRecipes } from "@/lib/api";
-import type {
-  CoachRequest,
-  UserProfile,
-} from "@/types/eatfit";
+import {
+  fetchCoachAdvice,
+  fetchCoachMessages,
+  fetchCoachSessions,
+  fetchGrocery,
+  fetchPlan,
+  fetchRecipes,
+  sendCoachChatMessage,
+} from "@/lib/api";
+import type { CoachRequest, UserProfile } from "@/types/eatfit";
 
 export function useRecipes() {
   return useQuery({
@@ -35,28 +40,55 @@ export function useGrocery(profile: UserProfile | null, selectedDate: string) {
   });
 }
 
+// ---------- Coach Chat Hooks ----------
+
 export function useCoachSessions(profile: UserProfile | null) {
   return useQuery({
     queryKey: ["coach-sessions", profile?.id],
     queryFn: async () => {
-      // TODO: migrate coach session CRUD from Supabase to backend API
-      return [];
+      if (!profile) return [];
+      return fetchCoachSessions(profile.id);
     },
-    enabled: Boolean(profile),
+    enabled: Boolean(profile?.id),
   });
 }
 
-export function useCoachMessages(sessionId?: string) {
+export function useCoachMessages(sessionId?: string | null) {
   return useQuery({
     queryKey: ["coach-messages", sessionId],
     queryFn: async () => {
-      // TODO: migrate coach message CRUD from Supabase to backend API
-      return [];
+      if (!sessionId) return [];
+      return fetchCoachMessages(sessionId);
     },
     enabled: Boolean(sessionId),
   });
 }
 
+export function useCoachChatMutation(profile: UserProfile | null) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      message,
+      sessionId,
+      date,
+    }: {
+      message: string;
+      sessionId?: string;
+      date?: string;
+    }) => {
+      if (!profile) throw new Error("Profile required");
+      return sendCoachChatMessage(profile.id, message, sessionId, date);
+    },
+    onSuccess: (data) => {
+      // Invalidate sessions list and messages for this session
+      queryClient.invalidateQueries({ queryKey: ["coach-sessions", profile?.id] });
+      queryClient.invalidateQueries({ queryKey: ["coach-messages", data.sessionId] });
+    },
+  });
+}
+
+// Legacy: kept for backward compatibility with the old coach flow
 export function useCoachMutation(profile: UserProfile | null, date: string) {
   const queryClient = useQueryClient();
 

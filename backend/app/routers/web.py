@@ -17,6 +17,8 @@ from app.recipe_store import get_all_recipes
 from app.schemas import (
     ActivityLevel,
     CoachByIdRequest,
+    CoachChatRequest,
+    CoachChatResponse,
     CoachResponse,
     DailyPlanOut,
     Gender,
@@ -178,3 +180,108 @@ def get_advice_by_id(body: CoachByIdRequest):
     history = sb.fetch_recent_coach_messages(body.profile_id, limit=10) if sb.available else []
     return generate_coach_advice(_profile_namespace(profile), target, plan, body.request,
                                  conversation_history=history)
+
+
+# ---------- Chat endpoint (multi-turn conversational coach) ----------
+
+@router.post("/by-id/coach/chat", response_model=CoachChatResponse)
+def coach_chat(body: CoachChatRequest):
+    """Full conversational coach endpoint.
+
+    - Creates a new session on first message (or reuses existing)
+    - Saves user message to Supabase
+    - Calls LLM with full conversation history
+    - Saves assistant response to Supabase
+    - Returns session info + structured response
+    """
+    sb = get_supabase()
+    if not sb.available:
+        raise HTTPException(status_code=503, detail="Supabase not configured on backend.")
+
+    profile = _load_profile_from_supabase(body.profile_id)
+    target = _compute_target_from_profile(profile)
+    plan = _build_plan(profile, target, body.date)
+
+    # Session: reuse or create
+    session_id = body.session_id
+    if session_id:
+        # Verify session belongs to this profile
+        sessions = sb.fetch_coach_sessions(body.profile_id)
+        matching = [s for s in sessions if s["id"] == session_id]
+        if not matching:
+            raise HTTPException(status_code=404, detail="Session not found")
+    else:
+        # Auto-create session with title from first message
+        title = body.message[:30] + ("…" if len(body.message) > 30 else "")
+        new_session = sb.create_coach_session(
+            body.profile_id,
+            title=title,
+            focus="daily_review",
+        )
+        if not new_session:
+            raise HTTPException(status_code=500, detail="Failed to create session")
+        session_id = new_session["id"]
+
+    # Save user message
+    user_msg = sb.create_coach_message(session_id, "user", body.message)
+    if not user_msg:
+        raise HTTPException(status_code=500, detail="Failed to save user message")
+
+    # Fetch full conversation history for this session
+    history = sb.fetch_coach_messages(session_id)
+    # Convert to the format expected by llm_coach (role, message dicts)
+    conversation_history = [
+        {"role": m["role"], "message": m["message"]}
+        for m in history
+    ]
+
+    # Call LLM with conversation context
+    from app.schemas import CoachFocus, CoachRequest as CR
+    coach_req = CR(
+        focus=CoachFocus.daily_review,
+        message=body.message,
+    )
+    response = generate_coach_advice(
+        _profile_namespace(profile), target, plan, coach_req,
+        conversation_history=conversation_history,
+    )
+
+    # Save assistant response with structured payload
+    assistant_msg = sb.create_coach_message(
+        session_id,
+        "assistant",
+        response.summary,
+        structured_payload=response.model_dump(mode="json"),
+    )
+
+    # Update session timestamp
+    sb.touch_coach_session(session_id)
+
+    # Build session title from first message if new
+    session_title = body.message[:30] + ("…" if len(body.message) > 30 else "")
+
+    return CoachChatResponse(
+        session_id=session_id,
+        session_title=session_title,
+        user_message_id=user_msg["id"],
+        assistant_message_id=assistant_msg["id"] if assistant_msg else "",
+        response=response,
+    )
+
+
+@router.get("/by-id/coach/sessions")
+def list_coach_sessions(profile_id: str):
+    """List all coach sessions for a profile."""
+    sb = get_supabase()
+    if not sb.available:
+        raise HTTPException(status_code=503, detail="Supabase not configured")
+    return sb.fetch_coach_sessions(profile_id)
+
+
+@router.get("/by-id/coach/sessions/{session_id}/messages")
+def list_coach_messages(session_id: str):
+    """List all messages for a coach session."""
+    sb = get_supabase()
+    if not sb.available:
+        raise HTTPException(status_code=503, detail="Supabase not configured")
+    return sb.fetch_coach_messages(session_id)

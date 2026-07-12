@@ -1,66 +1,149 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { EmptyState } from "@/components/common/EmptyState";
-import { SectionCard } from "@/components/common/SectionCard";
 import { useCurrentProfile } from "@/hooks/useCurrentProfile";
 import {
+  useCoachChatMutation,
   useCoachMessages,
-  useCoachMutation,
   useCoachSessions,
 } from "@/hooks/useDashboardData";
-import { useDashboardStore } from "@/store/dashboardStore";
-import type { CoachFocus } from "@/types/eatfit";
+import type { CoachMessage, CoachResponse } from "@/types/eatfit";
 import { useLang } from "@/i18n/LanguageContext";
+
+/** Structured response card shown inline below assistant messages */
+function StructuredCard({ response }: { response: CoachResponse }) {
+  const { t } = useLang();
+
+  const sections = [
+    { key: "riskAlerts", label: t("coach.riskAlerts"), items: response.riskAlerts, color: "bg-red-50 border-red-200" },
+    { key: "nutritionInsights", label: t("coach.nutritionInsights"), items: response.nutritionInsights, color: "bg-blue-50 border-blue-200" },
+    { key: "nextActions", label: t("coach.nextActions"), items: response.nextActions, color: "bg-green-50 border-green-200" },
+    { key: "mealStrategy", label: t("coach.mealStrategy"), items: response.mealStrategy, color: "bg-yellow-50 border-yellow-200" },
+  ];
+
+  return (
+    <div className="mt-2 space-y-2">
+      {/* Score badge */}
+      <div className="flex items-center gap-2">
+        <span className="text-xs uppercase tracking-[0.2em] text-[#9C8B7A]">{t("coach.score")}</span>
+        <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+          response.score >= 80 ? "bg-green-100 text-green-800" :
+          response.score >= 60 ? "bg-yellow-100 text-yellow-800" :
+          "bg-red-100 text-red-800"
+        }`}>
+          {response.score}/100
+        </span>
+      </div>
+
+      {/* Section cards */}
+      <div className="grid gap-2 sm:grid-cols-2">
+        {sections.map((section) =>
+          section.items && section.items.length > 0 ? (
+            <div
+              key={section.key}
+              className={`rounded-xl border px-3 py-2 ${section.color}`}
+            >
+              <div className="mb-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-[#9C8B7A]">
+                {section.label}
+              </div>
+              <ul className="space-y-1">
+                {section.items.map((item, i) => (
+                  <li key={i} className="text-xs text-[#6B5544] leading-relaxed">
+                    • {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null
+        )}
+      </div>
+
+      {/* Disclaimer */}
+      {response.disclaimer && (
+        <p className="text-[10px] text-[#C4B5A5] italic">{response.disclaimer}</p>
+      )}
+    </div>
+  );
+}
+
+/** Single chat message bubble */
+function ChatBubble({ msg }: { msg: CoachMessage }) {
+  const isUser = msg.role === "user";
+  const hasStructured = msg.role === "assistant" && msg.structuredPayload;
+
+  return (
+    <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
+      <div className={`max-w-[88%] ${isUser ? "order-1" : ""}`}>
+        {/* Message text */}
+        <div
+          className={`rounded-2xl px-4 py-3 text-sm leading-relaxed ${
+            isUser
+              ? "bg-[#FF6B35] text-white rounded-br-md"
+              : "border border-[#F0E6DD] bg-white text-[#1F1611] rounded-bl-md"
+          }`}
+        >
+          {msg.message}
+        </div>
+
+        {/* Structured response card (assistant only) */}
+        {hasStructured && (
+          <StructuredCard response={msg.structuredPayload!} />
+        )}
+      </div>
+    </div>
+  );
+}
+
+/** Typing indicator */
+function TypingBubble() {
+  return (
+    <div className="flex justify-start">
+      <div className="rounded-2xl rounded-bl-md border border-[#F0E6DD] bg-white px-4 py-3">
+        <div className="flex gap-1.5">
+          <span className="h-2 w-2 animate-bounce rounded-full bg-[#FF6B35]/40" style={{ animationDelay: "0ms" }} />
+          <span className="h-2 w-2 animate-bounce rounded-full bg-[#FF6B35]/40" style={{ animationDelay: "150ms" }} />
+          <span className="h-2 w-2 animate-bounce rounded-full bg-[#FF6B35]/40" style={{ animationDelay: "300ms" }} />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export function CoachPage() {
   const { data: profile } = useCurrentProfile();
-  const selectedDate = useDashboardStore((state) => state.selectedDate);
-  const coachFocus = useDashboardStore((state) => state.coachFocus);
-  const setCoachFocus = useDashboardStore((state) => state.setCoachFocus);
-  const [message, setMessage] = useState("");
-  const { data: sessions } = useCoachSessions(profile);
-  const currentSessionId = sessions?.[0]?.id;
-  const { data: messages } = useCoachMessages(currentSessionId);
-  const coachMutation = useCoachMutation(profile, selectedDate);
   const { t } = useLang();
   const scrollRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const focusOptions: { value: CoachFocus; label: string }[] = [
-    { value: "daily_review", label: t("coach.focus.dailyReview") },
-    { value: "meal_strategy", label: t("coach.focus.mealStrategy") },
-    { value: "eating_out", label: t("coach.focus.eatingOut") },
-    { value: "cravings", label: t("coach.focus.cravings") },
-  ];
+  // State
+  const [input, setInput] = useState("");
+  const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
 
-  // Build conversation context from history
-  const latestResponse = useMemo(() => {
-    if (coachMutation.data?.response) {
-      return coachMutation.data.response;
-    }
-    if (!messages?.length) {
-      return null;
-    }
-    for (let index = messages.length - 1; index >= 0; index -= 1) {
-      const candidate = messages[index];
-      if (candidate.structuredPayload) {
-        return candidate.structuredPayload;
-      }
-    }
-    return null;
-  }, [coachMutation.data, messages]);
+  // Data
+  const { data: sessions = [] } = useCoachSessions(profile);
+  const { data: messages = [] } = useCoachMessages(activeSessionId);
+  const chatMutation = useCoachChatMutation(profile);
 
+  // Auto-select latest session on load
   useEffect(() => {
-    if (!message && coachFocus === "daily_review") {
-      setMessage(t("coach.contextPlaceholder"));
+    if (sessions.length > 0 && !activeSessionId) {
+      setActiveSessionId(sessions[0].id);
     }
-  }, [coachFocus, message, t]);
+  }, [sessions, activeSessionId]);
 
-  // Auto-scroll to bottom on new messages
+  // Auto-scroll to bottom
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [messages, coachMutation.data]);
+  }, [messages]);
+
+  // Focus input after response
+  useEffect(() => {
+    if (!chatMutation.isPending && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [chatMutation.isPending]);
 
   if (!profile) {
     return (
@@ -73,198 +156,142 @@ export function CoachPage() {
     );
   }
 
-  async function handleSubmit() {
-    await coachMutation.mutateAsync({
-      focus: coachFocus,
-      message,
+  const activeSession = sessions.find((s) => s.id === activeSessionId);
+
+  async function handleSend() {
+    const trimmed = input.trim();
+    if (!trimmed || chatMutation.isPending) return;
+
+    setInput("");
+
+    // Optimistically scroll
+    setTimeout(() => {
+      if (scrollRef.current) {
+        scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      }
+    }, 50);
+
+    const result = await chatMutation.mutateAsync({
+      message: trimmed,
+      sessionId: activeSessionId ?? undefined,
     });
-    setMessage("");
+
+    // If this was a new session, switch to it
+    if (!activeSessionId && result.sessionId) {
+      setActiveSessionId(result.sessionId);
+    }
   }
 
-  async function handleQuickReply(reply: string) {
-    setMessage(reply);
-    await coachMutation.mutateAsync({
-      focus: coachFocus,
-      message: reply,
-    });
-    setMessage("");
+  function handleNewSession() {
+    setActiveSessionId(null);
+    setInput("");
+    setTimeout(() => inputRef.current?.focus(), 100);
   }
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[280px_1fr] xl:grid-cols-[320px_1fr]">
-      {/* Left panel: focus + input */}
-      <div className="space-y-4">
-        <SectionCard title={t("coach.title")} eyebrow={t("coach.eyebrow")}>
-          <div className="space-y-2">
-            {focusOptions.map((option) => (
-              <button
-                key={option.value}
-                type="button"
-                onClick={() => setCoachFocus(option.value)}
-                className={[
-                  "w-full rounded-2xl border px-4 py-3 text-left text-sm transition",
-                  coachFocus === option.value
-                    ? "border-[#FF6B35]/40 bg-[#FFE5D9] text-[#1F1611]"
-                    : "border-[#F0E6DD] bg-white text-[#6B5544] hover:bg-[#FFF5EE]",
-                ].join(" ")}
-              >
-                {option.label}
-              </button>
-            ))}
-          </div>
-
-          <label className="mt-4 block">
-            <div className="mb-2 text-sm text-[#6B5544]">{t("coach.context")}</div>
-            <textarea
-              value={message}
-              onChange={(event) => setMessage(event.target.value)}
-              onKeyDown={(event) => {
-                if (event.key === "Enter" && (event.metaKey || event.ctrlKey)) {
-                  event.preventDefault();
-                  handleSubmit();
-                }
-              }}
-              rows={5}
-              className="w-full rounded-3xl border border-[#F0E6DD] bg-white px-4 py-3 text-[#1F1611] outline-none"
-            />
-          </label>
-
-          <button
-            type="button"
-            onClick={handleSubmit}
-            disabled={coachMutation.isPending}
-            className="mt-4 w-full rounded-full bg-[#FF6B35] px-5 py-3 text-sm font-semibold text-white disabled:opacity-60 transition hover:bg-[#E55329]"
-          >
-            {coachMutation.isPending ? t("coach.generating") : t("coach.generate")}
-          </button>
-          <div className="mt-1 text-center text-xs text-[#9C8B7A]">
-            ⌘+Enter
-          </div>
-        </SectionCard>
+    <div className="flex h-[calc(100vh-10rem)] flex-col">
+      {/* Top bar: session selector + new chat */}
+      <div className="mb-4 flex items-center gap-3">
+        <select
+          value={activeSessionId ?? ""}
+          onChange={(e) => setActiveSessionId(e.target.value || null)}
+          className="flex-1 rounded-2xl border border-[#F0E6DD] bg-white px-4 py-2.5 text-sm text-[#1F1611] outline-none focus:border-[#FF6B35]/40"
+        >
+          <option value="">{t("coach.sessions.newChat") ?? "新对话"}</option>
+          {sessions.map((s) => (
+            <option key={s.id} value={s.id}>
+              {s.title} — {new Date(s.createdAt).toLocaleDateString()}
+            </option>
+          ))}
+        </select>
+        <button
+          type="button"
+          onClick={handleNewSession}
+          className="shrink-0 rounded-2xl border border-[#F0E6DD] bg-white px-4 py-2.5 text-sm text-[#6B5544] transition hover:bg-[#FFF5EE] hover:text-[#1F1611]"
+        >
+          + {t("coach.sessions.newChat") ?? "新对话"}
+        </button>
       </div>
 
-      {/* Right panel: conversation + structured response */}
-      <div className="space-y-4">
-        {/* Conversation history */}
-        <SectionCard title={t("coach.response.title")} eyebrow={t("coach.response.eyebrow")}>
-          {messages && messages.length > 0 ? (
-            <div ref={scrollRef} className="max-h-[400px] space-y-3 overflow-y-auto">
-              {messages.map((msg, index) => (
-                <div
-                  key={msg.id || index}
-                  className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-                >
-                  <div
-                    className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm ${
-                      msg.role === "user"
-                        ? "bg-[#FF6B35] text-white"
-                        : "border border-[#F0E6DD] bg-[#FFF5EE] text-[#1F1611]"
-                    }`}
-                  >
-                    {msg.message}
-                  </div>
-                </div>
-              ))}
-              {coachMutation.isPending && (
-                <div className="flex justify-start">
-                  <div className="rounded-2xl border border-[#F0E6DD] bg-[#FFF5EE] px-4 py-3 text-sm text-[#9C8B7A]">
-                    {t("coach.generating")}
-                  </div>
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className="py-4 text-[#6B5544]">{t("coach.noResponse")}</div>
-          )}
-
-          {/* Quick replies */}
-          {latestResponse && !coachMutation.isPending && (
-            <div className="mt-4 flex flex-wrap gap-2">
-              {(t("coach.quickReply1") !== "coach.quickReply1" ? [
-                t("coach.quickReply1"),
-                t("coach.quickReply2"),
-                t("coach.quickReply3"),
-              ] : [
-                "如果我今天没吃早餐呢？",
-                "明天该怎么调整？",
-                "推荐一个高蛋白加餐",
-              ]).map((reply) => (
+      {/* Chat area */}
+      <div
+        ref={scrollRef}
+        className="flex-1 overflow-y-auto rounded-[24px] border border-[#F0E6DD] bg-[#FFFBF7] p-4"
+      >
+        {messages.length === 0 && !activeSessionId ? (
+          <div className="flex h-full flex-col items-center justify-center text-center">
+            <div className="mb-4 text-5xl">🥗</div>
+            <h3 className="mb-2 font-serif text-xl text-[#1F1611]">
+              {t("coach.sessions.greeting") ?? "你好！我是 EatFit AI 营养顾问"}
+            </h3>
+            <p className="max-w-md text-sm text-[#6B5544]">
+              {t("coach.sessions.greetingDesc") ??
+                "告诉我你今天吃了什么、有什么目标或困扰，我会结合你的体测数据给出个性化建议。"}
+            </p>
+            {/* Quick start prompts */}
+            <div className="mt-6 flex flex-wrap justify-center gap-2">
+              {[
+                "帮我复盘今天的饮食",
+                "推荐适合我的减脂食谱",
+                "我现在想吃东西怎么办",
+                "明天该怎么安排三餐",
+              ].map((prompt) => (
                 <button
-                  key={reply}
+                  key={prompt}
                   type="button"
-                  onClick={() => handleQuickReply(reply)}
-                  className="rounded-full border border-[#F0E6DD] bg-white px-3 py-1.5 text-xs text-[#6B5544] transition hover:bg-[#FFF5EE] hover:text-[#1F1611]"
+                  onClick={() => {
+                    setInput(prompt);
+                    setTimeout(() => inputRef.current?.focus(), 50);
+                  }}
+                  className="rounded-full border border-[#F0E6DD] bg-white px-4 py-2 text-sm text-[#6B5544] transition hover:bg-[#FFF5EE]"
                 >
-                  {reply}
+                  {prompt}
                 </button>
               ))}
             </div>
-          )}
-        </SectionCard>
-
-        {/* Structured latest response */}
-        {latestResponse ? (
-          <div className="space-y-4">
-            <div className="rounded-[24px] border border-[#F0E6DD] bg-white p-5 shadow-warm">
-              <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">{t("coach.headline")}</div>
-              <h2 className="mt-3 font-serif text-2xl text-[#1F1611] md:text-3xl">{latestResponse.headline}</h2>
-              <p className="mt-4 leading-7 text-[#6B5544]">{latestResponse.summary}</p>
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="rounded-[24px] border border-[#F0E6DD] bg-white p-5 shadow-warm">
-                <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">{t("coach.score")}</div>
-                <div className="mt-3 text-5xl font-semibold text-[#1F1611]">{latestResponse.score}</div>
-              </div>
-              <div className="rounded-[24px] border border-[#F0E6DD] bg-white p-5 shadow-warm">
-                <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">{t("coach.disclaimer")}</div>
-                <p className="mt-3 text-sm leading-6 text-[#6B5544]">{latestResponse.disclaimer}</p>
-              </div>
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-2">
-              {[
-                [t("coach.riskAlerts"), latestResponse.riskAlerts],
-                [t("coach.nutritionInsights"), latestResponse.nutritionInsights],
-                [t("coach.nextActions"), latestResponse.nextActions],
-                [t("coach.mealStrategy"), latestResponse.mealStrategy],
-              ].map(([label, items]) => (
-                <div
-                  key={String(label)}
-                  className="rounded-[24px] border border-[#F0E6DD] bg-white p-5 shadow-warm"
-                >
-                  <div className="text-xs uppercase tracking-[0.24em] text-[#9C8B7A]">{label}</div>
-                  <ul className="mt-4 space-y-2 text-[#6B5544]">
-                    {(items as string[]).map((item, index) => (
-                      <li key={`${label}-${index}`} className="rounded-2xl bg-[#FFF5EE] px-4 py-2 text-sm">
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
           </div>
-        ) : null}
+        ) : messages.length === 0 ? (
+          <div className="flex h-full items-center justify-center text-sm text-[#9C8B7A]">
+            {t("coach.sessions.emptyChat") ?? "开始对话吧 👇"}
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {messages.map((msg) => (
+              <ChatBubble key={msg.id} msg={msg} />
+            ))}
+            {chatMutation.isPending && <TypingBubble />}
+          </div>
+        )}
+      </div>
 
-        {/* Session history */}
-        {sessions && sessions.length > 0 ? (
-          <SectionCard title={t("coach.sessions.title")} eyebrow={t("coach.sessions.eyebrow")}>
-            <div className="space-y-2">
-              {sessions.map((session) => (
-                <div
-                  key={session.id}
-                  className="rounded-2xl border border-[#F0E6DD] bg-[#FFF5EE] px-4 py-3"
-                >
-                  <div className="font-medium text-[#1F1611]">{session.title}</div>
-                  <div className="mt-1 text-xs uppercase tracking-[0.2em] text-[#9C8B7A]">
-                    {session.focus.replace("_", " ")}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </SectionCard>
-        ) : null}
+      {/* Input bar */}
+      <div className="mt-3 flex gap-2">
+        <input
+          ref={inputRef}
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              handleSend();
+            }
+          }}
+          placeholder={t("coach.sessions.inputPlaceholder") ?? "输入你的问题..."}
+          disabled={chatMutation.isPending}
+          className="flex-1 rounded-full border border-[#F0E6DD] bg-white px-5 py-3 text-sm text-[#1F1611] outline-none placeholder:text-[#C4B5A5] focus:border-[#FF6B35]/40 disabled:opacity-50"
+        />
+        <button
+          type="button"
+          onClick={handleSend}
+          disabled={!input.trim() || chatMutation.isPending}
+          className="shrink-0 rounded-full bg-[#FF6B35] p-3 text-white transition hover:bg-[#E55329] disabled:opacity-50"
+        >
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 10L18 2L10 18L8 12L2 10Z" fill="currentColor" />
+            <path d="M10 18L8 12L18 2L10 18Z" fill="currentColor" fillOpacity="0.6" />
+          </svg>
+        </button>
       </div>
     </div>
   );

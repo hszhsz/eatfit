@@ -130,6 +130,14 @@ export interface CoachMessage {
   createdAt: string;
 }
 
+export interface CoachChatResponse {
+  sessionId: string;
+  sessionTitle: string;
+  userMessageId: string;
+  assistantMessageId: string;
+  response: CoachResponse;
+}
+
 export interface FoodLog {
   id: string;
   profileId: string;

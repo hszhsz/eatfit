@@ -10,8 +10,8 @@ import httpx
 from app.schemas import CoachFocus, CoachRequest, CoachResponse, DailyPlanOut, NutritionTarget
 
 
-DEFAULT_BASE_URL = "https://ark.cn-beijing.volces.com/api/coding/v3"
-DEFAULT_MODEL = "doubao-1-5-pro-32k-250115"
+DEFAULT_BASE_URL = "https://api.moonshot.cn/v1"
+DEFAULT_MODEL = "kimi-2.7-code"
 DISCLAIMER = "建议仅作饮食管理参考，存在慢病、孕期或特殊医疗情况时应咨询医生或注册营养师。"
 
 
@@ -113,6 +113,13 @@ def _build_prompt(profile: Any, target: NutritionTarget, plan: DailyPlanOut, req
 
 
 def _extract_text(data: dict[str, Any]) -> str:
+    # OpenAI-compatible Chat Completions response format
+    choices = data.get("choices", [])
+    if choices:
+        content = choices[0].get("message", {}).get("content", "")
+        if isinstance(content, str) and content.strip():
+            return content.strip()
+    # Fallback: Responses API format (Volcano/Doubao legacy)
     if isinstance(data.get("output_text"), str) and data["output_text"].strip():
         return data["output_text"].strip()
     texts: list[str] = []
@@ -180,24 +187,18 @@ def generate_coach_advice(profile: Any, target: NutritionTarget, plan: DailyPlan
 
     payload = {
         "model": model,
-        "input": [
-            {
-                "role": "system",
-                "content": [{"type": "input_text", "text": system_prompt}],
-            },
-            {
-                "role": "user",
-                "content": [{"type": "input_text", "text": user_prompt}],
-            },
+        "messages": [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt},
         ],
         "temperature": 0.4,
-        "max_output_tokens": 2800,
+        "max_tokens": 2800,
     }
 
     try:
         with httpx.Client(timeout=90.0) as client:
             response = client.post(
-                f"{base_url}/responses",
+                f"{base_url}/chat/completions",
                 headers={
                     "Authorization": f"Bearer {api_key}",
                     "Content-Type": "application/json",
