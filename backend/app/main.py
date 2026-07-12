@@ -12,13 +12,16 @@ import os
 from contextlib import asynccontextmanager
 from pathlib import Path
 
-from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-# Load .env from the backend root (parent of app/)
-_env_file = Path(__file__).resolve().parent.parent / ".env"
-load_dotenv(_env_file)
+# Load .env for local development (Vercel injects env vars in production)
+try:
+    from dotenv import load_dotenv
+    _env_file = Path(__file__).resolve().parent.parent / ".env"
+    load_dotenv(_env_file)
+except ImportError:
+    pass
 
 from app.recipe_store import get_all_recipes
 from app.supabase_client import get_supabase
