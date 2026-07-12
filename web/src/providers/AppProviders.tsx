@@ -1,12 +1,12 @@
 import {
   ClerkProvider,
-  useAuth,
+  useSession,
 } from "@clerk/react";
 import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
-import {
+import React, {
   createContext,
   useCallback,
   useContext,
@@ -18,7 +18,7 @@ import {
 import { BrowserRouter } from "react-router-dom";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
-import { env, hasSupabase } from "@/lib/env";
+import { hasSupabase } from "@/lib/env";
 import { createSupabaseClient } from "@/lib/supabase";
 import { LanguageProvider } from "@/i18n/LanguageContext";
 
@@ -32,7 +32,7 @@ const SupabaseContext = createContext<SupabaseClient | null>(null);
 const ClerkSessionErrorContext = createContext<string | null>(null);
 
 function SupabaseProvider({ children }: PropsWithChildren) {
-  const { getToken } = useAuth();
+  const { session } = useSession();
   const lastErrorRef = useRef<string | null>(null);
   const [, forceRender] = useState(0);
 
@@ -48,7 +48,7 @@ function SupabaseProvider({ children }: PropsWithChildren) {
 
     return createSupabaseClient(async () => {
       try {
-        const token = await getToken();
+        const token = await session?.getToken();
         if (!token) {
           return null;
         }
@@ -75,7 +75,7 @@ function SupabaseProvider({ children }: PropsWithChildren) {
         return null;
       }
     });
-  }, [getToken, setError]);
+  }, [session, setError]);
 
   return (
     <SupabaseContext.Provider value={client}>
@@ -98,10 +98,17 @@ export function useClerkSessionError() {
   return useContext(ClerkSessionErrorContext);
 }
 
+// publishableKey is auto-detected from VITE_CLERK_PUBLISHABLE_KEY.
+// Official quickstart says do NOT pass manually, but TS types in v6.11.3
+// incorrectly mark it required (runtime uses options?.publishableKey).
+// Cast to work around stale types: https://clerk.com/docs/react/getting-started/quickstart
+const _ClerkProvider = ClerkProvider as React.FC<
+  Omit<React.ComponentProps<typeof ClerkProvider>, 'publishableKey'>
+>;
+
 export function AppProviders({ children }: PropsWithChildren) {
   return (
-    <ClerkProvider
-      publishableKey={env.clerkPublishableKey}
+    <_ClerkProvider
       signInUrl="/sign-in"
       signUpUrl="/sign-up"
       afterSignOutUrl="/"
@@ -113,7 +120,7 @@ export function AppProviders({ children }: PropsWithChildren) {
           </LanguageProvider>
         </SupabaseProvider>
       </QueryClientProvider>
-    </ClerkProvider>
+    </_ClerkProvider>
   );
 }
 
