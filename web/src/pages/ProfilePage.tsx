@@ -209,17 +209,8 @@ export function ProfilePage() {
                 ⚠️ {t("profile.loadError")}
               </div>
             ) : profile ? (
-              <div className="text-sm text-red-500">
-                {String(saveError.message)}
-                {/CLERK_SESSION_STORAGE_ERROR|no suitable key|wrong key type/i.test(String(saveError.message)) ? (
-                  <div className="mt-1 text-xs text-[#6B5544]">
-                    Tip: open <a href="/sign-in" className="underline">/sign-in</a> in a new tab, sign out, then sign back in to refresh the local session.
-                  </div>
-                ) : null}
-              </div>
-            ) : profile ? (
               <div className="text-sm text-[#6B5544]">
-                {t("profile.lastUpdated", { date: new Date(profile.updatedAt).toLocaleString() })}
+                ✅ {t("profile.lastUpdated", { date: new Date(profile.updatedAt).toLocaleString() })}
               </div>
             ) : (
               <div className="text-sm text-[#6B5544]">
