@@ -53,12 +53,15 @@ cd backend
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 export EATFIT_LLM_API_KEY="你的 Ark API Key"
+export EATFIT_LLM_BASE_URL="https://ark.cn-beijing.volces.com/api/v3"
+export EATFIT_LLM_MODEL="minimax-m3"
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 - 接口文档: http://localhost:8000/docs
 - 健康检查: http://localhost:8000/api/health
 - 若未配置 `EATFIT_LLM_API_KEY`, AI 顾问会回退到本地策略建议
+- 若只配置了 `EATFIT_LLM_API_KEY`, 后端会优先尝试项目默认的 Ark + `minimax-m3`, 并兼容历史 Moonshot/Kimi 配置
 
 ### 2. Web 前端
 

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import os
+from dataclasses import dataclass
 from typing import Any
 
 import httpx
@@ -10,9 +11,18 @@ import httpx
 from app.schemas import CoachFocus, CoachRequest, CoachResponse, DailyPlanOut, NutritionTarget
 
 
-DEFAULT_BASE_URL = "https://api.moonshot.cn/v1"
-DEFAULT_MODEL = "kimi-k2.7-code"
+DEFAULT_BASE_URL = "https://ark.cn-beijing.volces.com/api/v3"
+DEFAULT_MODEL = "minimax-m3"
+LEGACY_BASE_URL = "https://api.moonshot.cn/v1"
+LEGACY_MODEL = "kimi-k2.7-code"
 DISCLAIMER = "建议仅作饮食管理参考，存在慢病、孕期或特殊医疗情况时应咨询医生或注册营养师。"
+
+
+@dataclass(frozen=True)
+class LlmConfig:
+    name: str
+    base_url: str
+    model: str
 
 
 def _goal_label(goal: str) -> str:
@@ -139,6 +149,54 @@ def _extract_json_block(text: str) -> str:
     return text[start : end + 1]
 
 
+def _read_env(name: str) -> str | None:
+    value = os.getenv(name)
+    if value is None:
+        return None
+    stripped = value.strip()
+    return stripped or None
+
+
+def _resolve_llm_configs() -> list[LlmConfig]:
+    base_url = _read_env("EATFIT_LLM_BASE_URL")
+    model = _read_env("EATFIT_LLM_MODEL")
+    if base_url or model:
+        return [
+            LlmConfig(
+                name="explicit-env",
+                base_url=(base_url or DEFAULT_BASE_URL).rstrip("/"),
+                model=model or DEFAULT_MODEL,
+            )
+        ]
+
+    # Prefer the project's Ark/minimax default, but keep a legacy Moonshot/Kimi
+    # fallback so existing deployments with only EATFIT_LLM_API_KEY still work.
+    return [
+        LlmConfig(name="ark-default", base_url=DEFAULT_BASE_URL, model=DEFAULT_MODEL),
+        LlmConfig(name="moonshot-legacy", base_url=LEGACY_BASE_URL, model=LEGACY_MODEL),
+    ]
+
+
+def _build_payload(system_prompt: str, user_prompt: str, model: str) -> dict[str, Any]:
+    return {
+        "model": model,
+        "messages": [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt},
+        ],
+        "temperature": 1.0,
+        "max_tokens": 6000,
+    }
+
+
+def _error_detail(exc: Exception) -> str:
+    if isinstance(exc, httpx.HTTPStatusError):
+        response_text = exc.response.text.strip()
+        if response_text:
+            return f"{exc}; body={response_text[:500]}"
+    return str(exc)
+
+
 def _local_fallback(profile: Any, plan: DailyPlanOut, request: CoachRequest) -> CoachResponse:
     calorie_gap = round(plan.target.target_calories - plan.total_calories)
     protein_gap = round(plan.target.protein_g - plan.total_protein_g)
@@ -182,38 +240,35 @@ def generate_coach_advice(profile: Any, target: NutritionTarget, plan: DailyPlan
         return _local_fallback(profile, plan, request)
 
     system_prompt, user_prompt = _build_prompt(profile, target, plan, request, conversation_history)
-    base_url = os.getenv("EATFIT_LLM_BASE_URL", DEFAULT_BASE_URL).rstrip("/")
-    model = os.getenv("EATFIT_LLM_MODEL", DEFAULT_MODEL)
+    errors: list[str] = []
 
-    payload = {
-        "model": model,
-        "messages": [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt},
-        ],
-        "temperature": 1.0,
-        "max_tokens": 6000,
-    }
+    for config in _resolve_llm_configs():
+        payload = _build_payload(system_prompt, user_prompt, config.model)
+        try:
+            with httpx.Client(timeout=90.0) as client:
+                response = client.post(
+                    f"{config.base_url}/chat/completions",
+                    headers={
+                        "Authorization": f"Bearer {api_key}",
+                        "Content-Type": "application/json",
+                    },
+                    json=payload,
+                )
+                response.raise_for_status()
+                data = response.json()
 
-    try:
-        with httpx.Client(timeout=90.0) as client:
-            response = client.post(
-                f"{base_url}/chat/completions",
-                headers={
-                    "Authorization": f"Bearer {api_key}",
-                    "Content-Type": "application/json",
-                },
-                json=payload,
+            text = _extract_text(data)
+            raw_json = _extract_json_block(text)
+            parsed = CoachResponse.model_validate_json(raw_json)
+            return parsed.model_copy(update={"disclaimer": DISCLAIMER})
+        except Exception as exc:
+            errors.append(
+                f"{config.name}({config.base_url}, {config.model}): {_error_detail(exc)}"
             )
-            response.raise_for_status()
-            data = response.json()
 
-        text = _extract_text(data)
-        raw_json = _extract_json_block(text)
-        parsed = CoachResponse.model_validate_json(raw_json)
-        return parsed.model_copy(update={"disclaimer": DISCLAIMER})
-    except Exception as exc:
-        import traceback
-        print(f"[EatFit] LLM coach error: {exc}")
-        traceback.print_exc()
-        return _local_fallback(profile, plan, request)
+    if errors:
+        print("[EatFit] LLM coach error: all attempts failed")
+        for item in errors:
+            print(f"[EatFit]   - {item}")
+
+    return _local_fallback(profile, plan, request)
