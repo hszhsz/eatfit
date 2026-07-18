@@ -172,18 +172,20 @@ export function CoachPage() {
 
   const [input, setInput] = useState("");
   const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
+  const [isNewChatMode, setIsNewChatMode] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const { data: sessions = [] } = useCoachSessions(profile);
   const { data: messages = [] } = useCoachMessages(activeSessionId);
   const chatMutation = useCoachChatMutation(profile);
 
-  // Auto-select latest session on load
+  // Auto-select latest session on load, but do not override the user's
+  // explicit "New Chat" choice while they are starting a fresh conversation.
   useEffect(() => {
-    if (sessions.length > 0 && !activeSessionId) {
+    if (sessions.length > 0 && !activeSessionId && !isNewChatMode) {
       setActiveSessionId(sessions[0].id);
     }
-  }, [sessions, activeSessionId]);
+  }, [sessions, activeSessionId, isNewChatMode]);
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -229,11 +231,13 @@ export function CoachPage() {
 
     if (!activeSessionId && result.sessionId) {
       setActiveSessionId(result.sessionId);
+      setIsNewChatMode(false);
     }
   }
 
   function handleNewSession() {
     setActiveSessionId(null);
+    setIsNewChatMode(true);
     setInput("");
     setTimeout(() => inputRef.current?.focus(), 100);
   }
@@ -250,7 +254,10 @@ export function CoachPage() {
           <SessionSidebar
             sessions={sessions}
             activeSessionId={activeSessionId}
-            onSelect={setActiveSessionId}
+            onSelect={(id) => {
+              setActiveSessionId(id);
+              setIsNewChatMode(false);
+            }}
             onNew={handleNewSession}
           />
         </div>
